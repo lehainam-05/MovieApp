@@ -4,12 +4,12 @@ import { View, Text, ActivityIndicator, FlatList, Image } from "react-native";
 import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
 
-import useFetch from "@/services/usefetch";
+import useFetch from "@/hooks/useFetch";
 import { fetchMovies } from "@/services/api";
 import { updateSearchCount } from "@/services/appwrite";
 
-import SearchBar from "@/components/SearchBar";
-import MovieDisplayCard from "@/components/MovieCard";
+import SearchBar from "@/components/common/SearchBar";
+import MovieDisplayCard from "@/components/common/MovieCard";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");

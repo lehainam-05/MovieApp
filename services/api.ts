@@ -7,25 +7,66 @@ export const TMDB_CONFIG = {
   },
 };
 
+const tmdbGet = async <T>(endpoint: string): Promise<T> => {
+  const response = await fetch(`${TMDB_CONFIG.BASE_URL}${endpoint}`, {
+    method: "GET",
+    headers: TMDB_CONFIG.headers,
+  });
+
+  if (!response.ok) {
+    throw new Error(`TMDB request failed: ${response.statusText}`);
+  }
+
+  return response.json();
+};
+
 export const fetchMovies = async ({
   query,
 }: {
   query: string;
 }): Promise<Movie[]> => {
   const endpoint = query
-    ? `${TMDB_CONFIG.BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-    : `${TMDB_CONFIG.BASE_URL}/discover/movie?sort_by=popularity.desc`;
+    ? `/search/movie?query=${encodeURIComponent(query)}`
+    : "/discover/movie?sort_by=popularity.desc";
 
-  const response = await fetch(endpoint, {
-    method: "GET",
-    headers: TMDB_CONFIG.headers,
+  const data = await tmdbGet<{ results: Movie[] }>(endpoint);
+  return data.results;
+};
+
+export const fetchGenres = async (): Promise<{ id: number; name: string }[]> => {
+  const data = await tmdbGet<{ genres: { id: number; name: string }[] }>(
+    "/genre/movie/list?language=en-US"
+  );
+
+  return data.genres;
+};
+
+export const fetchMoviesByGenre = async (genreId?: number): Promise<Movie[]> => {
+  const endpoint = genreId
+    ? `/discover/movie?sort_by=popularity.desc&with_genres=${genreId}`
+    : "/discover/movie?sort_by=popularity.desc";
+
+  const data = await tmdbGet<{ results: Movie[] }>(endpoint);
+  return data.results;
+};
+
+export const fetchMoviesByRegionLanguage = async ({
+  region,
+  language,
+}: {
+  region: string;
+  language?: string;
+}): Promise<Movie[]> => {
+  const params = new URLSearchParams({
+    sort_by: "popularity.desc",
+    with_origin_country: region,
   });
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch movies: ${response.statusText}`);
+  if (language) {
+    params.append("with_original_language", language);
   }
 
-  const data = await response.json();
+  const data = await tmdbGet<{ results: Movie[] }>(`/discover/movie?${params.toString()}`);
   return data.results;
 };
 
@@ -33,20 +74,7 @@ export const fetchMovieDetails = async (
   movieId: string
 ): Promise<MovieDetails> => {
   try {
-    const response = await fetch(
-      `${TMDB_CONFIG.BASE_URL}/movie/${movieId}?api_key=${TMDB_CONFIG.API_KEY}`,
-      {
-        method: "GET",
-        headers: TMDB_CONFIG.headers,
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch movie details: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
+    return await tmdbGet<MovieDetails>(`/movie/${movieId}?api_key=${TMDB_CONFIG.API_KEY}`);
   } catch (error) {
     console.error("Error fetching movie details:", error);
     throw error;
