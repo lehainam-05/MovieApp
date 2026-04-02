@@ -1,26 +1,32 @@
 import { Tabs } from "expo-router";
-import { ImageBackground, Image, Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Image, Text, View } from "react-native";
 
 import { icons } from "@/constants/icons";
-import { images } from "@/constants/images";
 
-function TabIcon({ focused, icon, title }: any) {
+type TabIconProps = {
+  focused: boolean;
+  icon: any;
+  title: string;
+};
+
+function TabIcon({ focused, icon, title }: TabIconProps) {
   if (focused) {
     return (
-      <ImageBackground
-        source={images.highlight}
-        className="flex flex-row w-full flex-1 min-w-[112px] min-h-14 mt-4 justify-center items-center rounded-full overflow-hidden"
+      <LinearGradient
+        colors={["#7C3AED", "#C084FC"]}
+        start={{ x: 0, y: 0.5 }}
+        end={{ x: 1, y: 0.5 }}
+        className="mt-4 min-h-14 min-w-[112px] flex-1 flex-row items-center justify-center overflow-hidden rounded-full"
       >
-        <Image source={icon} tintColor="#151312" className="size-5" />
-        <Text className="text-secondary text-base font-semibold ml-2">
-          {title}
-        </Text>
-      </ImageBackground>
+        <Image source={icon} tintColor="#F5EFFF" className="size-5" />
+        <Text className="ml-2 text-base font-semibold text-white">{title}</Text>
+      </LinearGradient>
     );
   }
 
   return (
-    <View className="size-full justify-center items-center mt-4 rounded-full">
+    <View className="mt-4 size-full items-center justify-center rounded-full">
       <Image source={icon} tintColor="#A8B5DB" className="size-5" />
     </View>
   );
@@ -38,26 +44,24 @@ export default function TabsLayout() {
           alignItems: "center",
         },
         tabBarStyle: {
-          backgroundColor: "#0F0D23",
+          backgroundColor: "#0F0F14",
           borderRadius: 50,
           marginHorizontal: 20,
-          marginBottom: 36,
-          height: 52,
+          marginBottom: 24,
+          height: 56,
           position: "absolute",
           overflow: "hidden",
           borderWidth: 1,
-          borderColor: "#0F0D23",
+          borderColor: "#1E1B2E",
         },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "index",
+          title: "Home",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.home} title="Home" />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon focused={focused} icon={icons.home} title="Home" />,
         }}
       />
 
@@ -66,20 +70,16 @@ export default function TabsLayout() {
         options={{
           title: "Search",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.search} title="Search" />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon focused={focused} icon={icons.search} title="Search" />,
         }}
       />
 
       <Tabs.Screen
         name="save"
         options={{
-          title: "Save",
+          title: "Movies",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.save} title="Save" />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon focused={focused} icon={icons.save} title="Movies" />,
         }}
       />
 
@@ -88,9 +88,7 @@ export default function TabsLayout() {
         options={{
           title: "Profile",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.person} title="Profile" />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon focused={focused} icon={icons.person} title="Profile" />,
         }}
       />
     </Tabs>
