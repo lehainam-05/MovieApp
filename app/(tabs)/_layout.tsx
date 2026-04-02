@@ -1,27 +1,22 @@
 import { Tabs } from "expo-router";
-import { ImageBackground, Image, Text, View } from "react-native";
+import { Image, View } from "react-native";
 
 import { icons } from "@/constants/icons";
-import { images } from "@/constants/images";
 
-function TabIcon({ focused, icon, title }: any) {
+function TabIcon({ focused, icon }: any) {
   if (focused) {
     return (
-      <ImageBackground
-        source={images.highlight}
-        className="flex flex-row w-full flex-1 min-w-[112px] min-h-14 mt-4 justify-center items-center rounded-full overflow-hidden"
-      >
-        <Image source={icon} tintColor="#151312" className="size-5" />
-        <Text className="text-secondary text-base font-semibold ml-2">
-          {title}
-        </Text>
-      </ImageBackground>
+      <View className="size-full justify-center items-center mt-4 rounded-full">
+        <View className="size-9 rounded-full bg-accent items-center justify-center">
+          <Image source={icon} tintColor="#111216" className="size-5" />
+        </View>
+      </View>
     );
   }
 
   return (
     <View className="size-full justify-center items-center mt-4 rounded-full">
-      <Image source={icon} tintColor="#A8B5DB" className="size-5" />
+      <Image source={icon} tintColor="#A3A3A3" className="size-5" />
     </View>
   );
 }
@@ -38,7 +33,7 @@ export default function TabsLayout() {
           alignItems: "center",
         },
         tabBarStyle: {
-          backgroundColor: "#0F0D23",
+          backgroundColor: "#111216",
           borderRadius: 50,
           marginHorizontal: 20,
           marginBottom: 36,
@@ -46,7 +41,7 @@ export default function TabsLayout() {
           position: "absolute",
           overflow: "hidden",
           borderWidth: 1,
-          borderColor: "#0F0D23",
+          borderColor: "#2A2A2E",
         },
       }}
     >
@@ -56,7 +51,7 @@ export default function TabsLayout() {
           title: "index",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.home} title="Home" />
+            <TabIcon focused={focused} icon={icons.home} />
           ),
         }}
       />
@@ -67,7 +62,7 @@ export default function TabsLayout() {
           title: "Search",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.search} title="Search" />
+            <TabIcon focused={focused} icon={icons.search} />
           ),
         }}
       />
@@ -78,7 +73,7 @@ export default function TabsLayout() {
           title: "Save",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.save} title="Save" />
+            <TabIcon focused={focused} icon={icons.save} />
           ),
         }}
       />
@@ -89,7 +84,7 @@ export default function TabsLayout() {
           title: "Profile",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.person} title="Profile" />
+            <TabIcon focused={focused} icon={icons.person} />
           ),
         }}
       />

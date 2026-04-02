@@ -22,7 +22,7 @@ const RankingCard = ({ movie, index }: RankingCardProps) => {
           className="w-40 h-56 rounded-3xl"
           resizeMode="cover"
         />
-        <View className="absolute top-2 right-2 bg-black/70 px-2 py-1 rounded-md">
+        <View className="absolute top-2 right-2 bg-secondary px-2 py-1 rounded-md">
           <Text className="text-white text-xs font-semibold">
             PD.{movie.vote_average.toFixed(1)}
           </Text>

@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { images } from "@/constants/images";
 import { ALL_GENRE, GenreChip } from "@/constants/genres";
@@ -77,6 +78,7 @@ const Index = () => {
   return (
     <View className="flex-1 bg-primary">
       <Image source={images.bg} className="absolute w-full h-full z-0" resizeMode="cover" />
+      <LinearGradient colors={["#0C0C10", "#09090D", "#000000"]} className="absolute inset-0" />
 
       <ScrollView
         className="flex-1"
@@ -107,7 +109,7 @@ const Index = () => {
               ) : null}
 
               <View className="mt-12">
-                <Text className="text-white text-3xl font-black mb-4">TOP 10 TODAY</Text>
+                <Text className="text-white text-2xl font-black mb-4">TOP 10 TODAY</Text>
                 <FlatList
                   horizontal
                   data={(genreMovies ?? []).slice(0, 10)}
@@ -119,7 +121,7 @@ const Index = () => {
               </View>
 
               <View className="mt-12">
-                <Text className="text-white text-3xl font-black mb-4">NEW US-UK MOVIES</Text>
+                <Text className="text-white text-2xl font-black mb-4">NEW US-UK MOVIES</Text>
                 <View className="flex-row flex-wrap justify-between gap-y-6">
                   {(usUkMovies ?? []).slice(0, 4).map((movie) => (
                     <MoviePosterCard key={movie.id} movie={movie} />
@@ -128,7 +130,7 @@ const Index = () => {
               </View>
 
               <View className="mt-12">
-                <Text className="text-white text-3xl font-black mb-4">NEW ASIAN MOVIES</Text>
+                <Text className="text-white text-2xl font-black mb-4">NEW ASIAN MOVIES</Text>
                 <View className="flex-row flex-wrap justify-between gap-y-6">
                   {(asianMovies ?? []).slice(0, 4).map((movie) => (
                     <MoviePosterCard key={movie.id} movie={movie} />
