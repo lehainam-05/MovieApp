@@ -1,115 +1,144 @@
+import { useEffect, useMemo, useState } from "react";
 import {
-  View,
-  Text,
   ActivityIndicator,
-  ScrollView,
-  Image,
   FlatList,
+  Image,
+  ScrollView,
+  Text,
+  View,
 } from "react-native";
-import { useRouter } from "expo-router";
 
-import useFetch from "@/services/usefetch";
-import { fetchMovies } from "@/services/api";
-import { getTrendingMovies } from "@/services/appwrite";
-
-import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
+import { colors } from "@/constants/colors";
+import { ALL_GENRE, GenreChip } from "@/constants/genres";
 
-import SearchBar from "@/components/SearchBar";
-import MovieCard from "@/components/MovieCard";
-import TrendingCard from "@/components/TrendingCard";
+import useFetch from "@/hooks/useFetch";
+import {
+  fetchGenres,
+  fetchMoviesByGenre,
+  fetchMoviesByRegionLanguage,
+} from "@/services/api";
+
+import CategoryChips from "@/components/home/CategoryChips";
+import HeroBanner from "@/components/home/HeroBanner";
+import MoviePosterCard from "@/components/home/MoviePosterCard";
+import RankingCard from "@/components/home/RankingCard";
 
 const Index = () => {
-  const router = useRouter();
+  const [selectedGenreId, setSelectedGenreId] = useState<number>(ALL_GENRE.id);
 
   const {
-    data: trendingMovies,
-    loading: trendingLoading,
-    error: trendingError,
-  } = useFetch(getTrendingMovies);
+    data: genres,
+    loading: genresLoading,
+    error: genresError,
+  } = useFetch(fetchGenres);
 
   const {
-    data: movies,
-    loading: moviesLoading,
-    error: moviesError,
-  } = useFetch(() => fetchMovies({ query: "" }));
+    data: genreMovies,
+    loading: genreMoviesLoading,
+    error: genreMoviesError,
+    refetch: loadGenreMovies,
+  } = useFetch(
+    () => fetchMoviesByGenre(selectedGenreId === ALL_GENRE.id ? undefined : selectedGenreId),
+    false
+  );
+
+  const {
+    data: usUkMovies,
+    loading: usUkLoading,
+    error: usUkError,
+  } = useFetch(() => fetchMoviesByRegionLanguage({ region: "US" }));
+
+  const {
+    data: asianMovies,
+    loading: asianLoading,
+    error: asianError,
+  } = useFetch(() =>
+    fetchMoviesByRegionLanguage({ region: "JP", language: "ja" })
+  );
+
+  useEffect(() => {
+    loadGenreMovies();
+  }, [selectedGenreId]);
+
+  const chips: GenreChip[] = useMemo(() => {
+    const mapped = (genres ?? []).map((genre) => ({
+      id: genre.id,
+      name: genre.name,
+    }));
+
+    return [ALL_GENRE, ...mapped];
+  }, [genres]);
+
+  const heroMovie = genreMovies?.[0];
+
+  const isLoading = genresLoading || genreMoviesLoading || usUkLoading || asianLoading;
+  const error = genresError || genreMoviesError || usUkError || asianError;
 
   return (
     <View className="flex-1 bg-primary">
-      <Image
-        source={images.bg}
-        className="absolute w-full z-0"
-        resizeMode="cover"
-      />
+      <Image source={images.bg} className="absolute w-full h-full z-0" resizeMode="cover" />
 
       <ScrollView
-        className="flex-1 px-5"
+        className="flex-1"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ minHeight: "100%", paddingBottom: 10 }}
+        contentContainerStyle={{ paddingBottom: 120 }}
       >
-        <Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto" />
+        <View className="px-5 pt-16">
+          <Text className="text-4xl font-black tracking-wider" style={{ color: colors.accent }}>CINEMA</Text>
 
-        {moviesLoading || trendingLoading ? (
-          <ActivityIndicator
-            size="large"
-            color="#0000ff"
-            className="mt-10 self-center"
-          />
-        ) : moviesError || trendingError ? (
-          <Text>Error: {moviesError?.message || trendingError?.message}</Text>
-        ) : (
-          <View className="flex-1 mt-5">
-            <SearchBar
-              onPress={() => {
-                router.push("/search");
-              }}
-              placeholder="Search for a movie"
+          <View className="mt-5">
+            <CategoryChips
+              chips={chips}
+              selectedId={selectedGenreId}
+              onSelect={setSelectedGenreId}
             />
+          </View>
 
-            {trendingMovies && (
-              <View className="mt-10">
-                <Text className="text-lg text-white font-bold mb-3">
-                  Trending Movies
-                </Text>
+          {isLoading ? (
+            <ActivityIndicator size="large" color="#AB8BFF" className="mt-10" />
+          ) : error ? (
+            <Text className="text-red-400 mt-8">Error: {error.message}</Text>
+          ) : (
+            <>
+              {heroMovie ? (
+                <View className="mt-6">
+                  <HeroBanner movie={heroMovie} />
+                </View>
+              ) : null}
+
+              <View className="mt-12">
+                <Text className="text-white text-3xl font-black mb-4">TOP 10 TODAY</Text>
                 <FlatList
                   horizontal
+                  data={(genreMovies ?? []).slice(0, 10)}
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={({ item, index }) => <RankingCard movie={item} index={index} />}
                   showsHorizontalScrollIndicator={false}
-                  className="mb-4 mt-3"
-                  data={trendingMovies}
-                  contentContainerStyle={{
-                    gap: 26,
-                  }}
-                  renderItem={({ item, index }) => (
-                    <TrendingCard movie={item} index={index} />
-                  )}
-                  keyExtractor={(item) => item.movie_id.toString()}
-                  ItemSeparatorComponent={() => <View className="w-4" />}
+                  contentContainerStyle={{ gap: 12, paddingRight: 12 }}
                 />
               </View>
-            )}
 
-            <>
-              <Text className="text-lg text-white font-bold mt-5 mb-3">
-                Latest Movies
-              </Text>
+              <View className="mt-12">
+                <Text className="text-white text-3xl font-black mb-4">NEW US-UK MOVIES</Text>
+                <View className="flex-row flex-wrap justify-between gap-y-6">
+                  {(usUkMovies ?? []).slice(0, 4).map((movie) => (
+                    <MoviePosterCard key={movie.id} movie={movie} />
+                  ))}
+                </View>
+              </View>
 
-              <FlatList
-                data={movies}
-                renderItem={({ item }) => <MovieCard {...item} />}
-                keyExtractor={(item) => item.id.toString()}
-                numColumns={3}
-                columnWrapperStyle={{
-                  justifyContent: "flex-start",
-                  gap: 20,
-                  paddingRight: 5,
-                  marginBottom: 10,
-                }}
-                className="mt-2 pb-32"
-                scrollEnabled={false}
-              />
+              <View className="mt-12">
+                <Text className="text-white text-3xl font-black mb-4">NEW ASIAN MOVIES</Text>
+                <View className="flex-row flex-wrap justify-between gap-y-6">
+                  {(asianMovies ?? []).slice(0, 4).map((movie) => (
+                    <MoviePosterCard key={movie.id} movie={movie} />
+                  ))}
+                </View>
+              </View>
             </>
-          </View>
-        )}
+          )}
+        </View>
       </ScrollView>
     </View>
   );

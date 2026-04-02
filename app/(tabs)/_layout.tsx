@@ -1,21 +1,32 @@
 import { Tabs } from "expo-router";
-import { ImageBackground, Image, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { icons } from "@/constants/icons";
-import { images } from "@/constants/images";
+import { colors } from "@/constants/colors";
 
 function TabIcon({ focused, icon, title }: any) {
   if (focused) {
     return (
-      <ImageBackground
-        source={images.highlight}
-        className="flex flex-row w-full flex-1 min-w-[112px] min-h-14 mt-4 justify-center items-center rounded-full overflow-hidden"
+      <LinearGradient
+        colors={colors.gradient.chip}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{
+          flexDirection: "row",
+          width: "100%",
+          flex: 1,
+          minWidth: 112,
+          minHeight: 56,
+          marginTop: 8,
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 999,
+        }}
       >
-        <Image source={icon} tintColor="#151312" className="size-5" />
-        <Text className="text-secondary text-base font-semibold ml-2">
-          {title}
-        </Text>
-      </ImageBackground>
+        <Image source={icon} tintColor="#141624" className="size-5" />
+        <Text className="text-secondary text-base font-semibold ml-2">{title}</Text>
+      </LinearGradient>
     );
   }
 
@@ -38,15 +49,15 @@ export default function TabsLayout() {
           alignItems: "center",
         },
         tabBarStyle: {
-          backgroundColor: "#0F0D23",
-          borderRadius: 50,
+          backgroundColor: "#0D0F1A",
+          borderRadius: 24,
           marginHorizontal: 20,
-          marginBottom: 36,
-          height: 52,
+          marginBottom: 20,
+          height: 64,
           position: "absolute",
           overflow: "hidden",
           borderWidth: 1,
-          borderColor: "#0F0D23",
+          borderColor: "#25283A",
         },
       }}
     >
