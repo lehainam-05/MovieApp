@@ -1,27 +1,23 @@
 import { Tabs } from "expo-router";
-import { ImageBackground, Image, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 
 import { icons } from "@/constants/icons";
-import { images } from "@/constants/images";
 
 function TabIcon({ focused, icon, title }: any) {
-  if (focused) {
-    return (
-      <ImageBackground
-        source={images.highlight}
-        className="flex flex-row w-full flex-1 min-w-[112px] min-h-14 mt-4 justify-center items-center rounded-full overflow-hidden"
-      >
-        <Image source={icon} tintColor="#151312" className="size-5" />
-        <Text className="text-secondary text-base font-semibold ml-2">
-          {title}
-        </Text>
-      </ImageBackground>
-    );
-  }
-
   return (
-    <View className="size-full justify-center items-center mt-4 rounded-full">
-      <Image source={icon} tintColor="#A8B5DB" className="size-5" />
+    <View
+      className={`items-center justify-center px-3 py-2 rounded-2xl min-w-[68px] ${
+        focused ? "bg-[#2a1f37]" : ""
+      }`}
+    >
+      <Image source={icon} tintColor={focused ? "#d772ff" : "#8d8f9e"} className="size-5" />
+      <Text
+        className={`text-[10px] mt-1 uppercase tracking-[1.2px] font-semibold ${
+          focused ? "text-[#d772ff]" : "text-[#8d8f9e]"
+        }`}
+      >
+        {title}
+      </Text>
     </View>
   );
 }
@@ -32,21 +28,22 @@ export default function TabsLayout() {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarItemStyle: {
-          width: "100%",
+          width: "auto",
           height: "100%",
           justifyContent: "center",
           alignItems: "center",
         },
         tabBarStyle: {
-          backgroundColor: "#0F0D23",
-          borderRadius: 50,
-          marginHorizontal: 20,
-          marginBottom: 36,
-          height: 52,
+          backgroundColor: "#0e1016",
+          borderRadius: 18,
+          marginHorizontal: 16,
+          marginBottom: 22,
+          height: 70,
+          paddingTop: 8,
+          paddingBottom: 8,
           position: "absolute",
-          overflow: "hidden",
           borderWidth: 1,
-          borderColor: "#0F0D23",
+          borderColor: "#1e212c",
         },
       }}
     >
@@ -75,10 +72,10 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="save"
         options={{
-          title: "Save",
+          title: "Movies",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.save} title="Save" />
+            <TabIcon focused={focused} icon={icons.save} title="Movies" />
           ),
         }}
       />

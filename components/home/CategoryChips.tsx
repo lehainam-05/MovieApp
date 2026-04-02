@@ -24,13 +24,13 @@ const CategoryChips = ({ chips, selectedId, onSelect }: CategoryChipsProps) => {
             className={`px-6 py-3 rounded-full border ${
               isActive
                 ? "bg-white border-white"
-                : "bg-dark-200 border-dark-100"
+                : "bg-[#13131b] border-[#20222c]"
             }`}
             onPress={() => onSelect(item.id)}
           >
             <Text
-              className={`text-xs uppercase tracking-wider font-semibold ${
-                isActive ? "text-secondary" : "text-light-200"
+              className={`text-sm uppercase tracking-[1.4px] font-bold ${
+                isActive ? "text-[#15151a]" : "text-[#8d8d98]"
               }`}
             >
               {item.name}

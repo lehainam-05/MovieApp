@@ -1,5 +1,6 @@
 import { Link } from "expo-router";
 import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 interface HeroBannerProps {
   movie: Movie;
@@ -18,37 +19,38 @@ const HeroBanner = ({ movie }: HeroBannerProps) => {
           ? `https://image.tmdb.org/t/p/w780${movie.backdrop_path}`
           : "https://placehold.co/800x450/161622/FFFFFF.png",
       }}
-      className="w-full h-[420px] rounded-[30px] overflow-hidden justify-end"
+      className="w-full h-[470px] rounded-[30px] overflow-hidden justify-end bg-[#15151f]"
       resizeMode="cover"
     >
-      <View className="px-5 pb-6 bg-black/40">
-        <Text className="text-white text-4xl font-black uppercase" numberOfLines={2}>
+      <View className="px-5 pb-5 pt-12 bg-black/45">
+        <Text className="text-white text-5xl leading-[52px] font-black uppercase" numberOfLines={2}>
           {movie.title}
         </Text>
 
         <View className="flex-row mt-3 gap-2">
-          <View className="bg-accent/60 px-3 py-1 rounded-md">
-            <Text className="text-white text-xs font-semibold">IMDB {rating}</Text>
+          <View className="bg-[#b763ff]/80 px-3 py-1 rounded-md">
+            <Text className="text-[#efe3ff] text-xs font-semibold">IMDB {rating}</Text>
           </View>
-          <View className="bg-dark-200/80 px-3 py-1 rounded-md">
-            <Text className="text-white text-xs font-semibold">PG-13</Text>
+          <View className="bg-black/50 px-3 py-1 rounded-md">
+            <Text className="text-white text-xs font-semibold">1:16</Text>
           </View>
-          <View className="bg-dark-200/80 px-3 py-1 rounded-md">
+          <View className="bg-black/50 px-3 py-1 rounded-md">
             <Text className="text-white text-xs font-semibold">{releaseYear}</Text>
           </View>
         </View>
 
         <View className="flex-row gap-3 mt-5">
           <Link href={`/movie/${movie.id}`} asChild>
-            <TouchableOpacity className="bg-accent rounded-2xl px-8 py-4 flex-row items-center">
-              <Text className="text-white text-lg mr-2">▶</Text>
-              <Text className="text-black text-xl font-semibold">Watch Now</Text>
+            <TouchableOpacity className="bg-[#d770ff] rounded-3xl px-7 py-4 flex-1 flex-row items-center justify-center">
+              <Ionicons name="play" size={16} color="#1d1022" />
+              <Text className="text-[#1d1022] text-xl ml-2 font-bold">Watch Now</Text>
             </TouchableOpacity>
           </Link>
 
           <Link href={`/movie/${movie.id}`} asChild>
-            <TouchableOpacity className="bg-dark-200/95 border border-dark-100 rounded-2xl px-7 py-4">
-              <Text className="text-white text-xl font-semibold">ⓘ Info</Text>
+            <TouchableOpacity className="bg-[#17181f] border border-[#262836] rounded-3xl px-7 py-4 flex-1 flex-row items-center justify-center">
+              <Ionicons name="information-circle" size={18} color="#ffffff" />
+              <Text className="text-white text-xl ml-2 font-bold">Info</Text>
             </TouchableOpacity>
           </Link>
         </View>
