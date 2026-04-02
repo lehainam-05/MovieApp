@@ -1,16 +1,16 @@
 export const colors = {
-  primary: "#08090F",
-  secondary: "#141624",
-  accent: "#C873FF",
-  text: {
-    primary: "#F4EEFF",
-    secondary: "#B7B4C8",
-    muted: "#8A879C",
+  primary: "#030014",
+  secondary: "#151312",
+  accent: "#AB8BFF",
+  dark: {
+    100: "#221F3D",
+    200: "#0F0D23",
   },
-  gradient: {
-    purple: ["#6A36FF", "#B55CFF", "#EBA8FF"] as const,
-    purpleDark: ["#3E1C74", "#6A36FF"] as const,
-    chip: ["#7A4DFF", "#C873FF"] as const,
-    cardOverlay: ["rgba(6,8,18,0.1)", "rgba(6,8,18,0.9)"] as const,
+  light: {
+    100: "#D6C7FF",
+    200: "#A8B5DB",
+    300: "#9CA4AB",
   },
-} as const;
+  white: "#FFFFFF",
+  black: "#000000",
+};

@@ -9,7 +9,6 @@ import {
 } from "react-native";
 
 import { images } from "@/constants/images";
-import { colors } from "@/constants/colors";
 import { ALL_GENRE, GenreChip } from "@/constants/genres";
 
 import useFetch from "@/hooks/useFetch";
@@ -85,7 +84,7 @@ const Index = () => {
         contentContainerStyle={{ paddingBottom: 120 }}
       >
         <View className="px-5 pt-16">
-          <Text className="text-4xl font-black tracking-wider" style={{ color: colors.accent }}>CINEMA</Text>
+          <Text className="text-accent text-4xl font-black tracking-wider">CINEMA</Text>
 
           <View className="mt-5">
             <CategoryChips

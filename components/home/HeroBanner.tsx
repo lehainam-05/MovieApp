@@ -1,8 +1,5 @@
 import { Link } from "expo-router";
 import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-
-import { colors } from "@/constants/colors";
 
 interface HeroBannerProps {
   movie: Movie;
@@ -24,45 +21,38 @@ const HeroBanner = ({ movie }: HeroBannerProps) => {
       className="w-full h-[420px] rounded-[30px] overflow-hidden justify-end"
       resizeMode="cover"
     >
-      <LinearGradient colors={colors.gradient.cardOverlay} style={{ paddingHorizontal: 20, paddingBottom: 24 }}>
+      <View className="px-5 pb-6 bg-black/40">
         <Text className="text-white text-4xl font-black uppercase" numberOfLines={2}>
           {movie.title}
         </Text>
 
         <View className="flex-row mt-3 gap-2">
-          <View className="bg-accent/70 px-3 py-1 rounded-md">
+          <View className="bg-accent/60 px-3 py-1 rounded-md">
             <Text className="text-white text-xs font-semibold">IMDB {rating}</Text>
           </View>
-          <View className="bg-dark-200/90 px-3 py-1 rounded-md">
-            <Text className="text-white text-xs font-semibold">T16</Text>
+          <View className="bg-dark-200/80 px-3 py-1 rounded-md">
+            <Text className="text-white text-xs font-semibold">PG-13</Text>
           </View>
-          <View className="bg-dark-200/90 px-3 py-1 rounded-md">
+          <View className="bg-dark-200/80 px-3 py-1 rounded-md">
             <Text className="text-white text-xs font-semibold">{releaseYear}</Text>
           </View>
         </View>
 
         <View className="flex-row gap-3 mt-5">
           <Link href={`/movie/${movie.id}`} asChild>
-            <TouchableOpacity>
-              <LinearGradient
-                colors={colors.gradient.chip}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={{ borderRadius: 16, paddingHorizontal: 30, paddingVertical: 16, flexDirection: "row", alignItems: "center" }}
-              >
-                <Text className="text-white text-lg mr-2">▶</Text>
-                <Text className="text-secondary text-2xl font-semibold">Watch Now</Text>
-              </LinearGradient>
+            <TouchableOpacity className="bg-accent rounded-2xl px-8 py-4 flex-row items-center">
+              <Text className="text-white text-lg mr-2">▶</Text>
+              <Text className="text-black text-xl font-semibold">Watch Now</Text>
             </TouchableOpacity>
           </Link>
 
           <Link href={`/movie/${movie.id}`} asChild>
-            <TouchableOpacity className="bg-dark-200/95 border border-[#31344A] rounded-2xl px-7 py-4">
+            <TouchableOpacity className="bg-dark-200/95 border border-dark-100 rounded-2xl px-7 py-4">
               <Text className="text-white text-xl font-semibold">ⓘ Info</Text>
             </TouchableOpacity>
           </Link>
         </View>
-      </LinearGradient>
+      </View>
     </ImageBackground>
   );
 };
