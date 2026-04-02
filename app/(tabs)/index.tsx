@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { images } from "@/constants/images";
 import { ALL_GENRE, GenreChip } from "@/constants/genres";
@@ -77,6 +78,10 @@ const Index = () => {
   return (
     <View className="flex-1 bg-primary">
       <Image source={images.bg} className="absolute w-full h-full z-0" resizeMode="cover" />
+      <LinearGradient
+        colors={["rgba(7,5,24,0.95)", "rgba(8,6,18,0.98)", "rgba(4,3,10,1)"]}
+        className="absolute inset-0"
+      />
 
       <ScrollView
         className="flex-1"

@@ -1,4 +1,5 @@
 import { FlatList, Text, TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { GenreChip } from "@/constants/genres";
 
@@ -21,20 +22,23 @@ const CategoryChips = ({ chips, selectedId, onSelect }: CategoryChipsProps) => {
 
         return (
           <TouchableOpacity
-            className={`px-6 py-3 rounded-full border ${
-              isActive
-                ? "bg-white border-white"
-                : "bg-dark-200 border-dark-100"
-            }`}
+            className="rounded-full overflow-hidden"
             onPress={() => onSelect(item.id)}
           >
-            <Text
-              className={`text-xs uppercase tracking-wider font-semibold ${
-                isActive ? "text-secondary" : "text-light-200"
-              }`}
+            <LinearGradient
+              colors={isActive ? ["#F0D9FF", "#C8A2FF"] : ["#181528", "#0F0D23"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              className={`px-6 py-3 border rounded-full ${isActive ? "border-accent/40" : "border-dark-100"}`}
             >
-              {item.name}
-            </Text>
+              <Text
+                className={`text-xs uppercase tracking-wider font-semibold ${
+                  isActive ? "text-secondary" : "text-light-200"
+                }`}
+              >
+                {item.name}
+              </Text>
+            </LinearGradient>
           </TouchableOpacity>
         );
       }}
