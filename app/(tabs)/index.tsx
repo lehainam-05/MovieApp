@@ -5,9 +5,10 @@
 // - Hiển thị HeroBanner, top 10, phim US-UK, phim Asia
 // - Header bị mờ khi cuộn
 
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import {
   ActivityIndicator,
+  Animated,
   FlatList,
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -16,6 +17,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { BlurView } from "expo-blur";
@@ -43,6 +45,17 @@ const Index = () => {
   const [selectedGenreId, setSelectedGenreId] = useState<number>(ALL_GENRE.id);
   // trạng thái đã cuộn để điều chỉnh header blur
   const [scrolled, setScrolled] = useState(false);
+  // chỉ số HeroBanner hiện tại (auto slide)
+  const [activeHeroIndex, setActiveHeroIndex] = useState(0);
+
+  const heroListRef = useRef<Animated.FlatList<Movie>>(null);
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
+  const onViewRef = useRef(({ viewableItems }: { viewableItems: any[] }) => {
+    if (viewableItems.length > 0) {
+      setActiveHeroIndex(viewableItems[0].index ?? 0);
+    }
+  });
 
   // ─── Data fetching ──────────────────────────────────────
   // lấy genre list (auto khi render)
@@ -84,12 +97,39 @@ const Index = () => {
     return [ALL_GENRE, ...mapped];
   }, [genres]);
 
-  // 2) phim đầu tiên dùng cho hero banner
-  const heroMovie = genreMovies?.[0] ?? null;
+  // 2) danh sách phim dùng cho hero banner (5 film đầu)
+  const heroMovies = (genreMovies ?? []).slice(0, 5);
   // 3) top 10 movie danh sách từ thứ 2 đến 11
   const top10Movies = (genreMovies ?? []).slice(1, 11);
   // loading ban đầu khi chưa có dữ liệu
   const isInitialLoading = genreMoviesLoading && !genreMovies;
+
+  useEffect(() => {
+    setActiveHeroIndex(0);
+  }, [genreMovies]);
+
+  // reset chỉ số hero khi bộ phim mới tải lại
+  useEffect(() => {
+    setActiveHeroIndex(0);
+  }, [genreMovies]);
+
+  // Auto slide cho hero banner: mỗi 4 giây chuyển sang phim kế tiếp
+  useEffect(() => {
+    if (heroMovies.length === 0 || !heroListRef.current) return;
+
+    const intervalId = setInterval(() => {
+      setActiveHeroIndex((oldIndex) => {
+        const nextIndex = (oldIndex + 1) % heroMovies.length;
+        heroListRef.current?.scrollToOffset({
+          offset: nextIndex * (Dimensions.get("window").width - 40),
+          animated: true,
+        });
+        return nextIndex;
+      });
+    }, 4000);
+
+    return () => clearInterval(intervalId);
+  }, [heroMovies.length]);
 
   // ─── Scroll handler ────────────────────────────────────
   // dùng để set trạng thái scrolled cho header
@@ -199,10 +239,65 @@ const Index = () => {
           />
         ) : (
           <>
-            {/* Hero Banner gọi component */}
-            {heroMovie && (
+            {/* Hero Banner Carousel với khả năng swipe + auto slide */}
+            {heroMovies.length > 0 && (
               <View className="px-5 mt-2 mb-8">
-                <HeroBanner movie={heroMovie} />
+                <Animated.FlatList
+                  ref={heroListRef}
+                  data={heroMovies}
+                  horizontal
+                  pagingEnabled
+                  snapToAlignment="center"
+                  decelerationRate="fast"
+                  showsHorizontalScrollIndicator={false}
+                  keyExtractor={(item) => item.id.toString()}
+                  onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                    { useNativeDriver: true }
+                  )}
+                  scrollEventThrottle={16}
+                  renderItem={({ item, index }: { item: Movie; index: number }) => {
+                    const inputRange = [
+                      (index - 1) * (Dimensions.get("window").width - 40),
+                      index * (Dimensions.get("window").width - 40),
+                      (index + 1) * (Dimensions.get("window").width - 40),
+                    ];
+
+                    const scale = scrollX.interpolate({
+                      inputRange,
+                      outputRange: [0.94, 1, 0.94],
+                      extrapolate: "clamp",
+                    });
+
+                    return (
+                      <Animated.View
+                        style={{
+                          width: Dimensions.get("window").width - 40,
+                          transform: [{ scale }],
+                        }}
+                      >
+                        <HeroBanner movie={item} />
+                      </Animated.View>
+                    );
+                  }}
+                  onViewableItemsChanged={onViewRef.current}
+                  viewabilityConfig={viewConfigRef.current}
+                  contentContainerStyle={{ paddingRight: 20 }}
+                />
+
+                <View className="flex-row justify-center items-center mt-5 gap-2">
+                  {heroMovies.map((_, i) => (
+                    <View
+                      key={i}
+                      style={{
+                        width: i === activeHeroIndex ? 32 : 6,
+                        height: 6,
+                        borderRadius: 3,
+                        backgroundColor: i === activeHeroIndex ? Colors.primary : "rgba(255,255,255,0.2)",
+                      }}
+                    />
+                  ))}
+                </View>
               </View>
             )}
 

@@ -8,16 +8,12 @@ import { Colors } from "@/constants/colors";
 
 interface HeroBannerProps {
   movie: Movie;
-  /** Tổng số dấu chấm trong thanh phân trang */
-  totalDots?: number;
-  /** Chỉ số dot đang active (0-based) */
-  activeDot?: number;
 }
 
 // Lấy kích thước màn hình để xác định chiều cao tùy biến
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-const HeroBanner = ({ movie, totalDots = 5, activeDot = 0 }: HeroBannerProps) => {
+const HeroBanner = ({ movie }: HeroBannerProps) => {
   // Lấy năm phát hành từ release_date, nếu không có thì N/A
   const releaseYear = movie.release_date?.split("-")[0] ?? "N/A";
   // Lấy rating thành số 1 chữ số, nếu không hợp lệ thì N/A
@@ -68,7 +64,7 @@ const HeroBanner = ({ movie, totalDots = 5, activeDot = 0 }: HeroBannerProps) =>
                 className="px-3 py-1.5 rounded"
                 style={{ backgroundColor: "rgba(224,142,254,0.2)", borderWidth: 1, borderColor: "rgba(224,142,254,0.3)" }}
               >
-                <Text className="text-white font-bold uppercase" style={{ fontSize: 10, letterSpacing: 1.2 }}>
+                <Text className="text-primary-dim font-bold uppercase" style={{ fontSize: 10, letterSpacing: 1.2 }}>
                   IMDb {rating}
                 </Text>
               </View>
@@ -132,21 +128,6 @@ const HeroBanner = ({ movie, totalDots = 5, activeDot = 0 }: HeroBannerProps) =>
             </View>
           </View>
         </ImageBackground>
-      </View>
-
-      {/* Dấu chấm phân trang */}
-      <View className="flex-row justify-center items-center mt-5 gap-2">
-        {Array.from({ length: totalDots }).map((_, i) => (
-          <View
-            key={i}
-            style={{
-              width: i === activeDot ? 32 : 6,
-              height: 6,
-              borderRadius: 3,
-              backgroundColor: i === activeDot ? Colors.primary : "rgba(255,255,255,0.2)",
-            }}
-          />
-        ))}
       </View>
     </View>
   );
