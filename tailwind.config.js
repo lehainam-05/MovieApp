@@ -16,7 +16,7 @@ module.exports = {
           bright: "#2c2c2c",
         },
         // Primary purple
-        primary: "#e08efe",
+        primary: "#0e0e0e",
         "primary-dim": "#ce7eec",
         "primary-container": "#d180ef",
         // Secondary pink
