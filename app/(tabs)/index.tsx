@@ -16,8 +16,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
-  Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { BlurView } from "expo-blur";
@@ -41,6 +41,8 @@ const HEADER_HEIGHT = Platform.OS === "ios" ? 100 : 80;
 
 const Index = () => {
   const router = useRouter(); // có thể dùng router nếu cần navigate để mở chi tiết
+  const { width: screenWidth } = useWindowDimensions();
+  const heroItemWidth = screenWidth - 40;
   // id thể loại đang chọn, mặc định ALL_GENRE
   const [selectedGenreId, setSelectedGenreId] = useState<number>(ALL_GENRE.id);
   // trạng thái đã cuộn để điều chỉnh header blur
@@ -50,12 +52,6 @@ const Index = () => {
 
   const heroListRef = useRef<Animated.FlatList<Movie>>(null);
   const scrollX = useRef(new Animated.Value(0)).current;
-  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
-  const onViewRef = useRef(({ viewableItems }: { viewableItems: any[] }) => {
-    if (viewableItems.length > 0) {
-      setActiveHeroIndex(viewableItems[0].index ?? 0);
-    }
-  });
 
   // ─── Data fetching ──────────────────────────────────────
   // lấy genre list (auto khi render)
@@ -104,10 +100,6 @@ const Index = () => {
   // loading ban đầu khi chưa có dữ liệu
   const isInitialLoading = genreMoviesLoading && !genreMovies;
 
-  useEffect(() => {
-    setActiveHeroIndex(0);
-  }, [genreMovies]);
-
   // reset chỉ số hero khi bộ phim mới tải lại
   useEffect(() => {
     setActiveHeroIndex(0);
@@ -121,7 +113,7 @@ const Index = () => {
       setActiveHeroIndex((oldIndex) => {
         const nextIndex = (oldIndex + 1) % heroMovies.length;
         heroListRef.current?.scrollToOffset({
-          offset: nextIndex * (Dimensions.get("window").width - 40),
+          offset: nextIndex * heroItemWidth,
           animated: true,
         });
         return nextIndex;
@@ -129,7 +121,7 @@ const Index = () => {
     }, 4000);
 
     return () => clearInterval(intervalId);
-  }, [heroMovies.length]);
+  }, [heroItemWidth, heroMovies.length]);
 
   // ─── Scroll handler ────────────────────────────────────
   // dùng để set trạng thái scrolled cho header
@@ -246,8 +238,10 @@ const Index = () => {
                   ref={heroListRef}
                   data={heroMovies}
                   horizontal
-                  pagingEnabled
+                  pagingEnabled={false}
                   snapToAlignment="center"
+                  snapToInterval={heroItemWidth}
+                  snapToOffsets={heroMovies.map((_, i) => i * heroItemWidth)}
                   decelerationRate="fast"
                   showsHorizontalScrollIndicator={false}
                   keyExtractor={(item) => item.id.toString()}
@@ -258,9 +252,9 @@ const Index = () => {
                   scrollEventThrottle={16}
                   renderItem={({ item, index }: { item: Movie; index: number }) => {
                     const inputRange = [
-                      (index - 1) * (Dimensions.get("window").width - 40),
-                      index * (Dimensions.get("window").width - 40),
-                      (index + 1) * (Dimensions.get("window").width - 40),
+                      (index - 1) * heroItemWidth,
+                      index * heroItemWidth,
+                      (index + 1) * heroItemWidth,
                     ];
 
                     const scale = scrollX.interpolate({
@@ -272,7 +266,7 @@ const Index = () => {
                     return (
                       <Animated.View
                         style={{
-                          width: Dimensions.get("window").width - 40,
+                          width: heroItemWidth,
                           transform: [{ scale }],
                         }}
                       >
@@ -280,20 +274,51 @@ const Index = () => {
                       </Animated.View>
                     );
                   }}
-                  onViewableItemsChanged={onViewRef.current}
-                  viewabilityConfig={viewConfigRef.current}
+                  onMomentumScrollEnd={(event) => {
+                    const nextIndex = Math.round(
+                      event.nativeEvent.contentOffset.x / heroItemWidth
+                    );
+                    setActiveHeroIndex(nextIndex);
+                  }}
                   contentContainerStyle={{ paddingRight: 20 }}
+                  getItemLayout={(_, index) => ({
+                    length: heroItemWidth,
+                    offset: heroItemWidth * index,
+                    index,
+                  })}
                 />
 
                 <View className="flex-row justify-center items-center mt-5 gap-2">
                   {heroMovies.map((_, i) => (
-                    <View
+                    <Animated.View
                       key={i}
                       style={{
-                        width: i === activeHeroIndex ? 32 : 6,
+                        width: 32,
                         height: 6,
                         borderRadius: 3,
-                        backgroundColor: i === activeHeroIndex ? Colors.primary : "rgba(255,255,255,0.2)",
+                        backgroundColor: Colors.primary,
+                        transform: [
+                          {
+                            scaleX: scrollX.interpolate({
+                              inputRange: [
+                                (i - 1) * heroItemWidth,
+                                i * heroItemWidth,
+                                (i + 1) * heroItemWidth,
+                              ],
+                              outputRange: [0.1875, 1, 0.1875],
+                              extrapolate: "clamp",
+                            }),
+                          },
+                        ],
+                        opacity: scrollX.interpolate({
+                          inputRange: [
+                            (i - 1) * heroItemWidth,
+                            i * heroItemWidth,
+                            (i + 1) * heroItemWidth,
+                          ],
+                          outputRange: [0.25, 1, 0.25],
+                          extrapolate: "clamp",
+                        }),
                       }}
                     />
                   ))}
