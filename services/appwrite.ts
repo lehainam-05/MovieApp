@@ -1,3 +1,4 @@
+// Appwrite service dùng để tracking lượt tìm kiếm và lấy top trending từ database.
 import { Client, Databases, ID, Query } from "react-native-appwrite";
 
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
@@ -9,6 +10,8 @@ const client = new Client()
 
 const database = new Databases(client);
 
+// Cập nhật số lần tìm kiếm cho một từ khóa.
+// Nếu đã tồn tại query => tăng count, nếu chưa => tạo document mới.
 export const updateSearchCount = async (query: string, movie: Movie) => {
   try {
     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
@@ -40,6 +43,7 @@ export const updateSearchCount = async (query: string, movie: Movie) => {
   }
 };
 
+// Lấy 5 phim trending nhất theo count giảm dần
 export const getTrendingMovies = async (): Promise<
   TrendingMovie[] | undefined
 > => {

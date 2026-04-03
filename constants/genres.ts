@@ -1,3 +1,4 @@
+// Định nghĩa kiểu GenreChip dùng cho danh sách thể loại
 export interface GenreChip {
   id: number;
   name: string;
@@ -10,9 +11,8 @@ export const ALL_GENRE: GenreChip = {
 };
 
 /**
- * Curated list of popular TMDB genres for the category chips.
- * The full list is also fetched dynamically from the API,
- * but this acts as a fast fallback while the request is in-flight.
+ * Danh sách genre mặc định để hiển thị nhanh khi API chưa trả về.
+ * Nếu API trả về rồi thì sẽ mix thêm các genre đầy đủ.
  */
 export const POPULAR_GENRES: GenreChip[] = [
   ALL_GENRE,

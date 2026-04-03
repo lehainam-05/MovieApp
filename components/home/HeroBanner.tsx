@@ -1,3 +1,6 @@
+// HeroBanner: banner lớn ở đầu screen, hiển thị phim nổi bật.
+// Input: movie (data phim), totalDots, activeDot để tạo chỉ báo trang.
+// Output: ảnh nền, thông tin cơ bản, nút Watch Now/Info và các dot ngang.
 import { View, Text, ImageBackground, TouchableOpacity, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
@@ -5,16 +8,19 @@ import { Colors } from "@/constants/colors";
 
 interface HeroBannerProps {
   movie: Movie;
-  /** Total dots to show in the pagination indicator */
+  /** Tổng số dấu chấm trong thanh phân trang */
   totalDots?: number;
-  /** Currently active dot index (0-based) */
+  /** Chỉ số dot đang active (0-based) */
   activeDot?: number;
 }
 
+// Lấy kích thước màn hình để xác định chiều cao tùy biến
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const HeroBanner = ({ movie, totalDots = 5, activeDot = 0 }: HeroBannerProps) => {
+  // Lấy năm phát hành từ release_date, nếu không có thì N/A
   const releaseYear = movie.release_date?.split("-")[0] ?? "N/A";
+  // Lấy rating thành số 1 chữ số, nếu không hợp lệ thì N/A
   const rating = Number.isFinite(movie.vote_average)
     ? movie.vote_average.toFixed(1)
     : "N/A";
@@ -32,22 +38,22 @@ const HeroBanner = ({ movie, totalDots = 5, activeDot = 0 }: HeroBannerProps) =>
           className="w-full h-full"
           resizeMode="cover"
         >
-          {/* Top gradient (subtle dark from top) */}
+          {/* Gradient đen mờ ở phía trên để chữ dễ đọc */}
           <LinearGradient
             colors={["rgba(14,14,14,0.35)", "transparent"]}
             style={{ position: "absolute", top: 0, left: 0, right: 0, height: 120 }}
           />
 
-          {/* Bottom gradient (strong dark from bottom) */}
+          {/* Gradient đậm ở phía dưới để nội dung nổi bật */}
           <LinearGradient
             colors={["transparent", "rgba(14,14,14,0.85)", Colors.background]}
             locations={[0.3, 0.7, 1]}
             style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 280 }}
           />
 
-          {/* Content overlay */}
+          {/* Nội dung overlay nằm trên ảnh */}
           <View className="flex-1 justify-end items-center pb-8 px-6">
-            {/* Title */}
+            {/* Tiêu đề phim */}
             <Text
               className="text-white text-center font-black uppercase leading-tight"
               style={{ fontSize: 36, letterSpacing: -1.5 }}
@@ -56,13 +62,13 @@ const HeroBanner = ({ movie, totalDots = 5, activeDot = 0 }: HeroBannerProps) =>
               {movie.title}
             </Text>
 
-            {/* Badges row */}
+            {/* Dòng badge bao gồm IMDb score, tuổi và năm */}
             <View className="flex-row items-center mt-4 gap-2">
               <View
                 className="px-3 py-1.5 rounded"
                 style={{ backgroundColor: "rgba(224,142,254,0.2)", borderWidth: 1, borderColor: "rgba(224,142,254,0.3)" }}
               >
-                <Text className="text-primary font-bold uppercase" style={{ fontSize: 10, letterSpacing: 1.2 }}>
+                <Text className="text-white font-bold uppercase" style={{ fontSize: 10, letterSpacing: 1.2 }}>
                   IMDb {rating}
                 </Text>
               </View>
@@ -86,7 +92,7 @@ const HeroBanner = ({ movie, totalDots = 5, activeDot = 0 }: HeroBannerProps) =>
               </View>
             </View>
 
-            {/* Action buttons */}
+            {/* Nút hành động */}
             <View className="flex-row mt-6 gap-3">
               <Link href={`/movie/${movie.id}`} asChild>
                 <TouchableOpacity
@@ -128,7 +134,7 @@ const HeroBanner = ({ movie, totalDots = 5, activeDot = 0 }: HeroBannerProps) =>
         </ImageBackground>
       </View>
 
-      {/* Pagination dots */}
+      {/* Dấu chấm phân trang */}
       <View className="flex-row justify-center items-center mt-5 gap-2">
         {Array.from({ length: totalDots }).map((_, i) => (
           <View

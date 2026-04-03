@@ -1,3 +1,5 @@
+// MoviePosterCard hiển thị poster phim và thông tin nhỏ bên cạnh
+// Input: movie object, output: thẻ poster để nhấn chuyển sang chi tiết.
 import { Link } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "@/constants/colors";
@@ -7,7 +9,9 @@ interface MoviePosterCardProps {
 }
 
 const MoviePosterCard = ({ movie }: MoviePosterCardProps) => {
+  // Tính rating dưới dạng 1 chữ số thập phân
   const rating = movie.vote_average?.toFixed(1) ?? "N/A";
+  // Lấy năm phát hành hoặc N/A
   const year = movie.release_date?.split("-")[0] ?? "N/A";
 
   return (
@@ -17,7 +21,7 @@ const MoviePosterCard = ({ movie }: MoviePosterCardProps) => {
         style={{ width: 150 }}
         activeOpacity={0.85}
       >
-        {/* Poster */}
+        {/* Khung poster */}
         <View
           className="overflow-hidden mb-2"
           style={{
@@ -38,7 +42,7 @@ const MoviePosterCard = ({ movie }: MoviePosterCardProps) => {
             resizeMode="cover"
           />
 
-          {/* Rating badge on poster */}
+          {/* Badge điểm PĐ */}
           <View
             className="absolute bottom-2 left-2 px-2 py-1 rounded"
             style={{ backgroundColor: "rgba(224,142,254,0.9)" }}
@@ -52,7 +56,7 @@ const MoviePosterCard = ({ movie }: MoviePosterCardProps) => {
           </View>
         </View>
 
-        {/* Title */}
+        {/* Tiêu đề phim */}
         <Text
           className="text-white font-bold uppercase"
           style={{ fontSize: 13 }}
@@ -61,7 +65,7 @@ const MoviePosterCard = ({ movie }: MoviePosterCardProps) => {
           {movie.title}
         </Text>
 
-        {/* Sub info */}
+        {/* Dòng phụ: rating và năm */}
         <Text
           className="text-on-surface-variant uppercase font-medium mt-0.5"
           style={{ fontSize: 10 }}

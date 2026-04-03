@@ -1,3 +1,6 @@
+// Trang chi tiết phim (route /movie/[id])
+// Dùng useLocalSearchParams để lấy id phim từ URL, gọi fetchMovieDetails
+// và hiển thị thông tin phim đầy đủ
 import {
   View,
   Text,
@@ -18,6 +21,7 @@ interface MovieInfoProps {
   value?: string | number | null;
 }
 
+// Component nhỏ hiển thị 1 dòng info (label + value)
 const MovieInfo = ({ label, value }: MovieInfoProps) => (
   <View className="flex-col items-start justify-center mt-5">
     <Text className="text-light-200 font-normal text-sm">{label}</Text>
@@ -29,12 +33,13 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
 
 const Details = () => {
   const router = useRouter();
-  const { id } = useLocalSearchParams();
+  const { id } = useLocalSearchParams(); // lấy id từ URL param
 
   const { data: movie, loading } = useFetch(() =>
     fetchMovieDetails(id as string)
   );
 
+  // nếu đang load thì show spinner
   if (loading)
     return (
       <SafeAreaView className="bg-primary flex-1">
@@ -43,9 +48,10 @@ const Details = () => {
     );
 
   return (
-    <View className="bg-primary flex-1">
+    <View className="bg-background flex-1">
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
         <View>
+          {/* Poster lớn */}
           <Image
             source={{
               uri: `https://image.tmdb.org/t/p/w500${movie?.poster_path}`,
@@ -54,6 +60,7 @@ const Details = () => {
             resizeMode="stretch"
           />
 
+          {/* Button play trên poster */}
           <TouchableOpacity className="absolute bottom-5 right-5 rounded-full size-14 bg-white flex items-center justify-center">
             <Image
               source={icons.play}
@@ -113,6 +120,7 @@ const Details = () => {
         </View>
       </ScrollView>
 
+      {/* Nút Back luôn ở dưới cùng */}
       <TouchableOpacity
         className="absolute bottom-5 left-0 right-0 mx-5 bg-accent rounded-lg py-3.5 flex flex-row items-center justify-center z-50"
         onPress={router.back}

@@ -1,7 +1,13 @@
-import { useEffect, useMemo, useState, useCallback, useRef } from "react";
+// Trang home chính của app.
+// Chức năng:
+// - Lấy danh sách thể loại và phim từ API
+// - Người dùng chọn 1 thể loại => auto load phim tương ứng
+// - Hiển thị HeroBanner, top 10, phim US-UK, phim Asia
+// - Header bị mờ khi cuộn
+
+import { useEffect, useMemo, useState, useCallback } from "react";
 import {
   ActivityIndicator,
-  Animated,
   FlatList,
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -32,13 +38,17 @@ import RankingCard from "@/components/home/RankingCard";
 const HEADER_HEIGHT = Platform.OS === "ios" ? 100 : 80;
 
 const Index = () => {
-  const router = useRouter();
+  const router = useRouter(); // có thể dùng router nếu cần navigate để mở chi tiết
+  // id thể loại đang chọn, mặc định ALL_GENRE
   const [selectedGenreId, setSelectedGenreId] = useState<number>(ALL_GENRE.id);
+  // trạng thái đã cuộn để điều chỉnh header blur
   const [scrolled, setScrolled] = useState(false);
 
   // ─── Data fetching ──────────────────────────────────────
+  // lấy genre list (auto khi render)
   const { data: genres } = useFetch(fetchGenres);
 
+  // lấy phim theo thể loại, fetch tự động khi selectedGenreId đổi (useEffect phía dưới call loadGenreMovies)
   const {
     data: genreMovies,
     loading: genreMoviesLoading,
@@ -51,30 +61,38 @@ const Index = () => {
     true
   );
 
+  // lấy phim US-UK (không thay đổi)
   const { data: usUkMovies, loading: usUkLoading } = useFetch(() =>
     fetchMoviesByRegionLanguage({ region: "US" })
   );
 
+  // lấy phim châu Á (JP)
   const { data: asianMovies, loading: asianLoading } = useFetch(() =>
     fetchMoviesByRegionLanguage({ region: "JP", language: "ja" })
   );
 
+  // khi selectedGenreId thay đổi thì load lại danh sách phim tương ứng
   useEffect(() => {
     loadGenreMovies();
   }, [selectedGenreId]);
 
   // ─── Derived data ───────────────────────────────────────
+  // 1) xây chip thể loại để hiển thị từ genre API data
   const chips: GenreChip[] = useMemo(() => {
     if (!genres || genres.length === 0) return POPULAR_GENRES;
     const mapped = genres.map((g) => ({ id: g.id, name: g.name }));
     return [ALL_GENRE, ...mapped];
   }, [genres]);
 
+  // 2) phim đầu tiên dùng cho hero banner
   const heroMovie = genreMovies?.[0] ?? null;
+  // 3) top 10 movie danh sách từ thứ 2 đến 11
   const top10Movies = (genreMovies ?? []).slice(1, 11);
+  // loading ban đầu khi chưa có dữ liệu
   const isInitialLoading = genreMoviesLoading && !genreMovies;
 
   // ─── Scroll handler ────────────────────────────────────
+  // dùng để set trạng thái scrolled cho header
   const handleScroll = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
       const offsetY = event.nativeEvent.contentOffset.y;
@@ -84,6 +102,7 @@ const Index = () => {
   );
 
   // ─── Section header ────────────────────────────────────
+  // component nhỏ dùng chung cho các section
   const SectionHeader = useCallback(
     ({ title }: { title: string }) => (
       <View className="flex-row justify-between items-center mb-5">
@@ -102,7 +121,7 @@ const Index = () => {
   // ─── Render ─────────────────────────────────────────────
   return (
     <View style={{ flex: 1, backgroundColor: Colors.background }}>
-      {/* ── Sticky Header with Blur ── */}
+      {/* Sticky header cố định trên cùng */}
       <View style={styles.stickyHeader}>
         {scrolled ? (
           <BlurView
@@ -112,7 +131,7 @@ const Index = () => {
           />
         ) : null}
 
-        {/* Background overlay for when not blurred or as fallback */}
+        {/* Overlay nền nếu chưa cuộn hoặc làm mờ khi scrolled */}
         <View
           style={[
             StyleSheet.absoluteFill,
@@ -125,7 +144,6 @@ const Index = () => {
         />
 
         <View style={styles.headerContent}>
-          {/* CINEMA logo */}
           <Text
             className="font-black uppercase"
             style={{
@@ -137,7 +155,7 @@ const Index = () => {
             CINEMA
           </Text>
 
-          {/* Avatar */}
+          {/* Avatar đơn giản */}
           <View
             className="rounded-full overflow-hidden"
             style={{
@@ -155,7 +173,7 @@ const Index = () => {
         </View>
       </View>
 
-      {/* ── Main Scrollable Content ── */}
+      {/* Nội dung chính cuộn */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -165,7 +183,6 @@ const Index = () => {
         onScroll={handleScroll}
         scrollEventThrottle={16}
       >
-        {/* Category Chips */}
         <View className="px-5 py-3">
           <CategoryChips
             chips={chips}
@@ -174,7 +191,6 @@ const Index = () => {
           />
         </View>
 
-        {/* Loading state */}
         {isInitialLoading ? (
           <ActivityIndicator
             size="large"
@@ -183,7 +199,7 @@ const Index = () => {
           />
         ) : (
           <>
-            {/* Hero Banner */}
+            {/* Hero Banner gọi component */}
             {heroMovie && (
               <View className="px-5 mt-2 mb-8">
                 <HeroBanner movie={heroMovie} />

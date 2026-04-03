@@ -1,3 +1,6 @@
+// RankingCard hiển thị thẻ phim theo thứ tự Top
+// Input: movie object và index (vị trí trong danh sách)
+// Output: thẻ poster kèm số thứ tự nhạt phía sau, điểm PĐ.
 import { Link } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "@/constants/colors";
@@ -15,7 +18,7 @@ const RankingCard = ({ movie, index }: RankingCardProps) => {
         style={{ width: 150, marginLeft: index === 0 ? 0 : 8 }}
         activeOpacity={0.85}
       >
-        {/* Large rank number behind the poster */}
+        {/* Số thứ tự to đằng sau */}
         <Text
           style={{
             position: "absolute",
@@ -31,7 +34,7 @@ const RankingCard = ({ movie, index }: RankingCardProps) => {
           {index + 1}
         </Text>
 
-        {/* Poster image */}
+        {/* Khung ảnh poster */}
         <View
           className="overflow-hidden ml-4"
           style={{
@@ -52,7 +55,7 @@ const RankingCard = ({ movie, index }: RankingCardProps) => {
             resizeMode="cover"
           />
 
-          {/* Rating badge */}
+          {/* Badge điểm phim */}
           <View
             className="absolute top-2 right-2 px-2 py-1 rounded"
             style={{

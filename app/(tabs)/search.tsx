@@ -1,3 +1,7 @@
+// Màn hình Search
+// Input: người dùng gõ text vào ô SearchBar
+// Output: danh sách phim load từ API theo query (đã debounce 500ms)
+
 import { useState, useEffect } from "react";
 import { View, Text, ActivityIndicator, FlatList, Image } from "react-native";
 
@@ -12,8 +16,11 @@ import SearchBar from "@/components/common/SearchBar";
 import MovieDisplayCard from "@/components/common/MovieCard";
 
 const Search = () => {
+  // giá trị tìm kiếm đang gõ
   const [searchQuery, setSearchQuery] = useState("");
 
+  // hook dùng fetch API cho movies.
+  // autoFetch=false để control thời điểm gọi khi query thay đổi.
   const {
     data: movies = [],
     loading,
@@ -22,21 +29,25 @@ const Search = () => {
     reset,
   } = useFetch(() => fetchMovies({ query: searchQuery }), false);
 
+  // Hàm thay đổi query cho SearchBar
   const handleSearch = (text: string) => {
     setSearchQuery(text);
   };
 
-  // Debounced search effect
+  // Debounced search effect:
+  // mỗi khi searchQuery thay đổi, chờ 500ms mới gọi loadMovies
+  // nếu người dùng tiếp tục gõ thì callback cũ bị clear
   useEffect(() => {
     const timeoutId = setTimeout(async () => {
       if (searchQuery.trim()) {
         await loadMovies();
 
-        // Call updateSearchCount only if there are results
+        // Nếu có kết quả thì cập nhật số lần tìm kiếm lên Appwrite
         if (movies?.length! > 0 && movies?.[0]) {
           await updateSearchCount(searchQuery, movies[0]);
         }
       } else {
+        // Nếu query trống thì reset danh sách
         reset();
       }
     }, 500);
@@ -46,6 +57,7 @@ const Search = () => {
 
   return (
     <View className="flex-1 bg-primary">
+      {/* Background blur/ảnh */}
       <Image
         source={images.bg}
         className="flex-1 absolute w-full z-0"

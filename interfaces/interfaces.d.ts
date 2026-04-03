@@ -1,3 +1,6 @@
+// Định nghĩa các interface TypeScript để dùng cho model phim.
+
+// Movie: cấu trúc dữ liệu trả về từ /discover/movie, /search/movie
 interface Movie {
   id: number;
   title: string;
@@ -15,6 +18,7 @@ interface Movie {
   vote_count: number;
 }
 
+// TrendingMovie: dùng khi lưu/truy vấn trên Appwrite (search count)
 interface TrendingMovie {
   searchTerm: string;
   movie_id: number;
@@ -23,6 +27,7 @@ interface TrendingMovie {
   poster_url: string;
 }
 
+// Chi tiết movie trả về màn Detail
 interface MovieDetails {
   adult: boolean;
   backdrop_path: string | null;

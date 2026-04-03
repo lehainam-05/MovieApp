@@ -1,3 +1,6 @@
+// Component CategoryChips hiển thị danh sách thể loại dưới dạng chips ngang
+// Input: chips list: {id, name}, selectedId, onSelect callback
+// Output: list phím bấm chọn thể loại, kích hoạt highlight khi đã chọn.
 import { FlatList, Text, TouchableOpacity } from "react-native";
 import { GenreChip } from "@/constants/genres";
 
@@ -10,13 +13,13 @@ interface CategoryChipsProps {
 const CategoryChips = ({ chips, selectedId, onSelect }: CategoryChipsProps) => {
   return (
     <FlatList
-      horizontal
+      horizontal // cuộn theo hàng ngang
       data={chips}
       showsHorizontalScrollIndicator={false}
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={{ gap: 10, paddingRight: 20 }}
       renderItem={({ item }) => {
-        const isActive = item.id === selectedId;
+        const isActive = item.id === selectedId; // kiểm tra xem chip có đang chọn
 
         return (
           <TouchableOpacity
@@ -30,7 +33,7 @@ const CategoryChips = ({ chips, selectedId, onSelect }: CategoryChipsProps) => {
                 ? { backgroundColor: "rgba(31,31,31,0.9)" }
                 : undefined
             }
-            onPress={() => onSelect(item.id)}
+            onPress={() => onSelect(item.id)} // bấm chọn thể loại
             activeOpacity={0.7}
           >
             <Text

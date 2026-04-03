@@ -1,3 +1,4 @@
+// Tập trung icon dùng chung cho app, tức là alias để import 1 lần.
 import home from "@/assets/icons/home.png";
 import search from "@/assets/icons/search.png";
 import person from "@/assets/icons/person.png";

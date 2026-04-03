@@ -1,3 +1,5 @@
+// Trang profile đơn giản.
+// Chỉ hiển thị icon và chữ Profile, dùng SafeAreaView để đảm bảo bo góc trên các màn iOS.
 import { icons } from "@/constants/icons";
 import { View, Text, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
