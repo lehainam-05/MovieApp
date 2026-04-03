@@ -26,6 +26,13 @@ import { Colors } from "@/constants/colors";
 import { ALL_GENRE, POPULAR_GENRES, GenreChip } from "@/constants/genres";
 
 import useFetch from "@/hooks/useFetch";
+/**
+ * app/(tabs)/index.tsx
+ *
+ * @purpose Trang chủ (Home Screen) của ứng dụng, nơi người dùng nhìn thấy đầu tiên.
+ * @why Đóng vai trò làm Dashboard tổng hợp: Trưng bày một thanh tìm kiếm, danh sách thể loại (Category),
+ *      các bộ phim theo xu hướng (Trending - Carousel ngang), và danh sách phim phổ biến mới nhất.
+ */
 import {
   fetchGenres,
   fetchMoviesByGenre,

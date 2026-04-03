@@ -1,6 +1,10 @@
-// HeroBanner: banner lớn ở đầu screen, hiển thị phim nổi bật.
-// Input: movie (data phim), totalDots, activeDot để tạo chỉ báo trang.
-// Output: ảnh nền, thông tin cơ bản, nút Watch Now/Info và các dot ngang.
+/**
+ * components/home/HeroBanner.tsx
+ *
+ * @purpose Hiển thị thanh Banner quảng cáo khổng lồ chạy ngang đầu trang chủ (Hiển thị phim Top Trending).
+ * @why Carousel (cuộn ngang) giúp tiết kiệm diện tích màn hình điện thoại mà vẫn đập ngay vào mắt 
+ *      người dùng những bộ phim cháy khách nhất hiện tại.
+ */
 import { View, Text, ImageBackground, TouchableOpacity, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";

@@ -1,6 +1,10 @@
-// Component CategoryChips hiển thị danh sách thể loại dưới dạng chips ngang
-// Input: chips list: {id, name}, selectedId, onSelect callback
-// Output: list phím bấm chọn thể loại, kích hoạt highlight khi đã chọn.
+/**
+ * components/home/CategoryChips.tsx
+ *
+ * @purpose Danh sách các nút tròn bo góc (Chip) để lọc phim theo thể loại (Action, Romance,...).
+ * @why Việc cho phép người dùng lướt ngang và chạm (Tap) để lọc phim nhanh hơn rất nhiều so với 
+ *      việc phải bắt họ mở 1 cái danh sách (Dropdown) rườm rà.
+ */
 import { FlatList, Text, TouchableOpacity } from "react-native";
 import { GenreChip } from "@/constants/genres";
 

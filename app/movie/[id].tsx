@@ -1,139 +1,143 @@
-// Trang chi tiết phim (route /movie/[id])
-// Dùng useLocalSearchParams để lấy id phim từ URL, gọi fetchMovieDetails
-// và hiển thị thông tin phim đầy đủ
-import {
-  View,
-  Text,
-  Image,
-  ActivityIndicator,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+/**
+ * app/movie/[id].tsx
+ *
+ * @purpose Trang Controller (Điều khiển hiển thị chính) cho giao diện Chi Tiết Bộ Phim.
+ * @why Bằng việc đẩy DOM UI xuống các component con, file này tuân thủ chặt Nguyên Tắc Đơn Nhiệm 
+ *      (Single Responsibility): Gánh trách nhiệm phân giải parameter, xử lý mượt mà toạ độ cuộn lưới
+ *      cho Animation Header, và giải quyết Data theo trạng thái API mà không dính líu chi tiết CSS.
+ */
+
+import { useState, useCallback } from "react";
+import { View, ActivityIndicator, ScrollView, Platform, NativeSyntheticEvent, NativeScrollEvent, Text } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-import { icons } from "@/constants/icons";
+import { Colors } from "@/constants/colors";
 import useFetch from "@/hooks/useFetch";
-import { fetchMovieDetails } from "@/services/api";
+import { fetchMovieDetails, fetchMovieCast, fetchSimilarMovies } from "@/services/api";
 
-interface MovieInfoProps {
-  label: string;
-  value?: string | number | null;
-}
+import StickyHeader from "@/components/common/StickyHeader";
+import HeroBackdrop from "@/components/common/HeroBackdrop";
+import Footer from "@/components/common/Footer";
+import MovieInfo from "@/components/movie/MovieInfo";
+import MovieCastList from "@/components/movie/MovieCastList";
+import MovieSimilarList from "@/components/movie/MovieSimilarList";
 
-// Component nhỏ hiển thị 1 dòng info (label + value)
-const MovieInfo = ({ label, value }: MovieInfoProps) => (
-  <View className="flex-col items-start justify-center mt-5">
-    <Text className="text-light-200 font-normal text-sm">{label}</Text>
-    <Text className="text-light-100 font-bold text-sm mt-2">
-      {value || "N/A"}
-    </Text>
-  </View>
-);
-
-const Details = () => {
+const MovieDetail = () => {
   const router = useRouter();
-  const { id } = useLocalSearchParams(); // lấy id từ URL param
+  const { id } = useLocalSearchParams();
 
-  const { data: movie, loading } = useFetch(() =>
+  // Mảng xử lý Data Layer: tách riêng với UI/Component logic
+  const { data: movie, loading: loadingMovie } = useFetch(() =>
     fetchMovieDetails(id as string)
   );
+  const { data: cast, loading: loadingCast } = useFetch(() =>
+    fetchMovieCast(id as string)
+  );
+  const { data: similarMovies, loading: loadingSimilar } = useFetch(() =>
+    fetchSimilarMovies(id as string)
+  );
 
-  // nếu đang load thì show spinner
-  if (loading)
+  const [scrolled, setScrolled] = useState(false);
+
+  /**
+   * Tính toán cờ `scrolled` dựa trên tọa độ Y để thay đổi background thanh Header thành thuỷ tinh mờ (glassmorphism)
+   */
+  const handleScroll = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const offsetY = event.nativeEvent.contentOffset.y;
+      setScrolled(offsetY > 10);
+    },
+    []
+  );
+
+  const handleActorPress = (actorId: number) => {
+    router.push(`/actor/${actorId}` as any);
+  };
+
+  /**
+   * Trạng thái tải: Hiện Indicator khi đang đợi dữ liệu API
+   */
+  if (loadingMovie) {
     return (
-      <SafeAreaView className="bg-primary flex-1">
-        <ActivityIndicator />
-      </SafeAreaView>
+      <View
+        className="flex-1 items-center justify-center"
+        style={{ backgroundColor: Colors.background }}
+      >
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
     );
+  }
+
+  // Trường hợp hi hữu tải thất bại
+  if (!movie) {
+    return (
+      <View style={{ flex: 1, backgroundColor: Colors.background, alignItems: "center", justifyContent: "center" }}>
+        <Text style={{ color: "white" }}>Movie not found.</Text>
+      </View>
+    );
+  }
+
+  const backdropUrl = movie.backdrop_path
+    ? `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`
+    : "https://via.placeholder.com/1280";
 
   return (
-    <View className="bg-background flex-1">
-      <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
-        <View>
-          {/* Poster lớn */}
-          <Image
-            source={{
-              uri: `https://image.tmdb.org/t/p/w500${movie?.poster_path}`,
+    <View style={{ flex: 1, backgroundColor: Colors.background }}>
+      <StickyHeader
+        scrolled={scrolled}
+        onBackPress={router.back}
+        titleNode={
+          <Text
+            className="font-black uppercase"
+            style={{
+              fontSize: 24,
+              letterSpacing: -1.5,
+              color: Colors.primary,
+              marginTop: 2,
             }}
-            className="w-full h-[550px]"
-            resizeMode="stretch"
-          />
+          >
+            CINEMA
+          </Text>
+        }
+        rightNode={
+          <>
+            <View className="size-8 rounded-full bg-primary/20 border border-primary/40 items-center justify-center overflow-hidden ml-2">
+              <Text className="text-white text-xs">👤</Text>
+            </View>
+          </>
+        }
+      />
 
-          {/* Button play trên poster */}
-          <TouchableOpacity className="absolute bottom-5 right-5 rounded-full size-14 bg-white flex items-center justify-center">
-            <Image
-              source={icons.play}
-              className="w-6 h-7 ml-1"
-              resizeMode="stretch"
-            />
-          </TouchableOpacity>
-        </View>
-
-        <View className="flex-col items-start justify-center mt-5 px-5">
-          <Text className="text-white font-bold text-xl">{movie?.title}</Text>
-          <View className="flex-row items-center gap-x-1 mt-2">
-            <Text className="text-light-200 text-sm">
-              {movie?.release_date?.split("-")[0]} •
-            </Text>
-            <Text className="text-light-200 text-sm">{movie?.runtime}m</Text>
-          </View>
-
-          <View className="flex-row items-center bg-dark-100 px-2 py-1 rounded-md gap-x-1 mt-2">
-            <Image source={icons.star} className="size-4" />
-
-            <Text className="text-white font-bold text-sm">
-              {Math.round(movie?.vote_average ?? 0)}/10
-            </Text>
-
-            <Text className="text-light-200 text-sm">
-              ({movie?.vote_count} votes)
-            </Text>
-          </View>
-
-          <MovieInfo label="Overview" value={movie?.overview} />
-          <MovieInfo
-            label="Genres"
-            value={movie?.genres?.map((g) => g.name).join(" • ") || "N/A"}
-          />
-
-          <View className="flex flex-row justify-between w-1/2">
-            <MovieInfo
-              label="Budget"
-              value={`$${(movie?.budget ?? 0) / 1_000_000} million`}
-            />
-            <MovieInfo
-              label="Revenue"
-              value={`$${Math.round(
-                (movie?.revenue ?? 0) / 1_000_000
-              )} million`}
-            />
-          </View>
-
-          <MovieInfo
-            label="Production Companies"
-            value={
-              movie?.production_companies?.map((c) => c.name).join(" • ") ||
-              "N/A"
-            }
-          />
-        </View>
-      </ScrollView>
-
-      {/* Nút Back luôn ở dưới cùng */}
-      <TouchableOpacity
-        className="absolute bottom-5 left-0 right-0 mx-5 bg-accent rounded-lg py-3.5 flex flex-row items-center justify-center z-50"
-        onPress={router.back}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingBottom: 40,
+          paddingTop: Platform.OS === "ios" ? 100 : 80,
+        }}
+        bounces={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
       >
-        <Image
-          source={icons.arrow}
-          className="size-5 mr-1 mt-0.5 rotate-180"
-          tintColor="#fff"
-        />
-        <Text className="text-white font-semibold text-base">Go Back</Text>
-      </TouchableOpacity>
+        <HeroBackdrop imageUrl={backdropUrl} height={600} />
+
+        <MovieInfo movie={movie} />
+
+        {loadingCast ? (
+          <ActivityIndicator color={Colors.primary} className="my-10" />
+        ) : (
+          <MovieCastList cast={cast || []} onActorPress={handleActorPress} />
+        )}
+
+        {loadingSimilar ? (
+          <ActivityIndicator color={Colors.primary} className="my-10" />
+        ) : (
+          <MovieSimilarList movies={similarMovies || []} />
+        )}
+
+        <Footer />
+      </ScrollView>
     </View>
   );
 };
 
-export default Details;
+export default MovieDetail;

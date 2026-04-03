@@ -1,5 +1,11 @@
-// MoviePosterCard hiển thị poster phim và thông tin nhỏ bên cạnh
-// Input: movie object, output: thẻ poster để nhấn chuyển sang chi tiết.
+/**
+ * components/home/MoviePosterCard.tsx
+ *
+ * @purpose Thẻ Card hiển thị ảnh bìa dọc (Poster) của một bộ phim. 
+ * @why Thẻ này xuất hiện MỌI NƠI trong app (Trang chủ, Tìm kiếm, Phim tương tự). Thay vì 
+ *      ở đâu cũng phải code lại cái thẻ ảnh, tạch riêng nó ra giúp tối ưu hoá bộ nhớ và 
+ *      giữ tính nhất quán về kích thước.
+ */
 import { Link } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "@/constants/colors";
