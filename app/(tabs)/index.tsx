@@ -39,6 +39,39 @@ import RankingCard from "@/components/home/RankingCard";
 
 const HEADER_HEIGHT = Platform.OS === "ios" ? 100 : 80;
 
+const PaginationDot = ({ isActive }: { isActive: boolean }) => {
+  const animatedValue = useRef(new Animated.Value(isActive ? 1 : 0)).current;
+
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      toValue: isActive ? 1 : 0,
+      duration: 350,
+      useNativeDriver: false,
+    }).start();
+  }, [isActive]);
+
+  const width = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [6, 20],
+  });
+
+  const backgroundColor = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["rgba(255,255,255,0.2)", Colors.primary],
+  });
+
+  return (
+    <Animated.View
+      style={{
+        height: 6,
+        borderRadius: 3,
+        width,
+        backgroundColor,
+      }}
+    />
+  );
+};
+
 const Index = () => {
   const router = useRouter(); // có thể dùng router nếu cần navigate để mở chi tiết
   // id thể loại đang chọn, mặc định ALL_GENRE
@@ -287,15 +320,7 @@ const Index = () => {
 
                 <View className="flex-row justify-center items-center mt-5 gap-2">
                   {heroMovies.map((_, i) => (
-                    <View
-                      key={i}
-                      style={{
-                        width: i === activeHeroIndex ? 32 : 6,
-                        height: 6,
-                        borderRadius: 3,
-                        backgroundColor: i === activeHeroIndex ? Colors.primary : "rgba(255,255,255,0.2)",
-                      }}
-                    />
+                    <PaginationDot key={i} isActive={i === activeHeroIndex} />
                   ))}
                 </View>
               </View>
