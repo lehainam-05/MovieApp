@@ -16,8 +16,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
-  Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { BlurView } from "expo-blur";
@@ -38,9 +38,16 @@ import MoviePosterCard from "@/components/home/MoviePosterCard";
 import RankingCard from "@/components/home/RankingCard";
 
 const HEADER_HEIGHT = Platform.OS === "ios" ? 100 : 80;
+const HERO_ITEM_MAX_WIDTH = 380;
+const HERO_ITEM_RATIO = 0.86;
+const HERO_ITEM_GAP = 14;
 
 const Index = () => {
   const router = useRouter(); // có thể dùng router nếu cần navigate để mở chi tiết
+  const { width: screenWidth } = useWindowDimensions();
+  const heroItemWidth = Math.min(screenWidth * HERO_ITEM_RATIO, HERO_ITEM_MAX_WIDTH);
+  const heroSnapInterval = heroItemWidth + HERO_ITEM_GAP;
+  const heroSideInset = Math.max((screenWidth - heroItemWidth) / 2, 0);
   // id thể loại đang chọn, mặc định ALL_GENRE
   const [selectedGenreId, setSelectedGenreId] = useState<number>(ALL_GENRE.id);
   // trạng thái đã cuộn để điều chỉnh header blur
@@ -50,12 +57,8 @@ const Index = () => {
 
   const heroListRef = useRef<Animated.FlatList<Movie>>(null);
   const scrollX = useRef(new Animated.Value(0)).current;
-  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
-  const onViewRef = useRef(({ viewableItems }: { viewableItems: any[] }) => {
-    if (viewableItems.length > 0) {
-      setActiveHeroIndex(viewableItems[0].index ?? 0);
-    }
-  });
+  const isUserSwipingRef = useRef(false);
+  const swipeReleaseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ─── Data fetching ──────────────────────────────────────
   // lấy genre list (auto khi render)
@@ -104,10 +107,6 @@ const Index = () => {
   // loading ban đầu khi chưa có dữ liệu
   const isInitialLoading = genreMoviesLoading && !genreMovies;
 
-  useEffect(() => {
-    setActiveHeroIndex(0);
-  }, [genreMovies]);
-
   // reset chỉ số hero khi bộ phim mới tải lại
   useEffect(() => {
     setActiveHeroIndex(0);
@@ -118,18 +117,24 @@ const Index = () => {
     if (heroMovies.length === 0 || !heroListRef.current) return;
 
     const intervalId = setInterval(() => {
+      if (isUserSwipingRef.current) return;
       setActiveHeroIndex((oldIndex) => {
         const nextIndex = (oldIndex + 1) % heroMovies.length;
         heroListRef.current?.scrollToOffset({
-          offset: nextIndex * (Dimensions.get("window").width - 40),
+          offset: nextIndex * heroSnapInterval,
           animated: true,
         });
         return nextIndex;
       });
     }, 4000);
 
-    return () => clearInterval(intervalId);
-  }, [heroMovies.length]);
+    return () => {
+      clearInterval(intervalId);
+      if (swipeReleaseTimerRef.current) {
+        clearTimeout(swipeReleaseTimerRef.current);
+      }
+    };
+  }, [heroMovies.length, heroSnapInterval]);
 
   // ─── Scroll handler ────────────────────────────────────
   // dùng để set trạng thái scrolled cho header
@@ -246,9 +251,12 @@ const Index = () => {
                   ref={heroListRef}
                   data={heroMovies}
                   horizontal
-                  pagingEnabled
+                  pagingEnabled={false}
                   snapToAlignment="center"
+                  snapToInterval={heroSnapInterval}
+                  snapToOffsets={heroMovies.map((_, i) => i * heroSnapInterval)}
                   decelerationRate="fast"
+                  bounces={false}
                   showsHorizontalScrollIndicator={false}
                   keyExtractor={(item) => item.id.toString()}
                   onScroll={Animated.event(
@@ -258,42 +266,100 @@ const Index = () => {
                   scrollEventThrottle={16}
                   renderItem={({ item, index }: { item: Movie; index: number }) => {
                     const inputRange = [
-                      (index - 1) * (Dimensions.get("window").width - 40),
-                      index * (Dimensions.get("window").width - 40),
-                      (index + 1) * (Dimensions.get("window").width - 40),
+                      (index - 1) * heroSnapInterval,
+                      index * heroSnapInterval,
+                      (index + 1) * heroSnapInterval,
                     ];
 
                     const scale = scrollX.interpolate({
                       inputRange,
-                      outputRange: [0.94, 1, 0.94],
+                      outputRange: [0.93, 1, 0.93],
+                      extrapolate: "clamp",
+                    });
+
+                    const translateY = scrollX.interpolate({
+                      inputRange,
+                      outputRange: [10, 0, 10],
                       extrapolate: "clamp",
                     });
 
                     return (
                       <Animated.View
                         style={{
-                          width: Dimensions.get("window").width - 40,
-                          transform: [{ scale }],
+                          width: heroItemWidth,
+                          marginRight: index === heroMovies.length - 1 ? 0 : HERO_ITEM_GAP,
+                          transform: [{ scale }, { translateY }],
+                          opacity: scrollX.interpolate({
+                            inputRange,
+                            outputRange: [0.72, 1, 0.72],
+                            extrapolate: "clamp",
+                          }),
                         }}
                       >
                         <HeroBanner movie={item} />
                       </Animated.View>
                     );
                   }}
-                  onViewableItemsChanged={onViewRef.current}
-                  viewabilityConfig={viewConfigRef.current}
-                  contentContainerStyle={{ paddingRight: 20 }}
+                  onScrollBeginDrag={() => {
+                    isUserSwipingRef.current = true;
+                    if (swipeReleaseTimerRef.current) {
+                      clearTimeout(swipeReleaseTimerRef.current);
+                    }
+                  }}
+                  onScrollEndDrag={() => {
+                    if (swipeReleaseTimerRef.current) {
+                      clearTimeout(swipeReleaseTimerRef.current);
+                    }
+                    swipeReleaseTimerRef.current = setTimeout(() => {
+                      isUserSwipingRef.current = false;
+                    }, 450);
+                  }}
+                  onMomentumScrollEnd={(event) => {
+                    const nextIndex = Math.round(
+                      event.nativeEvent.contentOffset.x / heroSnapInterval
+                    );
+                    setActiveHeroIndex(nextIndex);
+                    isUserSwipingRef.current = false;
+                  }}
+                  contentContainerStyle={{ paddingHorizontal: heroSideInset }}
+                  getItemLayout={(_, index) => ({
+                    length: heroSnapInterval,
+                    offset: heroSnapInterval * index,
+                    index,
+                  })}
                 />
 
                 <View className="flex-row justify-center items-center mt-5 gap-2">
                   {heroMovies.map((_, i) => (
-                    <View
+                    <Animated.View
                       key={i}
                       style={{
-                        width: i === activeHeroIndex ? 32 : 6,
+                        width: 32,
                         height: 6,
                         borderRadius: 3,
-                        backgroundColor: i === activeHeroIndex ? Colors.primary : "rgba(255,255,255,0.2)",
+                        backgroundColor: Colors.primary,
+                        transform: [
+                          {
+                            scaleX: scrollX.interpolate({
+                              inputRange: [
+                                (i - 1) * heroSnapInterval,
+                                i * heroSnapInterval,
+                                (i + 1) * heroSnapInterval,
+                              ],
+                              outputRange: [0.1875, 1, 0.1875],
+                              extrapolate: "clamp",
+                            }),
+                          },
+                        ],
+                        opacity: scrollX.interpolate({
+                          inputRange: [
+                            (i - 1) * heroSnapInterval,
+                            i * heroSnapInterval,
+                            (i + 1) * heroSnapInterval,
+                          ],
+                          outputRange: [0.25, 1, 0.25],
+                          extrapolate: "clamp",
+                        }),
                       }}
                     />
                   ))}
