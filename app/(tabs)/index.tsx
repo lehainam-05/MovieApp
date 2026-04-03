@@ -7,6 +7,8 @@ import {
   Text,
   View,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { images } from "@/constants/images";
 import { ALL_GENRE, GenreChip } from "@/constants/genres";
@@ -22,6 +24,15 @@ import CategoryChips from "@/components/home/CategoryChips";
 import HeroBanner from "@/components/home/HeroBanner";
 import MoviePosterCard from "@/components/home/MoviePosterCard";
 import RankingCard from "@/components/home/RankingCard";
+
+const SectionHeader = ({ title }: { title: string }) => (
+  <View className="flex-row items-center justify-between mb-4">
+    <Text className="text-white text-[31px] font-black">{title}</Text>
+    <View className="size-8 rounded-full bg-white/5 border border-white/10 items-center justify-center">
+      <Ionicons name="chevron-forward" size={18} color="#FFFFFF" />
+    </View>
+  </View>
+);
 
 const Index = () => {
   const [selectedGenreId, setSelectedGenreId] = useState<number>(ALL_GENRE.id);
@@ -75,16 +86,45 @@ const Index = () => {
   const error = genresError || genreMoviesError || usUkError || asianError;
 
   return (
-    <View className="flex-1 bg-primary">
-      <Image source={images.bg} className="absolute w-full h-full z-0" resizeMode="cover" />
+    <View className="flex-1 bg-black">
+      <Image source={images.bg} className="absolute w-full h-full z-0 opacity-30" resizeMode="cover" />
+      <LinearGradient
+        colors={["#030014", "#05030a", "#000000"]}
+        locations={[0, 0.52, 1]}
+        className="absolute inset-0"
+      />
 
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ paddingBottom: 130 }}
       >
         <View className="px-5 pt-16">
-          <Text className="text-accent text-4xl font-black tracking-wider">CINEMA</Text>
+          <View className="flex-row items-center justify-between">
+            <View className="flex-row items-center gap-3">
+              <Ionicons name="menu" size={22} color="#FFFFFF" />
+              <LinearGradient
+                colors={["#9D50BB", "#AB57AC", "#C084FC"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                className="rounded-full px-4 py-1.5"
+              >
+                <Text className="text-white text-2xl font-black tracking-wider">CINEMA</Text>
+              </LinearGradient>
+            </View>
+
+            <View className="flex-row items-center gap-2.5">
+              <View className="size-10 rounded-full border border-white/15 bg-white/5 items-center justify-center">
+                <Ionicons name="notifications" size={17} color="#FFFFFF" />
+              </View>
+              <LinearGradient
+                colors={["#9D50BB", "#AB57AC"]}
+                className="size-10 rounded-full items-center justify-center"
+              >
+                <Ionicons name="person" size={16} color="#FFFFFF" />
+              </LinearGradient>
+            </View>
+          </View>
 
           <View className="mt-5">
             <CategoryChips
@@ -95,7 +135,7 @@ const Index = () => {
           </View>
 
           {isLoading ? (
-            <ActivityIndicator size="large" color="#AB8BFF" className="mt-10" />
+            <ActivityIndicator size="large" color="#AB57AC" className="mt-10" />
           ) : error ? (
             <Text className="text-red-400 mt-8">Error: {error.message}</Text>
           ) : (
@@ -107,7 +147,7 @@ const Index = () => {
               ) : null}
 
               <View className="mt-12">
-                <Text className="text-white text-3xl font-black mb-4">TOP 10 TODAY</Text>
+                <SectionHeader title="TOP 10 TODAY" />
                 <FlatList
                   horizontal
                   data={(genreMovies ?? []).slice(0, 10)}
@@ -119,7 +159,7 @@ const Index = () => {
               </View>
 
               <View className="mt-12">
-                <Text className="text-white text-3xl font-black mb-4">NEW US-UK MOVIES</Text>
+                <SectionHeader title="NEW US-UK MOVIES" />
                 <View className="flex-row flex-wrap justify-between gap-y-6">
                   {(usUkMovies ?? []).slice(0, 4).map((movie) => (
                     <MoviePosterCard key={movie.id} movie={movie} />
@@ -128,7 +168,7 @@ const Index = () => {
               </View>
 
               <View className="mt-12">
-                <Text className="text-white text-3xl font-black mb-4">NEW ASIAN MOVIES</Text>
+                <SectionHeader title="NEW ASIAN MOVIES" />
                 <View className="flex-row flex-wrap justify-between gap-y-6">
                   {(asianMovies ?? []).slice(0, 4).map((movie) => (
                     <MoviePosterCard key={movie.id} movie={movie} />
