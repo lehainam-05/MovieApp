@@ -73,7 +73,18 @@ export default function TabsLayout() {
           title: "Home",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.home} title="Home" />
+            <TabIcon focused={focused} icon={icons.home} title="Trang Chủ" />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="movies"
+        options={{
+          title: "Movies",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused} icon={icons.save} title="Kho Phim" />
           ),
         }}
       />
@@ -84,18 +95,7 @@ export default function TabsLayout() {
           title: "Search",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.search} title="Search" />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="save"
-        options={{
-          title: "Save",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.save} title="Movies" />
+            <TabIcon focused={focused} icon={icons.search} title="Tìm Kiếm" />
           ),
         }}
       />
@@ -106,7 +106,7 @@ export default function TabsLayout() {
           title: "Profile",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.person} title="Profile" />
+            <TabIcon focused={focused} icon={icons.person} title="Hồ Sơ" />
           ),
         }}
       />

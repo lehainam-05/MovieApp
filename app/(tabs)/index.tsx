@@ -336,7 +336,7 @@ const Index = () => {
             {/* Top 10 Today */}
             {top10Movies.length > 0 && (
               <View className="py-6 px-5">
-                <SectionHeader title="Top 10 Today" />
+                <SectionHeader title="Top 10 Hôm Nay" />
                 <FlatList
                   horizontal
                   data={top10Movies}
@@ -352,7 +352,7 @@ const Index = () => {
 
             {/* New US-UK Movies */}
             <View className="py-6 px-5">
-              <SectionHeader title="New US-UK Movies" />
+              <SectionHeader title="Phim Mới Âu - Mỹ" />
               {usUkLoading ? (
                 <ActivityIndicator color={Colors.primary} />
               ) : (
@@ -372,7 +372,7 @@ const Index = () => {
               className="py-6 px-5"
               style={{ backgroundColor: Colors.black }}
             >
-              <SectionHeader title="New Asian Movies" />
+              <SectionHeader title="Phim Mới Châu Á" />
               {asianLoading ? (
                 <ActivityIndicator color={Colors.primary} />
               ) : (

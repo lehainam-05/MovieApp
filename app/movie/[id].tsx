@@ -18,9 +18,9 @@ import { fetchMovieDetails, fetchMovieCast, fetchSimilarMovies } from "@/service
 import StickyHeader from "@/components/common/StickyHeader";
 import HeroBackdrop from "@/components/common/HeroBackdrop";
 import Footer from "@/components/common/Footer";
-import MovieInfo from "@/components/movie/MovieInfo";
-import MovieCastList from "@/components/movie/MovieCastList";
-import MovieSimilarList from "@/components/movie/MovieSimilarList";
+import MovieInfo from "@/components/movie_detail/MovieInfo";
+import MovieCastList from "@/components/movie_detail/MovieCastList";
+import MovieSimilarList from "@/components/movie_detail/MovieSimilarList";
 
 const MovieDetail = () => {
   const router = useRouter();
@@ -101,8 +101,20 @@ const MovieDetail = () => {
         }
         rightNode={
           <>
-            <View className="size-8 rounded-full bg-primary/20 border border-primary/40 items-center justify-center overflow-hidden ml-2">
-              <Text className="text-white text-xs">👤</Text>
+            <View
+              className="rounded-full overflow-hidden"
+              style={{ 
+                width: 34, 
+                height: 34, 
+                backgroundColor: Colors.surfaceContainerHigh, 
+                justifyContent: "center", 
+                alignItems: "center", 
+                borderWidth: 2, 
+                borderColor: "rgba(224,142,254,0.2)",
+                marginLeft: 8
+              }}
+            >
+              <Text style={{ fontSize: 16 }}>👤</Text>
             </View>
           </>
         }

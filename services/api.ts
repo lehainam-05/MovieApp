@@ -25,7 +25,7 @@ export const TMDB_CONFIG = {
 const tmdbGet = async <T>(endpoint: string): Promise<T> => {
   // Tự động gài cắm thẻ ngôn ngữ Tiếng Việt (language=vi) vào mọi HTTP Request.
   // Tuy nhiên, mảng tiểu sử Diễn Viên trên TMDB 99% là chưa có ai dịch tiếng Việt (Sẽ báo rỗng).
-  // Nên ta phải chừa API '/person/id' ra và cho nó xài 'en-US' để giữ nguyên tiểu sử tiếng Anh gốc.
+  // Nên phải chừa API '/person/id' ra và cho nó xài 'en-US' để giữ nguyên tiểu sử tiếng Anh gốc.
   const isActorProfile = endpoint.startsWith('/person/') && !endpoint.includes('movie_credits');
   const lang = isActorProfile ? 'en-US' : 'vi';
 
@@ -74,12 +74,16 @@ export const fetchGenres = async (): Promise<{ id: number; name: string }[]> => 
 
 /**
  * Lọc phim theo đúng chuẩn một Hệ Loại (`genreId`) ấn định.
- * Nếu ID bị kẹt (undefined), trả lại toàn bộ kho!
+ * Tích hợp Phân trang (Pagination) và Kiểu Sắp xếp (SortBy).
  */
-export const fetchMoviesByGenre = async (genreId?: number): Promise<Movie[]> => {
+export const fetchMoviesByGenre = async (
+  genreId?: number,
+  page: number = 1,
+  sortBy: "popularity.desc" | "primary_release_date.desc" | "vote_average.desc" = "popularity.desc"
+): Promise<Movie[]> => {
   const endpoint = genreId
-    ? `/discover/movie?sort_by=popularity.desc&with_genres=${genreId}`
-    : "/discover/movie?sort_by=popularity.desc";
+    ? `/discover/movie?sort_by=${sortBy}&with_genres=${genreId}&page=${page}`
+    : `/discover/movie?sort_by=${sortBy}&page=${page}`;
 
   const data = await tmdbGet<{ results: Movie[] }>(endpoint);
   return data.results;

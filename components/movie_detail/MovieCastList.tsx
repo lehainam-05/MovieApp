@@ -22,10 +22,10 @@ const MovieCastList: React.FC<MovieCastListProps> = ({ cast, onActorPress }) => 
     <View className="px-5 mb-8">
       {/* Mảng tiêu đề */}
       <View className="flex-row justify-between items-end mb-4">
-        <Text className="text-white font-bold text-xl">Top Cast</Text>
+        <Text className="text-white font-bold text-xl">Diễn Viên Nổi Bật</Text>
         <TouchableOpacity className="flex-row items-center">
           <Text className="text-light-200 text-xs font-semibold mr-1">
-            See All
+            Xem Thêm
           </Text>
           <Ionicons name="chevron-forward" size={12} color="#ababab" />
         </TouchableOpacity>

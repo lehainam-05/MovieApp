@@ -31,7 +31,7 @@ const MovieInfo: React.FC<MovieInfoProps> = ({ movie }) => {
           {movie.runtime}m
         </Text>
         <View className="flex-row items-center ml-1">
-          <FontAwesome name="star" size={14} color={Colors.primary} />
+          <FontAwesome name="star" size={14} color="#FFC107" />
           <Text className="text-white text-sm font-bold ml-1">
             {Math.round(movie.vote_average * 10) / 10}
           </Text>
@@ -67,12 +67,12 @@ const MovieInfo: React.FC<MovieInfoProps> = ({ movie }) => {
           style={{ backgroundColor: Colors.primary }}
         >
           <Image source={icons.play} className="size-4 mr-2" tintColor="#000000ff" />
-          <Text className="text-black font-bold text-base">Play Now</Text>
+          <Text className="text-black font-bold text-base">XEM NGAY</Text>
         </TouchableOpacity>
 
         <TouchableOpacity className="flex-1 h-12 items-center justify-center rounded-full border border-dark-100 bg-dark-200">
           <Text className="text-white font-semibold text-base">
-            Watch Trailer
+            XEM TRAILER
           </Text>
         </TouchableOpacity>
       </View>

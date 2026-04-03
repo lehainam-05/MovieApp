@@ -111,7 +111,7 @@ const HeroBanner = ({ movie }: HeroBannerProps) => {
                     ▶
                   </Text>
                   <Text className="font-bold text-base" style={{ color: Colors.onPrimary }}>
-                    Watch Now
+                    XEM NGAY
                   </Text>
                 </TouchableOpacity>
               </Link>
@@ -126,7 +126,7 @@ const HeroBanner = ({ movie }: HeroBannerProps) => {
                   }}
                   activeOpacity={0.85}
                 >
-                  <Text className="text-white font-bold text-base">ⓘ Info</Text>
+                  <Text className="text-white font-bold text-base">ⓘ CHI TIẾT</Text>
                 </TouchableOpacity>
               </Link>
             </View>

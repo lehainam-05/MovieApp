@@ -19,11 +19,11 @@ const MovieSimilarList: React.FC<MovieSimilarListProps> = ({ movies }) => {
 
   return (
     <View className="mb-10 pl-5">
-      <View className="flex-row justify-between items-end mb-4 pr-5">
-        <Text className="text-white font-bold text-xl">You Might Enjoy</Text>
+      <View className="flex-row justify-between items-end mb-4 px-5">
+        <Text className="text-white font-bold text-xl">Phim Tương Tự</Text>
         <TouchableOpacity className="flex-row items-center">
           <Text className="text-light-200 text-xs font-semibold mr-1">
-            View More
+            Xem Thêm
           </Text>
           <Ionicons name="chevron-forward" size={12} color="#ababab" />
         </TouchableOpacity>
