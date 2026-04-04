@@ -9,11 +9,12 @@
 import React from "react";
 import { View, Platform, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { BlurView } from "expo-blur";
+import { Ionicons } from "@expo/vector-icons";
 import { icons } from "@/constants/icons";
 
 interface StickyHeaderProps {
   scrolled: boolean;
-  onBackPress: () => void;
+  onBackPress?: () => void;
   titleNode: React.ReactNode;
   rightNode?: React.ReactNode;
 }
@@ -55,13 +56,11 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({
       {/* Cụm điều hướng */}
       <View className="flex-row justify-between items-center px-5">
         <View className="flex-row items-center">
-          <TouchableOpacity onPress={onBackPress} className="p-2 -ml-2 mr-2">
-            <Image
-              source={icons.arrow}
-              className="size-6 rotate-180"
-              tintColor="#fff"
-            />
-          </TouchableOpacity>
+          {onBackPress && (
+            <TouchableOpacity onPress={onBackPress} className="p-2 -ml-2 mr-2">
+              <Ionicons name="arrow-back" size={24} color="white" />
+            </TouchableOpacity>
+          )}
 
           {titleNode}
         </View>

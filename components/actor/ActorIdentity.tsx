@@ -56,7 +56,7 @@ const ActorIdentity: React.FC<ActorIdentityProps> = ({
           className="flex-1 h-12 flex-row items-center justify-center rounded-full mr-3"
           style={{ backgroundColor: "#D48BFF" }}
         >
-          <Image source={icons.play} className="size-3 mr-2" tintColor="#000" />
+          <Image source={icons.play} className="size-3 mr-2" style={{ width: 12, height: 12 }} tintColor="#000" />
           <Text className="text-black font-bold text-sm">Watch Reel</Text>
         </TouchableOpacity>
 

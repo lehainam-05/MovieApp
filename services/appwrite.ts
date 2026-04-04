@@ -32,7 +32,7 @@ export const updateSearchCount = async (query: string, movie: Movie) => {
       await database.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), {
         searchTerm: query,
         movie_id: movie.id,
-        title: movie.title,
+        tittle: movie.title,
         count: 1,
         poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
       });

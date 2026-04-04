@@ -1,50 +1,14 @@
+/**
+ * app/(tabs)/_layout.tsx
+ *
+ * @purpose Cấu hình Tab Bar Navigation — file bắt buộc của Expo Router.
+ * @why Expo Router yêu cầu file `_layout.tsx` nằm đúng vị trí này để định nghĩa
+ *      cấu trúc điều hướng Tab. Không thể di chuyển sang screens/.
+ *      Component TabIcon đã được tách ra components/common/TabIcon.tsx.
+ */
 import { Tabs } from "expo-router";
-import { Image, Text, View } from "react-native";
-
 import { icons } from "@/constants/icons";
-
-function TabIcon({
-  focused,
-  icon,
-  title,
-}: {
-  focused: boolean;
-  icon: any;
-  title: string;
-}) {
-  return (
-    <View className="items-center justify-center" style={{ minWidth: 70 }}>
-      {/* Icon container */}
-      <View
-        style={{
-          backgroundColor: focused ? "rgba(171,139,255,0.25)" : "transparent",
-          borderRadius: 16,
-          padding: 10,
-          marginBottom: 4,
-        }}
-      >
-        <Image
-          source={icon}
-          tintColor={focused ? "#AB8BFF" : "#9e9eb3"}
-          className="size-6"
-        />
-      </View>
-
-      {/* Label */}
-      <Text
-        style={{
-          color: focused ? "#AB8BFF" : "#9e9eb3",
-          fontSize: 10,
-          fontWeight: "600",
-          letterSpacing: 1,
-          textTransform: "uppercase",
-        }}
-      >
-        {title}
-      </Text>
-    </View>
-  );
-}
+import TabIcon from "@/components/common/TabIcon";
 
 export default function TabsLayout() {
   return (

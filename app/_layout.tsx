@@ -5,40 +5,60 @@
  * @why Đây là nơi khai báo Expo Router Stack. Quản lý việc màn hình nào sẽ được xếp lên trên màn hình nào, 
  *      và thiết lập các quy tắc chung hiển thị toàn cục (như ẩn StatusBar, nạp file CSS gốc).
  */
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import "./globals.css";
-import { StatusBar } from "react-native";
+import { StatusBar, View, ActivityIndicator } from "react-native";
+import { useEffect } from "react";
+
+import { WatchlistProvider } from "@/store/WatchlistContext";
+import { AuthProvider, useAuth } from "@/store/AuthContext";
+import { Colors } from "@/constants/colors";
+
+const RootLayoutNav = () => {
+  const { isAuthenticated, isLoading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    // Chặn cửa tử: Nếu chưa đăng nhập mà lang thang ngoài login => Cút về login.
+    if (!isAuthenticated && segments[0] !== 'login') {
+      // Dùng replace để triệt tiêu nút "Back" của OS nảy về trang nhăng cuội
+      router.replace('/login');
+    } else if (isAuthenticated && segments[0] === 'login') {
+      // Nếu có vé rồi mà ra check-in làm trò => Ép vô sàn đấu chính
+      router.replace('/(tabs)');
+    }
+  }, [isAuthenticated, isLoading, segments]);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
+  return (
+    <Stack>
+      <Stack.Screen name="login" options={{ headerShown: false, animation: 'fade' }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="movie/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="actor/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="settings/account" options={{ headerShown: false }} />
+      <Stack.Screen name="watchlist" options={{ headerShown: false }} />
+    </Stack>
+  );
+};
 
 export default function RootLayout() {
   return (
-    <>
-      {/* Ẩn cột sóng, giờ, phần trăm pin của điện thoại để App phủ kín 100% màn hình, tạo cảm giác điện ảnh */}
-      <StatusBar hidden={true} />
-
-      {/* Máy quản lý ngăn xếp màn hình (Stack). Màn hình mới mở sẽ lùi màn cũ ra sau. */}
-      <Stack>
-        {/* Khai báo cụm Tab Dưới Đáy (Bottom Tabs) làm root */}
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: false, // Tắt cái tên route mặc định màu trắng ở đỉnh đầu
-          }}
-        />
-        {/* Cấu hình màn hình Chi tiết Phim */}
-        <Stack.Screen
-          name="movie/[id]"
-          options={{
-            headerShown: false,
-          }}
-        />
-        {/* Cấu hình màn hình Trang Cá Nhân Diễn Viên */}
-        <Stack.Screen
-          name="actor/[id]"
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack>
-    </>
+    <AuthProvider>
+      <WatchlistProvider>
+        <StatusBar hidden={true} />
+        <RootLayoutNav />
+      </WatchlistProvider>
+    </AuthProvider>
   );
 }

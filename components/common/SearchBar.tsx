@@ -19,6 +19,7 @@ const SearchBar = ({ placeholder, value, onChangeText, onPress }: Props) => {
       <Image
         source={icons.search}
         className="w-5 h-5"
+        style={{ width: 20, height: 20 }}
         resizeMode="contain"
         tintColor="#AB8BFF"
       />

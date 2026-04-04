@@ -1,18 +1,9 @@
-// Trang profile đơn giản.
-// Chỉ hiển thị icon và chữ Profile, dùng SafeAreaView để đảm bảo bo góc trên các màn iOS.
-import { icons } from "@/constants/icons";
-import { View, Text, Image } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+/**
+ * app/(tabs)/profile.tsx
+ *
+ * @purpose Đầu nối (Entry point) từ Tab Router vào lõi Screen.
+ * @why Router chỉ là Bảng Chỉ Đường, toàn bộ UI nằm tại screens/ProfileScreen.tsx.
+ */
+import ProfileScreen from '@/screens/ProfileScreen';
 
-const Profile = () => {
-  return (
-    <SafeAreaView className="bg-primary flex-1 px-10">
-      <View className="flex justify-center items-center flex-1 flex-col gap-5">
-        <Image source={icons.person} className="size-10" tintColor="#fff" />
-        <Text className="text-gray-500 text-base">Profile</Text>
-      </View>
-    </SafeAreaView>
-  );
-};
-
-export default Profile;
+export default ProfileScreen;

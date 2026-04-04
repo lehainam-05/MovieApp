@@ -66,7 +66,7 @@ const MovieInfo: React.FC<MovieInfoProps> = ({ movie }) => {
           className="flex-1 h-12 flex-row items-center justify-center rounded-full mr-3"
           style={{ backgroundColor: Colors.primary }}
         >
-          <Image source={icons.play} className="size-4 mr-2" tintColor="#000000ff" />
+          <Image source={icons.play} className="size-4 mr-2" style={{ width: 16, height: 16 }} tintColor="#000000ff" />
           <Text className="text-black font-bold text-base">XEM NGAY</Text>
         </TouchableOpacity>
 

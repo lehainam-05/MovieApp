@@ -81,9 +81,10 @@ export const fetchMoviesByGenre = async (
   page: number = 1,
   sortBy: "popularity.desc" | "primary_release_date.desc" | "vote_average.desc" = "popularity.desc"
 ): Promise<Movie[]> => {
+  const safeLangs = "en|vi|ko|ja|zh|th";
   const endpoint = genreId
-    ? `/discover/movie?sort_by=${sortBy}&with_genres=${genreId}&page=${page}`
-    : `/discover/movie?sort_by=${sortBy}&page=${page}`;
+    ? `/discover/movie?sort_by=${sortBy}&with_genres=${genreId}&page=${page}&with_original_language=${safeLangs}`
+    : `/discover/movie?sort_by=${sortBy}&page=${page}&with_original_language=${safeLangs}`;
 
   const data = await tmdbGet<{ results: Movie[] }>(endpoint);
   return data.results;

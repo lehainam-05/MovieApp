@@ -5,7 +5,7 @@
  * @why Carousel (cuộn ngang) giúp tiết kiệm diện tích màn hình điện thoại mà vẫn đập ngay vào mắt 
  *      người dùng những bộ phim cháy khách nhất hiện tại.
  */
-import { View, Text, ImageBackground, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, ImageBackground, TouchableOpacity, Dimensions, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { Colors } from "@/constants/colors";
@@ -25,10 +25,21 @@ const HeroBanner = ({ movie }: HeroBannerProps) => {
     ? movie.vote_average.toFixed(1)
     : "N/A";
 
+  // Limit width and height on Web so it doesn't stretch and crop the poster drastically
+  const isWeb = Platform.OS === "web";
+  const itemWidth = isWeb ? Math.min(SCREEN_WIDTH, 500) : SCREEN_WIDTH;
+  const bannerHeight = itemWidth * 1.15;
+
   return (
-    <View>
+    <View className="w-full items-center">
       {/* Banner image */}
-      <View className="w-full rounded-[28px] overflow-hidden" style={{ height: SCREEN_WIDTH * 1.15 }}>
+      <View 
+        className="w-full rounded-[28px] overflow-hidden" 
+        style={{ 
+          height: bannerHeight, 
+          maxWidth: isWeb ? 500 : "100%",
+        }}
+      >
         <ImageBackground
           source={{
             uri: movie.backdrop_path
