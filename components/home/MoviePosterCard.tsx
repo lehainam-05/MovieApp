@@ -1,35 +1,82 @@
+/**
+ * components/home/MoviePosterCard.tsx
+ *
+ * @purpose Thẻ Card hiển thị ảnh bìa dọc (Poster) của một bộ phim. 
+ * @why Thẻ này xuất hiện MỌI NƠI trong app (Trang chủ, Tìm kiếm, Phim tương tự). Thay vì 
+ *      ở đâu cũng phải code lại cái thẻ ảnh, tạch riêng nó ra giúp tối ưu hoá bộ nhớ và 
+ *      giữ tính nhất quán về kích thước.
+ */
 import { Link } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Colors } from "@/constants/colors";
 
 interface MoviePosterCardProps {
   movie: Movie;
 }
 
 const MoviePosterCard = ({ movie }: MoviePosterCardProps) => {
+  // Tính rating dưới dạng 1 chữ số thập phân
+  const rating = movie.vote_average?.toFixed(1) ?? "N/A";
+  // Lấy năm phát hành hoặc N/A
+  const year = movie.release_date?.split("-")[0] ?? "N/A";
+
   return (
     <Link href={`/movie/${movie.id}`} asChild>
-      <TouchableOpacity className="w-[46%]">
-        <Image
-          source={{
-            uri: movie.poster_path
-              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-              : "https://placehold.co/500x750/1a1a1a/FFFFFF.png",
+      <TouchableOpacity
+        className="mr-3"
+        style={{ width: 150 }}
+        activeOpacity={0.85}
+      >
+        {/* Khung poster */}
+        <View
+          className="overflow-hidden mb-2"
+          style={{
+            width: 150,
+            height: 225,
+            borderRadius: 16,
+            borderWidth: 1,
+            borderColor: "rgba(255,255,255,0.05)",
           }}
-          className="w-full h-56 rounded-2xl"
-          resizeMode="cover"
-        />
+        >
+          <Image
+            source={{
+              uri: movie.poster_path
+                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                : "https://placehold.co/500x750/1a1a1a/FFFFFF.png",
+            }}
+            className="w-full h-full"
+            resizeMode="cover"
+          />
 
-        <View className="absolute left-2 bottom-[72px] bg-accent/90 px-2 py-1 rounded-md">
-          <Text className="text-black text-[10px] font-bold">
-            PD.{movie.vote_average.toFixed(1)}
-          </Text>
+          {/* Badge điểm PĐ */}
+          <View
+            className="absolute bottom-2 left-2 px-2 py-1 rounded"
+            style={{ backgroundColor: "rgba(224,142,254,0.9)" }}
+          >
+            <Text
+              className="font-bold"
+              style={{ fontSize: 10, color: Colors.onPrimary }}
+            >
+              PĐ.{rating}
+            </Text>
+          </View>
         </View>
 
-        <Text className="text-white text-xl font-bold mt-3" numberOfLines={1}>
+        {/* Tiêu đề phim */}
+        <Text
+          className="text-white font-bold uppercase"
+          style={{ fontSize: 13 }}
+          numberOfLines={1}
+        >
           {movie.title}
         </Text>
-        <Text className="text-light-300 text-sm mt-1">
-          {movie.vote_average.toFixed(1)} • {movie.release_date?.split("-")[0] || "N/A"}
+
+        {/* Dòng phụ: rating và năm */}
+        <Text
+          className="text-on-surface-variant uppercase font-medium mt-0.5"
+          style={{ fontSize: 10 }}
+        >
+          {rating} • {year}
         </Text>
       </TouchableOpacity>
     </Link>

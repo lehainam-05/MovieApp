@@ -1,5 +1,11 @@
+/**
+ * components/home/CategoryChips.tsx
+ *
+ * @purpose Danh sách các nút tròn bo góc (Chip) để lọc phim theo thể loại (Action, Romance,...).
+ * @why Việc cho phép người dùng lướt ngang và chạm (Tap) để lọc phim nhanh hơn rất nhiều so với 
+ *      việc phải bắt họ mở 1 cái danh sách (Dropdown) rườm rà.
+ */
 import { FlatList, Text, TouchableOpacity } from "react-native";
-
 import { GenreChip } from "@/constants/genres";
 
 interface CategoryChipsProps {
@@ -11,27 +17,34 @@ interface CategoryChipsProps {
 const CategoryChips = ({ chips, selectedId, onSelect }: CategoryChipsProps) => {
   return (
     <FlatList
-      horizontal
+      horizontal // cuộn theo hàng ngang
       data={chips}
       showsHorizontalScrollIndicator={false}
       keyExtractor={(item) => item.id.toString()}
-      contentContainerStyle={{ gap: 10, paddingRight: 10 }}
+      contentContainerStyle={{ gap: 10, paddingRight: 20 }}
       renderItem={({ item }) => {
-        const isActive = item.id === selectedId;
+        const isActive = item.id === selectedId; // kiểm tra xem chip có đang chọn
 
         return (
           <TouchableOpacity
-            className={`px-6 py-3 rounded-full border ${
+            className={`px-5 py-2.5 rounded-full border ${
               isActive
                 ? "bg-white border-white"
-                : "bg-dark-200 border-dark-100"
+                : "border-white/5"
             }`}
-            onPress={() => onSelect(item.id)}
+            style={
+              !isActive
+                ? { backgroundColor: "rgba(31,31,31,0.9)" }
+                : undefined
+            }
+            onPress={() => onSelect(item.id)} // bấm chọn thể loại
+            activeOpacity={0.7}
           >
             <Text
-              className={`text-xs uppercase tracking-wider font-semibold ${
-                isActive ? "text-secondary" : "text-light-200"
+              className={`font-bold uppercase ${
+                isActive ? "text-black" : "text-on-surface-variant"
               }`}
+              style={{ fontSize: 11, letterSpacing: 1.5 }}
             >
               {item.name}
             </Text>

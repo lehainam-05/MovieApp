@@ -1,30 +1,14 @@
+/**
+ * app/(tabs)/_layout.tsx
+ *
+ * @purpose Cấu hình Tab Bar Navigation — file bắt buộc của Expo Router.
+ * @why Expo Router yêu cầu file `_layout.tsx` nằm đúng vị trí này để định nghĩa
+ *      cấu trúc điều hướng Tab. Không thể di chuyển sang screens/.
+ *      Component TabIcon đã được tách ra components/common/TabIcon.tsx.
+ */
 import { Tabs } from "expo-router";
-import { ImageBackground, Image, Text, View } from "react-native";
-
 import { icons } from "@/constants/icons";
-import { images } from "@/constants/images";
-
-function TabIcon({ focused, icon, title }: any) {
-  if (focused) {
-    return (
-      <ImageBackground
-        source={images.highlight}
-        className="flex flex-row w-full flex-1 min-w-[112px] min-h-14 mt-4 justify-center items-center rounded-full overflow-hidden"
-      >
-        <Image source={icon} tintColor="#151312" className="size-5" />
-        <Text className="text-secondary text-base font-semibold ml-2">
-          {title}
-        </Text>
-      </ImageBackground>
-    );
-  }
-
-  return (
-    <View className="size-full justify-center items-center mt-4 rounded-full">
-      <Image source={icon} tintColor="#A8B5DB" className="size-5" />
-    </View>
-  );
-}
+import TabIcon from "@/components/common/TabIcon";
 
 export default function TabsLayout() {
   return (
@@ -32,31 +16,39 @@ export default function TabsLayout() {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarItemStyle: {
-          width: "100%",
-          height: "100%",
+          flex: 1,
           justifyContent: "center",
           alignItems: "center",
         },
         tabBarStyle: {
           backgroundColor: "#0F0D23",
-          borderRadius: 50,
-          marginHorizontal: 20,
-          marginBottom: 36,
-          height: 52,
+          borderTopWidth: 0,
+          height: 80,
+          paddingTop: 8,
+          paddingBottom: 12,
           position: "absolute",
-          overflow: "hidden",
-          borderWidth: 1,
-          borderColor: "#0F0D23",
+          elevation: 0,
         },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "index",
+          title: "Home",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.home} title="Home" />
+            <TabIcon focused={focused} icon={icons.home} title="Trang Chủ" />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="movies"
+        options={{
+          title: "Movies",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused} icon={icons.save} title="Kho Phim" />
           ),
         }}
       />
@@ -67,18 +59,7 @@ export default function TabsLayout() {
           title: "Search",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.search} title="Search" />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="save"
-        options={{
-          title: "Save",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.save} title="Save" />
+            <TabIcon focused={focused} icon={icons.search} title="Tìm Kiếm" />
           ),
         }}
       />
@@ -89,7 +70,7 @@ export default function TabsLayout() {
           title: "Profile",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} icon={icons.person} title="Profile" />
+            <TabIcon focused={focused} icon={icons.person} title="Hồ Sơ" />
           ),
         }}
       />
