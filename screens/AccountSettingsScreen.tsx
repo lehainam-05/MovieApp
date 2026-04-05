@@ -154,8 +154,16 @@ const AccountSettingsScreen = () => {
 
         <TouchableOpacity
           onPress={logout}
-          className="h-14 rounded-2xl flex-row items-center justify-center border border-red-500/20 mb-12 mt-4"
-          style={{ backgroundColor: 'rgba(255, 59, 48, 0.08)' }}
+          className="flex-row items-center justify-center"
+          style={{ 
+            height: 56, 
+            marginTop: 16, 
+            marginBottom: 48, 
+            borderRadius: 16, 
+            borderWidth: 1, 
+            borderColor: 'rgba(255, 59, 48, 0.2)', 
+            backgroundColor: 'rgba(255, 59, 48, 0.08)' 
+          }}
         >
           <MaterialCommunityIcons name="logout" size={20} color="#FF3B30" />
           <Text style={{ color: '#FF3B30', fontSize: 13, fontWeight: '700', marginLeft: 8 }}>Đăng xuất khỏi Aether</Text>
