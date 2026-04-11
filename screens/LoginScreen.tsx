@@ -6,7 +6,7 @@
  *      cấu trúc Form tối giản không viền và đổ bóng quang học cho nút Sign In.
  */
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, ImageBackground, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, ImageBackground, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/colors';
 import { useAuth } from '@/store/AuthContext';
@@ -23,7 +23,7 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     if (!email || !password || password.length < 6) return;
     setSubmitLoading(true);
-    
+
     // Giả lập Loading xoay tròn Fetch API 1,5s
     setTimeout(async () => {
       await login(email);
@@ -40,22 +40,23 @@ const LoginScreen = () => {
     >
       <View style={[StyleSheet.absoluteFillObject, { backgroundColor: 'rgba(0,0,0,0.75)' }]} />
 
-      <KeyboardAvoidingView 
-        style={{ flex: 1 }} 
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <View className="flex-1 justify-center px-4">
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+          <View className="flex-1 justify-center px-4 py-8">
 
           {/* Thẻ Kính Mờ (Glass Card) lớn bọc ngoài */}
-          <View 
-            className="rounded-[32px] p-6 pt-10 pb-8" 
-            style={{ 
-              backgroundColor: 'rgba(20, 20, 22, 0.85)', 
+          <View
+            className="rounded-[32px] p-6 pt-10 pb-8"
+            style={{
+              backgroundColor: 'rgba(20, 20, 22, 0.85)',
               borderColor: 'rgba(255,255,255,0.03)',
               borderWidth: 1
             }}
           >
-            
+
             {/* Header: Logo chữ */}
             <View className="items-center mb-10">
               <View className="flex-row items-center mb-3">
@@ -71,9 +72,9 @@ const LoginScreen = () => {
 
             {/* Inputs */}
             <View className="mb-4">
-              <TextInput 
-                placeholder="Địa chỉ Email" 
-                placeholderTextColor="#666" 
+              <TextInput
+                placeholder="Địa chỉ Email"
+                placeholderTextColor="#666"
                 style={{ backgroundColor: '#1C1C1E', color: 'white', height: 56, borderRadius: 16, paddingHorizontal: 20, fontSize: 15 }}
                 autoCapitalize="none"
                 keyboardType="email-address"
@@ -83,16 +84,16 @@ const LoginScreen = () => {
             </View>
 
             <View className="mb-4">
-              <TextInput 
-                placeholder="Mật khẩu" 
-                placeholderTextColor="#666" 
+              <TextInput
+                placeholder="Mật khẩu"
+                placeholderTextColor="#666"
                 style={{ backgroundColor: '#1C1C1E', color: 'white', height: 56, borderRadius: 16, paddingHorizontal: 20, fontSize: 15 }}
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
               />
             </View>
-            
+
             <TouchableOpacity className="self-end mb-8">
               <Text style={{ color: Colors.primary, fontSize: 12, fontWeight: '600' }}>
                 Quên mật khẩu?
@@ -100,7 +101,7 @@ const LoginScreen = () => {
             </TouchableOpacity>
 
             {/* Nút Sign In (Có lớp bo sáng) */}
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={handleLogin}
               disabled={isSubmitLoading}
               activeOpacity={0.8}
@@ -149,7 +150,7 @@ const LoginScreen = () => {
             {/* Đăng ký */}
             <View className="flex-row items-center justify-center">
               <Text style={{ color: '#888', fontSize: 13, fontWeight: '500' }}>Chưa có tài khoản? </Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push('/register')}>
                 <Text style={{ color: Colors.primary, fontSize: 13, fontWeight: '700' }}>Đăng Ký</Text>
               </TouchableOpacity>
             </View>
@@ -157,15 +158,15 @@ const LoginScreen = () => {
           </View>
         </View>
 
-        {/* Cụm Footer Policy dưới cùng */}
         <View className="items-center justify-center pb-8 opacity-40">
-           <View className="flex-row gap-6 mb-2">
-             <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2 }}>CHÍNH SÁCH</Text>
-             <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2 }}>ĐIỀU KHOẢN</Text>
-             <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2 }}>HỖ TRỢ</Text>
-           </View>
+          <View className="flex-row mb-2">
+            <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2 }}>CHÍNH SÁCH</Text>
+            <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2, marginHorizontal: 8 }}>ĐIỀU KHOẢN</Text>
+            <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2 }}>HỖ TRỢ</Text>
+          </View>
         </View>
-        
+
+        </ScrollView>
       </KeyboardAvoidingView>
     </ImageBackground>
   );

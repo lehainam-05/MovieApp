@@ -22,8 +22,8 @@ const RootLayoutNav = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    // Chặn cửa tử: Nếu chưa đăng nhập mà lang thang ngoài login => Cút về login.
-    if (!isAuthenticated && segments[0] !== 'login') {
+    // Chặn cửa tử: Nếu chưa đăng nhập mà lang thang ngoài login/register => Cút về login.
+    if (!isAuthenticated && segments[0] !== 'login' && segments[0] !== 'register') {
       // Dùng replace để triệt tiêu nút "Back" của OS nảy về trang nhăng cuội
       router.replace('/login');
     } else if (isAuthenticated && segments[0] === 'login') {
@@ -43,6 +43,7 @@ const RootLayoutNav = () => {
   return (
     <Stack>
       <Stack.Screen name="login" options={{ headerShown: false, animation: 'fade' }} />
+      <Stack.Screen name="register" options={{ headerShown: false, animation: 'fade' }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="movie/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="actor/[id]" options={{ headerShown: false }} />
