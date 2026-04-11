@@ -284,9 +284,6 @@ const SearchScreen = () => {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.logo}>CINEMA</Text>
-        <View style={styles.avatar}>
-          <Text style={{ fontSize: 14 }}>👤</Text>
-        </View>
       </View>
 
       {/* Search Bar */}

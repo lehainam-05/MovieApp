@@ -205,23 +205,8 @@ const HomeScreen = () => {
               color: Colors.primary,
             }}
           >
-            CINEMA
+            AETHER
           </Text>
-
-          <View
-            className="rounded-full overflow-hidden"
-            style={{
-              width: 34,
-              height: 34,
-              borderWidth: 2,
-              borderColor: "rgba(224,142,254,0.2)",
-              backgroundColor: Colors.surfaceContainerHigh,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ fontSize: 16 }}>👤</Text>
-          </View>
         </View>
       </View>
 

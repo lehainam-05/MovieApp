@@ -47,124 +47,124 @@ const LoginScreen = () => {
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
           <View className="flex-1 justify-center px-4 py-8">
 
-          {/* Thẻ Kính Mờ (Glass Card) lớn bọc ngoài */}
-          <View
-            className="rounded-[32px] p-6 pt-10 pb-8"
-            style={{
-              backgroundColor: 'rgba(20, 20, 22, 0.85)',
-              borderColor: 'rgba(255,255,255,0.03)',
-              borderWidth: 1
-            }}
-          >
-
-            {/* Header: Logo chữ */}
-            <View className="items-center mb-10">
-              <View className="flex-row items-center mb-3">
-                <Ionicons name="film" size={28} color={Colors.primary} />
-                <Text style={{ color: Colors.primary, fontSize: 28, fontWeight: '900', letterSpacing: 8, marginLeft: 12 }}>
-                  AETHER
-                </Text>
-              </View>
-              <Text style={{ color: '#888', fontSize: 10, letterSpacing: 2, fontWeight: '600' }}>
-                TRẢI NGHIỆM ĐIỆN ẢNH SỐ
-              </Text>
-            </View>
-
-            {/* Inputs */}
-            <View className="mb-4">
-              <TextInput
-                placeholder="Địa chỉ Email"
-                placeholderTextColor="#666"
-                style={{ backgroundColor: '#1C1C1E', color: 'white', height: 56, borderRadius: 16, paddingHorizontal: 20, fontSize: 15 }}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                value={email}
-                onChangeText={setEmail}
-              />
-            </View>
-
-            <View className="mb-4">
-              <TextInput
-                placeholder="Mật khẩu"
-                placeholderTextColor="#666"
-                style={{ backgroundColor: '#1C1C1E', color: 'white', height: 56, borderRadius: 16, paddingHorizontal: 20, fontSize: 15 }}
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-              />
-            </View>
-
-            <TouchableOpacity className="self-end mb-8">
-              <Text style={{ color: Colors.primary, fontSize: 12, fontWeight: '600' }}>
-                Quên mật khẩu?
-              </Text>
-            </TouchableOpacity>
-
-            {/* Nút Sign In (Có lớp bo sáng) */}
-            <TouchableOpacity
-              onPress={handleLogin}
-              disabled={isSubmitLoading}
-              activeOpacity={0.8}
+            {/* Thẻ Kính Mờ (Glass Card) lớn bọc ngoài */}
+            <View
+              className="rounded-[32px] p-6 pt-10 pb-8"
               style={{
-                backgroundColor: Colors.primary,
-                height: 56,
-                borderRadius: 28,
-                alignItems: 'center',
-                justifyContent: 'center',
-                shadowColor: Colors.primary,
-                shadowOffset: { width: 0, height: 8 },
-                shadowOpacity: 0.4,
-                shadowRadius: 16,
-                elevation: 10,
-                marginBottom: 28
+                backgroundColor: 'rgba(20, 20, 22, 0.85)',
+                borderColor: 'rgba(255,255,255,0.03)',
+                borderWidth: 1
               }}
             >
-              {isSubmitLoading ? (
-                <ActivityIndicator color="black" />
-              ) : (
-                <Text style={{ color: '#000', fontSize: 16, fontWeight: '700' }}>Đăng Nhập</Text>
-              )}
-            </TouchableOpacity>
 
-            {/* Dải phân cách */}
-            <View className="flex-row items-center justify-center mb-6 px-4">
-              <View style={{ flex: 1, height: 1, backgroundColor: 'rgba(255,255,255,0.05)' }} />
-              <Text style={{ color: '#666', fontSize: 10, letterSpacing: 1, marginHorizontal: 16, fontWeight: '600' }}>
-                HOẶC TIẾP TỤC VỚI
-              </Text>
-              <View style={{ flex: 1, height: 1, backgroundColor: 'rgba(255,255,255,0.05)' }} />
-            </View>
+              {/* Header: Logo chữ */}
+              <View className="items-center mb-10">
+                <View className="flex-row items-center mb-3">
+                  <Ionicons name="film" size={28} color={Colors.primary} />
+                  <Text style={{ color: Colors.primary, fontSize: 28, fontWeight: '900', letterSpacing: 2, marginLeft: 12 }}>
+                    CINEMA
+                  </Text>
+                </View>
+                <Text style={{ color: '#888', fontSize: 10, letterSpacing: 2, fontWeight: '600' }}>
+                  TRẢI NGHIỆM ĐIỆN ẢNH SỐ
+                </Text>
+              </View>
 
-            {/* Third-party Logins */}
-            <View className="flex-row gap-4 mb-8">
-              <TouchableOpacity style={{ flex: 1, backgroundColor: '#1C1C1E', height: 48, borderRadius: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                <Ionicons name="logo-google" size={16} color="#aaa" />
-                <Text style={{ color: '#aaa', fontSize: 13, fontWeight: '600', marginLeft: 10 }}>Google</Text>
+              {/* Inputs */}
+              <View className="mb-4">
+                <TextInput
+                  placeholder="Địa chỉ Email"
+                  placeholderTextColor="#666"
+                  style={{ backgroundColor: '#1C1C1E', color: 'white', height: 56, borderRadius: 16, paddingHorizontal: 20, fontSize: 15 }}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  value={email}
+                  onChangeText={setEmail}
+                />
+              </View>
+
+              <View className="mb-4">
+                <TextInput
+                  placeholder="Mật khẩu"
+                  placeholderTextColor="#666"
+                  style={{ backgroundColor: '#1C1C1E', color: 'white', height: 56, borderRadius: 16, paddingHorizontal: 20, fontSize: 15 }}
+                  secureTextEntry
+                  value={password}
+                  onChangeText={setPassword}
+                />
+              </View>
+
+              <TouchableOpacity className="self-end mb-8">
+                <Text style={{ color: Colors.primary, fontSize: 12, fontWeight: '600' }}>
+                  Quên mật khẩu?
+                </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{ flex: 1, backgroundColor: '#1C1C1E', height: 48, borderRadius: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                <Ionicons name="logo-apple" size={16} color="#aaa" />
-                <Text style={{ color: '#aaa', fontSize: 13, fontWeight: '600', marginLeft: 10 }}>Apple</Text>
-              </TouchableOpacity>
-            </View>
 
-            {/* Đăng ký */}
-            <View className="flex-row items-center justify-center">
-              <Text style={{ color: '#888', fontSize: 13, fontWeight: '500' }}>Chưa có tài khoản? </Text>
-              <TouchableOpacity onPress={() => router.push('/register')}>
-                <Text style={{ color: Colors.primary, fontSize: 13, fontWeight: '700' }}>Đăng Ký</Text>
+              {/* Nút Sign In (Có lớp bo sáng) */}
+              <TouchableOpacity
+                onPress={handleLogin}
+                disabled={isSubmitLoading}
+                activeOpacity={0.8}
+                style={{
+                  backgroundColor: Colors.primary,
+                  height: 56,
+                  borderRadius: 28,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  shadowColor: Colors.primary,
+                  shadowOffset: { width: 0, height: 8 },
+                  shadowOpacity: 0.4,
+                  shadowRadius: 16,
+                  elevation: 10,
+                  marginBottom: 28
+                }}
+              >
+                {isSubmitLoading ? (
+                  <ActivityIndicator color="black" />
+                ) : (
+                  <Text style={{ color: '#000', fontSize: 16, fontWeight: '700' }}>Đăng Nhập</Text>
+                )}
               </TouchableOpacity>
-            </View>
 
+              {/* Dải phân cách */}
+              <View className="flex-row items-center justify-center mb-6 px-4">
+                <View style={{ flex: 1, height: 1, backgroundColor: 'rgba(255,255,255,0.05)' }} />
+                <Text style={{ color: '#666', fontSize: 10, letterSpacing: 1, marginHorizontal: 16, fontWeight: '600' }}>
+                  HOẶC TIẾP TỤC VỚI
+                </Text>
+                <View style={{ flex: 1, height: 1, backgroundColor: 'rgba(255,255,255,0.05)' }} />
+              </View>
+
+              {/* Third-party Logins */}
+              <View className="flex-row gap-4 mb-8">
+                <TouchableOpacity style={{ flex: 1, backgroundColor: '#1C1C1E', height: 48, borderRadius: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                  <Ionicons name="logo-google" size={16} color="#aaa" />
+                  <Text style={{ color: '#aaa', fontSize: 13, fontWeight: '600', marginLeft: 10 }}>Google</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ flex: 1, backgroundColor: '#1C1C1E', height: 48, borderRadius: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                  <Ionicons name="logo-apple" size={16} color="#aaa" />
+                  <Text style={{ color: '#aaa', fontSize: 13, fontWeight: '600', marginLeft: 10 }}>Apple</Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Đăng ký */}
+              <View className="flex-row items-center justify-center">
+                <Text style={{ color: '#888', fontSize: 13, fontWeight: '500' }}>Chưa có tài khoản? </Text>
+                <TouchableOpacity onPress={() => router.push('/register')}>
+                  <Text style={{ color: Colors.primary, fontSize: 13, fontWeight: '700' }}>Đăng Ký</Text>
+                </TouchableOpacity>
+              </View>
+
+            </View>
           </View>
-        </View>
 
-        <View className="items-center justify-center pb-8 opacity-40">
-          <View className="flex-row mb-2">
-            <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2 }}>CHÍNH SÁCH</Text>
-            <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2, marginHorizontal: 8 }}>ĐIỀU KHOẢN</Text>
-            <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2 }}>HỖ TRỢ</Text>
+          <View className="items-center justify-center pb-8 opacity-40">
+            <View className="flex-row mb-2">
+              <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2 }}>CHÍNH SÁCH</Text>
+              <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2, marginHorizontal: 8 }}>ĐIỀU KHOẢN</Text>
+              <Text style={{ color: 'white', fontSize: 10, letterSpacing: 2 }}>HỖ TRỢ</Text>
+            </View>
           </View>
-        </View>
 
         </ScrollView>
       </KeyboardAvoidingView>

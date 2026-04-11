@@ -193,13 +193,6 @@ const MoviesScreen = () => {
           <Text className="font-black uppercase" style={{ fontSize: 24, letterSpacing: -1.5, color: Colors.primary }}>
             CINEMA
           </Text>
-
-          <View
-            className="rounded-full overflow-hidden"
-            style={{ width: 34, height: 34, backgroundColor: Colors.surfaceContainerHigh, justifyContent: "center", alignItems: "center", borderWidth: 2, borderColor: "rgba(224,142,254,0.2)" }}
-          >
-            <Text style={{ fontSize: 16 }}>👤</Text>
-          </View>
         </View>
       </View>
 

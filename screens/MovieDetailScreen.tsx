@@ -119,21 +119,6 @@ const MovieDetailScreen = () => {
             >
               <Ionicons name={isSaved(movie.id) ? "heart" : "heart-outline"} size={24} color={isSaved(movie.id) ? "#FF0055" : "white"} />
             </TouchableOpacity>
-
-            <View
-              className="rounded-full overflow-hidden"
-              style={{ 
-                width: 34, 
-                height: 34, 
-                backgroundColor: Colors.surfaceContainerHigh, 
-                justifyContent: "center", 
-                alignItems: "center", 
-                borderWidth: 2, 
-                borderColor: "rgba(224,142,254,0.2)",
-              }}
-            >
-              <Text style={{ fontSize: 16 }}>👤</Text>
-            </View>
           </View>
         }
       />
