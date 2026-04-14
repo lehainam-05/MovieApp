@@ -205,7 +205,7 @@ const HomeScreen = () => {
               color: Colors.primary,
             }}
           >
-            AETHER
+            CINEMA
           </Text>
         </View>
       </View>
