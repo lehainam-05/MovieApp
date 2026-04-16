@@ -2,13 +2,14 @@
  * store/WatchlistContext.tsx
  * 
  * @purpose Quản lý trạng thái toàn cục (Global State) cho tính năng Lưu Phim Yêu Thích.
- * @why Dừng lại ở cấp độ màn hình là chưa đủ, dữ liệu "Phim đã lưu" cần hiển thị xuyên suốt
- *      ở cả trang Chi Tiết Phim (để bật nút Trái Tim) và trang Profile (để hiển thị lưới cuộn ngang).
- *      Do đó mảng `watchlist` bắt buộc chui vào một React Context độc lập.
+ * @why Dữ liệu "Phim đã lưu" cần hiển thị xuyên suốt ở cả trang Chi Tiết Phim (nút ❤️)
+ *      và trang Profile (lưới cuộn ngang). Dữ liệu được đồng bộ lên backend (db.json)
+ *      thông qua json-server REST API, thay vì chỉ lưu cục bộ AsyncStorage.
  */
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getFavorites, addFavorite, removeFavorite } from "@/services/favoriteService";
 
 interface WatchlistContextType {
   watchlist: Movie[];
@@ -20,48 +21,75 @@ const WatchlistContext = createContext<WatchlistContextType | undefined>(undefin
 
 /**
  * WatchlistProvider
- * @purpose Đóng vai trò là cái "giỏ" nhúng toàn bộ App vào bên trong, phân phát state `watchlist` đi khắp nơi.
- * @why Khi App khởi động, nó tự động trích xuất JSON phim đã lưu ở `AsyncStorage` (bộ nhớ trong vật lý)
- *      nạp vào Memory. 
+ * @purpose Đóng vai trò "giỏ" nhúng toàn bộ App bên trong, phân phát state `watchlist` đi khắp nơi.
+ * @why Khi App khởi động, nó gọi API lấy danh sách phim yêu thích từ server (db.json)
+ *      và nạp vào Memory. Mọi thay đổi (thêm/xóa) đều được đồng bộ ngay lên server.
  */
 export const WatchlistProvider = ({ children }: { children: ReactNode }) => {
   const [watchlist, setWatchlist] = useState<Movie[]>([]);
 
   useEffect(() => {
-    // Load from memory
-    const loadFromStorage = async () => {
-      try {
-        const stored = await AsyncStorage.getItem("@watchlist");
-        if (stored) setWatchlist(JSON.parse(stored));
-      } catch (e) {
-        console.error("Failed to load watchlist from storage", e);
-      }
-    };
-    loadFromStorage();
+    loadFavoritesFromServer();
   }, []);
 
   /**
+   * Lấy userId đã lưu trong AsyncStorage (do AuthContext lưu khi đăng nhập).
+   * Dùng userId này để lọc favorites theo đúng user.
+   */
+  const getUserId = async (): Promise<number> => {
+    try {
+      const stored = await AsyncStorage.getItem("@authUser");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        // json-server-auth lưu user.id khi register/login
+        return parsed.id || 1;
+      }
+    } catch (e) {
+      console.error("Failed to get userId", e);
+    }
+    return 1; // Mặc định userId = 1
+  };
+
+  /**
+   * Load danh sách phim yêu thích từ server khi app khởi động.
+   */
+  const loadFavoritesFromServer = async () => {
+    try {
+      const userId = await getUserId();
+      const movies = await getFavorites(userId);
+      setWatchlist(movies);
+    } catch (e) {
+      console.error("Failed to load favorites from server", e);
+    }
+  };
+
+  /**
    * toggleWatchlist
-   * @purpose Đóng vai trò hạt nhân logic: ấn thêm/xoá phim khỏi giỏ.
-   * @highlight Kĩ thuật đảo ngược: Cứa duyệt mảng kiểm tra trùng lặp (some). Đã có thì xóa (`filter`), 
-   * chưa có thì móc nối (`unshift`) lên tận đầu giỏ để người dùng thấy ngay thay đổi.
-   * Đồng thời tiến hành đồng bộ dữ liệu vào `AsyncStorage` ngay lập tức.
+   * @purpose Hạt nhân logic: bấm thêm/xóa phim khỏi danh sách yêu thích.
+   * @highlight Đã có trong danh sách → gọi DELETE API xóa trên server.
+   *            Chưa có → gọi POST API thêm vào server.
+   *            Cập nhật state cục bộ ngay lập tức (optimistic update) để UI phản hồi nhanh.
    */
   const toggleWatchlist = async (movie: Movie) => {
     try {
-      let updatedList = [...watchlist];
-      const isAlreadySaved = updatedList.some((m) => m.id === movie.id);
+      const userId = await getUserId();
+      const isAlreadySaved = watchlist.some((m) => m.id === movie.id);
 
       if (isAlreadySaved) {
-        updatedList = updatedList.filter((m) => m.id !== movie.id); // Xóa khỏi danh sách
+        // Optimistic update: xóa khỏi state trước
+        setWatchlist((prev) => prev.filter((m) => m.id !== movie.id));
+        // Gọi API xóa trên server
+        await removeFavorite(userId, movie.id);
       } else {
-        updatedList.unshift(movie); // Thêm lên đầu danh sách
+        // Optimistic update: thêm vào đầu danh sách
+        setWatchlist((prev) => [movie, ...prev]);
+        // Gọi API thêm trên server
+        await addFavorite(userId, movie);
       }
-
-      setWatchlist(updatedList);
-      await AsyncStorage.setItem("@watchlist", JSON.stringify(updatedList));
     } catch (e) {
       console.error("Failed to update watchlist", e);
+      // Nếu lỗi, reload lại từ server để đồng bộ
+      await loadFavoritesFromServer();
     }
   };
 

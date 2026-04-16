@@ -1,0 +1,265 @@
+{
+  "users": [
+    {
+      "email": "lehainam124@gmail.com",
+      "password": "$2a$10$eioJKoQQVFxuf.6jK5EKg.rtQmNPq0OeyOjH0syRMifmkqFbWq8Z2",
+      "fullName": "Lê Hải Nam",
+      "id": 1
+    },
+    {
+      "email": "nghia123@gmail.com",
+      "password": "$2a$10$wM4wDkun/XvtoxuB4MCYr.glP98/gvpVfxItuymR1SwXwYqYvuGmu",
+      "fullName": "Nguyễn Đắc Tuấn Nghĩa",
+      "id": 2
+    }
+  ],
+  "favorites": [
+    {
+      "userId": 1,
+      "movie_id": 83533,
+      "title": "Avatar: Lửa và Tro Tàn",
+      "poster_path": "/w6DBmG260sCHBQdGzkBIVn9gAQZ.jpg",
+      "backdrop_path": "/u8DU5fkLoM5tTRukzPC31oGPxaQ.jpg",
+      "vote_average": 7.375,
+      "release_date": "2025-12-17",
+      "genre_ids": [
+        878,
+        12,
+        14
+      ],
+      "overview": "Sau cuộc chiến tàn khốc với RDA và nỗi mất mát to lớn khi đứa con trai cả hy sinh, Jake Sully và Neytiri phải đối mặt với một mối đe dọa mới trên Pandora: tộc Tro Tàn — một nhóm Na'vi hung bạo và khát khao quyền lực, do thủ lĩnh tàn nhẫn Varang dẫn dắt. Gia đình Jake buộc phải chiến đấu để sinh tồn và bảo vệ tương lai của Pandora, trong một cuộc xung đột đẩy họ đến giới hạn cuối cùng cả về thể xác lẫn tinh thần.",
+      "adult": false,
+      "original_language": "en",
+      "original_title": "Avatar: Fire and Ash",
+      "popularity": 327.4227,
+      "video": false,
+      "vote_count": 2589,
+      "createdAt": "2026-04-16T07:34:23.661Z",
+      "id": 1
+    },
+    {
+      "userId": 1,
+      "movie_id": 502356,
+      "title": "Anh Em Super Mario",
+      "poster_path": "/gRlfFcpPdjREQ3lgeuAuB10gfbR.jpg",
+      "backdrop_path": "/9n2tJBplPbgR2ca05hS5CKXwP2c.jpg",
+      "vote_average": 7.587,
+      "release_date": "2023-04-05",
+      "genre_ids": [
+        10751,
+        35,
+        12,
+        14,
+        16
+      ],
+      "overview": "The Super Mario Bros. Movie xoay quanh cuộc phiêu lưu ở thế giới Vương quốc Nấm của anh em thợ sửa ống nước Mario và Luigi. Sau khi tình cờ bước tới vùng đất lạ từ một ống nước, Luigi đã bị chia tách với Mario và rơi vào tay quái vật rùa xấu xa Bowser, hắn đang âm mưu độc chiếm thế giới. Trong lúc cố gắng tìm kiếm người anh em của mình, Mario đã chạm mặt anh bạn nấm Toad và công chúa Peach. Từ đây họ sát cánh bên nhau trên hành trình ngăn chặn thế lực hắc ám.",
+      "adult": false,
+      "original_language": "en",
+      "original_title": "The Super Mario Bros. Movie",
+      "popularity": 256.845,
+      "video": false,
+      "vote_count": 10482,
+      "createdAt": "2026-04-16T07:34:32.428Z",
+      "id": 2
+    },
+    {
+      "userId": 1,
+      "movie_id": 687163,
+      "title": "Thoát Khỏi Tận Thế",
+      "poster_path": "/7NzV9SN5ocWzMrdQw9fFDgLYVJC.jpg",
+      "backdrop_path": "/8Tfys3mDZVp4tNoH2ktm06a0Tau.jpg",
+      "vote_average": 8.224,
+      "release_date": "2026-03-15",
+      "genre_ids": [
+        878,
+        12
+      ],
+      "overview": "Mất trí nhớ và lạc lõng trên một con tàu vũ trụ, một phi hành gia khám phá ra rằng anh là hy vọng duy nhất của nhân loại trước bờ vực tuyệt chủng. Một liên minh bất ngờ được hình thành, nắm giữ vận mệnh của tất cả.",
+      "adult": false,
+      "original_language": "en",
+      "original_title": "Project Hail Mary",
+      "popularity": 283.7114,
+      "video": false,
+      "vote_count": 1437,
+      "createdAt": "2026-04-16T07:34:34.556Z",
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "movie_id": 1226863,
+      "title": "Phim Super Mario Thiên Hà",
+      "poster_path": "/h1FlxHYiVcZVkIE5XW599ZkV6Sr.jpg",
+      "backdrop_path": "/kxQiIJ4gVcD3K6o14MJ72p5yRcE.jpg",
+      "vote_average": 6.802,
+      "release_date": "2026-04-01",
+      "genre_ids": [
+        10751,
+        35,
+        12,
+        14,
+        16
+      ],
+      "overview": "",
+      "adult": false,
+      "original_language": "en",
+      "original_title": "The Super Mario Galaxy Movie",
+      "popularity": 663.5937,
+      "video": false,
+      "vote_count": 461,
+      "createdAt": "2026-04-16T07:34:37.552Z",
+      "id": 4
+    },
+    {
+      "userId": 1,
+      "movie_id": 1311031,
+      "title": "Thanh Gươm Diệt Quỷ: Vô Hạn Thành",
+      "poster_path": "/nV99ACeAa8fFFso0tQZ3HktEf5X.jpg",
+      "backdrop_path": "/1RgPyOhN4DRs225BGTlHJqCudII.jpg",
+      "vote_average": 7.686,
+      "release_date": "2025-07-18",
+      "genre_ids": [
+        16,
+        28,
+        14
+      ],
+      "overview": "Khi các thành viên của Sát Quỷ Đoàn và Trụ Cột tham gia vào chương trình đặc huấn để chuẩn bị cho trận chiến sắp với lũ quỷ, Kibutsuji Muzan xuất hiện tại Dinh thự Ubuyashiki. Khi thủ lĩnh của Sát Quỷ Đoàn gặp nguy hiểm, Tanjiro và các Trụ Cột trở về trụ sở Thế nhưng, Muzan bất ngờ kéo toàn bộ Sát Quỷ Đoàn đến hang ổ cuối cùng của lũ quỷ là Vô Hạn Thành, mở màn cho trận đánh cuối cùng của cả hai phe.",
+      "adult": false,
+      "original_language": "ja",
+      "original_title": "劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来",
+      "popularity": 125.3419,
+      "video": false,
+      "vote_count": 791,
+      "createdAt": "2026-04-16T07:34:39.996Z",
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "movie_id": 1539104,
+      "title": "Chú Thuật Hồi Chiến: -BIến Cố Shibuya x Tử Diệt Hồi Du-",
+      "poster_path": "/sBffPvE9Kau726nnU14cTOEj3Pq.jpg",
+      "backdrop_path": "/gtKglOSEq3d4MgQE4VsrT1sRkd0.jpg",
+      "vote_average": 5.9,
+      "release_date": "2025-11-07",
+      "genre_ids": [
+        16,
+        28,
+        14
+      ],
+      "overview": "",
+      "adult": false,
+      "original_language": "ja",
+      "original_title": "劇場版 呪術廻戦「渋谷事変 特別編集版」×「死滅回游 先行上映」",
+      "popularity": 44.4015,
+      "video": false,
+      "vote_count": 92,
+      "createdAt": "2026-04-16T07:34:42.547Z",
+      "id": 6
+    }
+  ],
+  "metrics": [
+    {
+      "searchTerm": "Kinh Dị",
+      "movie_id": 4258,
+      "title": "Phim Kinh Dị Hài Mỹ 5",
+      "count": 2,
+      "poster_url": "https://image.tmdb.org/t/p/w500/vBqLLxE6GaAPhO6v9EFvFbLZ7Ap.jpg",
+      "id": 1
+    },
+    {
+      "searchTerm": "Avengers",
+      "movie_id": 24428,
+      "title": "Avengers 1:Biệt Đội Siêu Anh Hùng",
+      "count": 6,
+      "poster_url": "https://image.tmdb.org/t/p/w500/rX46P5ZwcHOvrkhtYDYhnNf46Bo.jpg",
+      "id": 2
+    },
+    {
+      "searchTerm": "Avenger",
+      "movie_id": 47369,
+      "title": "Avenger",
+      "count": 2,
+      "poster_url": "https://image.tmdb.org/t/p/w500/cEI5aazuAVJ3PcWeNM8gxYiNjmq.jpg",
+      "id": 3
+    },
+    {
+      "searchTerm": "Avenges",
+      "movie_id": 959981,
+      "title": "Lieutenant Daring Avenges an Insult to the Union Jack",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500null",
+      "id": 4
+    },
+    {
+      "searchTerm": "zombie",
+      "movie_id": 1652009,
+      "title": "Zombie",
+      "count": 2,
+      "poster_url": "https://image.tmdb.org/t/p/w500/w6V08xjnkvZpUK26TCsfmgmbgOa.jpg",
+      "id": 5
+    },
+    {
+      "searchTerm": "t",
+      "movie_id": 226979,
+      "title": "Test",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500/tTWRomgIMOoIB3CJLPlVbqSawEm.jpg",
+      "id": 6
+    },
+    {
+      "searchTerm": "Mario",
+      "movie_id": 1226863,
+      "title": "Phim Super Mario Thiên Hà",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500/h1FlxHYiVcZVkIE5XW599ZkV6Sr.jpg",
+      "id": 7
+    },
+    {
+      "searchTerm": "mario",
+      "movie_id": 1226863,
+      "title": "Phim Super Mario Thiên Hà",
+      "count": 2,
+      "poster_url": "https://image.tmdb.org/t/p/w500/h1FlxHYiVcZVkIE5XW599ZkV6Sr.jpg",
+      "id": 8
+    },
+    {
+      "searchTerm": "mar",
+      "movie_id": 630699,
+      "title": "Mãe",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500/jPLNkniLLLsnvqRDncIyFyTcXsN.jpg",
+      "id": 9
+    },
+    {
+      "searchTerm": "mari",
+      "movie_id": 1226863,
+      "title": "Phim Super Mario Thiên Hà",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500/h1FlxHYiVcZVkIE5XW599ZkV6Sr.jpg",
+      "id": 10
+    },
+    {
+      "searchTerm": "ava",
+      "movie_id": 83533,
+      "title": "Avatar: Lửa và Tro Tàn",
+      "count": 2,
+      "poster_url": "https://image.tmdb.org/t/p/w500/w6DBmG260sCHBQdGzkBIVn9gAQZ.jpg",
+      "id": 11
+    },
+    {
+      "searchTerm": "avatar",
+      "movie_id": 19995,
+      "title": "Avatar",
+      "count": 4,
+      "poster_url": "https://image.tmdb.org/t/p/w500/bxp5IUY05jLGeZ5bW85W2NF6Rgi.jpg",
+      "id": 12
+    },
+    {
+      "searchTerm": "avaz",
+      "movie_id": 650361,
+      "title": "Avaz-e gonjeshk",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500/wwSSLdEmvkIXAOFdVhHIubJunM8.jpg",
+      "id": 13
+    }
+  ]
+}

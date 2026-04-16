@@ -25,20 +25,14 @@ import { useRouter } from "expo-router";
 import { Colors } from "@/constants/colors";
 import useFetch from "@/hooks/useFetch";
 import { fetchMovies, fetchGenres } from "@/services/api";
-import { updateSearchCount } from "@/services/appwrite";
+import { updateSearchCount, getTrendingMovies } from "@/services/trendingService";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const CARD_GAP = 12;
 const CARD_WIDTH = (SCREEN_WIDTH - 40 - CARD_GAP) / 2;
 
-/** Từ khoá phổ biến — hiển thị dưới dạng chip khi chưa tìm */
-const POPULAR_KEYWORDS = [
-  "Hành Động",
-  "Kinh Dị",
-  "Oscars 2024",
-  "Phim Hàn Mới",
-  "Khoa Học Viễn Tưởng",
-];
+/** Từ khoá mặc định khi chưa có dữ liệu trending */
+const DEFAULT_KEYWORDS = ["Hành Động", "Kinh Dị", "Khoa Học Viễn Tưởng"];
 
 const SearchScreen = () => {
   const router = useRouter();
@@ -54,11 +48,18 @@ const SearchScreen = () => {
     return map;
   }, [genres]);
 
-  // ── Trending khi chưa tìm ──────────────────────────────
+  // ── Trending khi chưa tìm (lấy từ JSON Server) ─────────
   const {
     data: trendingMovies,
     loading: trendingLoading,
-  } = useFetch(() => fetchMovies({ query: "" }));
+    refetch: refetchTrending,
+  } = useFetch(getTrendingMovies);
+
+  // Từ khoá phổ biến — lấy từ dữ liệu trending thực tế
+  const popularKeywords = useMemo(() => {
+    if (!trendingMovies || trendingMovies.length === 0) return DEFAULT_KEYWORDS;
+    return (trendingMovies as TrendingMovie[]).map((m) => m.searchTerm);
+  }, [trendingMovies]);
 
   // ── Kết quả tìm kiếm ──────────────────────────────────
   const {
@@ -68,20 +69,26 @@ const SearchScreen = () => {
     reset: resetSearch,
   } = useFetch(() => fetchMovies({ query: searchQuery }), false);
 
-  // Debounced search
+  // Debounced search — chỉ gọi API tìm kiếm
   useEffect(() => {
-    const timer = setTimeout(async () => {
+    const timer = setTimeout(() => {
       if (searchQuery.trim()) {
-        await loadSearch();
-        if (searchResults?.length! > 0 && searchResults?.[0]) {
-          await updateSearchCount(searchQuery, searchResults[0]);
-        }
+        loadSearch();
       } else {
         resetSearch();
       }
     }, 500);
     return () => clearTimeout(timer);
   }, [searchQuery]);
+
+  // Tracking — ghi nhận lượt tìm khi có kết quả trả về, rồi cập nhật lại trending
+  useEffect(() => {
+    if (searchQuery.trim() && searchResults && searchResults.length > 0) {
+      updateSearchCount(searchQuery, searchResults[0] as Movie).then(() => {
+        refetchTrending();
+      });
+    }
+  }, [searchResults]);
 
   const handleKeywordPress = (keyword: string) => {
     setSearchQuery(keyword);
@@ -98,9 +105,9 @@ const SearchScreen = () => {
     return movie.release_date?.split("-")[0] || "";
   };
 
-  // ── Phim Featured (đầu tiên của trending) ──────────────
-  const featuredMovie = (trendingMovies ?? [])[0];
-  const gridMovies = (trendingMovies ?? []).slice(1, 5);
+  // ── Phim Featured (đầu tiên của trending từ JSON Server) ──
+  const featuredMovie = (trendingMovies ?? [])[0] as TrendingMovie | undefined;
+  const gridMovies = ((trendingMovies ?? []) as TrendingMovie[]).slice(1, 5);
 
   // ── Hàm render 1 card kết quả tìm kiếm ────────────────
   const renderSearchResultCard = useCallback(
@@ -144,7 +151,7 @@ const SearchScreen = () => {
       <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
         <Text style={styles.sectionLabel}>TỪ KHOÁ PHỔ BIẾN</Text>
         <View style={styles.chipsRow}>
-          {POPULAR_KEYWORDS.map((kw) => (
+          {popularKeywords.map((kw) => (
             <TouchableOpacity
               key={kw}
               style={styles.chip}
@@ -170,30 +177,26 @@ const SearchScreen = () => {
         />
       ) : (
         <>
-          {/* Featured Card */}
+          {/* Featured Card — phim trending #1 từ JSON Server */}
           {featuredMovie && (
             <TouchableOpacity
               style={styles.featuredCard}
               activeOpacity={0.85}
-              onPress={() => router.push(`/movie/${featuredMovie.id}`)}
+              onPress={() => router.push(`/movie/${featuredMovie.movie_id}`)}
             >
               <Image
-                source={{
-                  uri: featuredMovie.backdrop_path
-                    ? `https://image.tmdb.org/t/p/w780${featuredMovie.backdrop_path}`
-                    : `https://image.tmdb.org/t/p/w500${featuredMovie.poster_path}`,
-                }}
+                source={{ uri: featuredMovie.poster_url }}
                 style={styles.featuredImage}
                 resizeMode="cover"
               />
               <View style={styles.featuredOverlay} />
               <View style={styles.featuredInfo}>
-                <Text style={styles.featuredLabel}>KẾT QUẢ NỔI BẬT</Text>
+                <Text style={styles.featuredLabel}>🔥 ĐANG THỊNH HÀNH</Text>
                 <Text style={styles.featuredName}>
                   {featuredMovie.title?.toUpperCase()}
                 </Text>
-                <Text style={styles.featuredDesc} numberOfLines={2}>
-                  {featuredMovie.overview}
+                <Text style={styles.featuredDesc} numberOfLines={1}>
+                  Đã được tìm {featuredMovie.count} lần - "{featuredMovie.searchTerm}"
                 </Text>
               </View>
             </TouchableOpacity>
@@ -216,17 +219,13 @@ const SearchScreen = () => {
 
               return (
                 <TouchableOpacity
-                  key={movie.id}
+                  key={movie.movie_id}
                   style={[styles.gridCard, { height: cardHeight }]}
                   activeOpacity={0.8}
-                  onPress={() => router.push(`/movie/${movie.id}`)}
+                  onPress={() => router.push(`/movie/${movie.movie_id}`)}
                 >
                   <Image
-                    source={{
-                      uri: movie.poster_path
-                        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                        : "https://placehold.co/300x450/1C1C1E/666.png",
-                    }}
+                    source={{ uri: movie.poster_url }}
                     style={styles.gridCardImage}
                     resizeMode="cover"
                   />
@@ -236,7 +235,7 @@ const SearchScreen = () => {
                       {movie.title}
                     </Text>
                     <Text style={styles.gridCardMeta}>
-                      {getGenreLabel(movie)} • {getYear(movie)}
+                      {movie.count} lượt tìm
                     </Text>
                   </View>
                 </TouchableOpacity>

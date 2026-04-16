@@ -6,11 +6,12 @@
  *      cấu trúc Form tối giản không viền và đổ bóng quang học cho nút Sign In.
  */
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, ImageBackground, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, ImageBackground, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/colors';
 import { useAuth } from '@/store/AuthContext';
 import { useRouter } from 'expo-router';
+import { loginUser } from '@/services/authService';
 
 const LoginScreen = () => {
   const { login } = useAuth();
@@ -21,15 +22,22 @@ const LoginScreen = () => {
   const [isSubmitLoading, setSubmitLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (!email || !password || password.length < 6) return;
+    if (!email || !password || password.length < 6) {
+      Alert.alert('Lỗi', 'Vui lòng nhập email và mật khẩu (tối thiểu 6 ký tự).');
+      return;
+    }
     setSubmitLoading(true);
 
-    // Giả lập Loading xoay tròn Fetch API 1,5s
-    setTimeout(async () => {
-      await login(email);
-      setSubmitLoading(false);
+    try {
+      const data = await loginUser(email, password);
+      await login(data.user.email, data.user.id);
       router.replace('/(tabs)');
-    }, 1500);
+    } catch (error: any) {
+      Alert.alert('Đăng nhập thất bại', 'Email hoặc mật khẩu không đúng. Vui lòng thử lại.');
+      console.error('Login error:', error.message);
+    } finally {
+      setSubmitLoading(false);
+    }
   };
 
   return (

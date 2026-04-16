@@ -4,10 +4,11 @@
  * @purpose Trang Đăng Ký (Create Account) dựa trên thiết kế mẫu.
  */
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, ScrollView, ImageBackground, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, ScrollView, ImageBackground, StyleSheet, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/colors';
 import { useRouter } from 'expo-router';
+import { registerUser } from '@/services/authService';
 
 const RegisterScreen = () => {
   const router = useRouter();
@@ -20,14 +21,27 @@ const RegisterScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = async () => {
-    if (!fullName || !email || !password || password !== confirmPassword) return;
+    if (!fullName || !email || !password || password !== confirmPassword) {
+      Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin và kiểm tra mật khẩu.');
+      return;
+    }
+    if (password.length < 6) {
+      Alert.alert('Lỗi', 'Mật khẩu phải có ít nhất 6 ký tự.');
+      return;
+    }
     setSubmitLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await registerUser(email, password, fullName);
+      Alert.alert('Thành công', 'Tài khoản đã được tạo! Hãy đăng nhập.', [
+        { text: 'OK', onPress: () => router.replace('/login') },
+      ]);
+    } catch (error: any) {
+      Alert.alert('Đăng ký thất bại', error.message || 'Email đã tồn tại hoặc server đang tắt.');
+      console.error('Register error:', error.message);
+    } finally {
       setSubmitLoading(false);
-      router.replace('/login');
-    }, 1500);
+    }
   };
 
   return (

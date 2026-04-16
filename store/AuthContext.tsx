@@ -11,10 +11,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
-  user: { email: string } | null;
+  user: { email: string; id?: number } | null;
   avatarUri: string;
   nickname: string;
-  login: (email: string) => Promise<void>;
+  login: (email: string, userId?: number) => Promise<void>;
   logout: () => Promise<void>;
   updateProfile: (avatar: string, name: string) => Promise<void>;
 }
@@ -24,8 +24,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true); // Tránh chớp nháy Layout khi memory chưa load xong
-  const [user, setUser] = useState<{ email: string } | null>(null);
-  
+  const [user, setUser] = useState<{ email: string; id?: number } | null>(null);
+
   // Trạng thái Hồ sơ cá nhân toàn cục
   const [avatarUri, setAvatarUri] = useState<string>("https://i.pravatar.cc/300");
   const [nickname, setNickname] = useState<string>("Alex Auteur");
@@ -39,10 +39,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setUser(JSON.parse(storedUser));
           setIsAuthenticated(true);
         }
-        
+
         const savedAvatar = await AsyncStorage.getItem('@userAvatar');
         if (savedAvatar) setAvatarUri(savedAvatar);
-        
+
         const savedName = await AsyncStorage.getItem('@userNickname');
         if (savedName) setNickname(savedName);
       } catch (e) {
@@ -54,9 +54,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkAuthStatus();
   }, []);
 
-  const login = async (email: string) => {
+  const login = async (email: string, userId?: number) => {
     try {
-      const userData = { email };
+      const userData = { email, id: userId };
       await AsyncStorage.setItem("@authUser", JSON.stringify(userData));
       setUser(userData);
       setIsAuthenticated(true);
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated(false);
     setUser(null);
   };
-  
+
   const updateProfile = async (avatar: string, name: string) => {
     setAvatarUri(avatar);
     setNickname(name);
