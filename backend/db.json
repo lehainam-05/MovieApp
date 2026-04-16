@@ -154,6 +154,77 @@
       "vote_count": 92,
       "createdAt": "2026-04-16T07:34:42.547Z",
       "id": 6
+    },
+    {
+      "userId": 2,
+      "movie_id": 83533,
+      "title": "Avatar: Lửa và Tro Tàn",
+      "poster_path": "/w6DBmG260sCHBQdGzkBIVn9gAQZ.jpg",
+      "backdrop_path": "/u8DU5fkLoM5tTRukzPC31oGPxaQ.jpg",
+      "vote_average": 7.375,
+      "release_date": "2025-12-17",
+      "genre_ids": [
+        878,
+        12,
+        14
+      ],
+      "overview": "Sau cuộc chiến tàn khốc với RDA và nỗi mất mát to lớn khi đứa con trai cả hy sinh, Jake Sully và Neytiri phải đối mặt với một mối đe dọa mới trên Pandora: tộc Tro Tàn — một nhóm Na'vi hung bạo và khát khao quyền lực, do thủ lĩnh tàn nhẫn Varang dẫn dắt. Gia đình Jake buộc phải chiến đấu để sinh tồn và bảo vệ tương lai của Pandora, trong một cuộc xung đột đẩy họ đến giới hạn cuối cùng cả về thể xác lẫn tinh thần.",
+      "adult": false,
+      "original_language": "en",
+      "original_title": "Avatar: Fire and Ash",
+      "popularity": 327.4227,
+      "video": false,
+      "vote_count": 2589,
+      "createdAt": "2026-04-16T07:43:07.367Z",
+      "id": 7
+    },
+    {
+      "userId": 2,
+      "movie_id": 502356,
+      "title": "Anh Em Super Mario",
+      "poster_path": "/gRlfFcpPdjREQ3lgeuAuB10gfbR.jpg",
+      "backdrop_path": "/9n2tJBplPbgR2ca05hS5CKXwP2c.jpg",
+      "vote_average": 7.587,
+      "release_date": "2023-04-05",
+      "genre_ids": [
+        10751,
+        35,
+        12,
+        14,
+        16
+      ],
+      "overview": "The Super Mario Bros. Movie xoay quanh cuộc phiêu lưu ở thế giới Vương quốc Nấm của anh em thợ sửa ống nước Mario và Luigi. Sau khi tình cờ bước tới vùng đất lạ từ một ống nước, Luigi đã bị chia tách với Mario và rơi vào tay quái vật rùa xấu xa Bowser, hắn đang âm mưu độc chiếm thế giới. Trong lúc cố gắng tìm kiếm người anh em của mình, Mario đã chạm mặt anh bạn nấm Toad và công chúa Peach. Từ đây họ sát cánh bên nhau trên hành trình ngăn chặn thế lực hắc ám.",
+      "adult": false,
+      "original_language": "en",
+      "original_title": "The Super Mario Bros. Movie",
+      "popularity": 256.845,
+      "video": false,
+      "vote_count": 10482,
+      "createdAt": "2026-04-16T07:43:10.105Z",
+      "id": 8
+    },
+    {
+      "userId": 2,
+      "movie_id": 372058,
+      "title": "Tên Cậu Là Gì?",
+      "poster_path": "/yV8ARrvpWaWd509QM4LwMScNDvZ.jpg",
+      "backdrop_path": "/8x9iKH8kWA0zdkgNdpAew7OstYe.jpg",
+      "vote_average": 8.478,
+      "release_date": "2016-08-26",
+      "genre_ids": [
+        16,
+        10749,
+        18
+      ],
+      "overview": "Bộ phim là câu chuyện hoán đổi cơ thể của 2 cô cậu Mitsuha - nữ sinh trung học sống ở một thị trấn nhỏ của vùng Itomori và Taki – nam sinh tại thủ đô Tokyo đầy sôi động. Mitsuha luôn chán chường với cuộc sống tẻ nhạt của mình và mơ ước được làm anh chàng đẹp trai sống tại thủ đô. Trong khi đó, Taki hằng đêm lại nhìn thấy mình trong hình hài cô gái vùng miền quê. Ước mơ của cả 2 đã thành sự thật khi sao chổi nghìn năm xuất hiện trên trái đất và rồi cứ cách ngày lại được hoán đổi cơ thể cho nhau.",
+      "adult": false,
+      "original_language": "ja",
+      "original_title": "君の名は。",
+      "popularity": 27.1757,
+      "video": false,
+      "vote_count": 12420,
+      "createdAt": "2026-04-16T07:43:18.917Z",
+      "id": 9
     }
   ],
   "metrics": [

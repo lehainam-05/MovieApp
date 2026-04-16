@@ -10,6 +10,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getFavorites, addFavorite, removeFavorite } from "@/services/favoriteService";
+import { useAuth } from "@/store/AuthContext";
 
 interface WatchlistContextType {
   watchlist: Movie[];
@@ -27,35 +28,22 @@ const WatchlistContext = createContext<WatchlistContextType | undefined>(undefin
  */
 export const WatchlistProvider = ({ children }: { children: ReactNode }) => {
   const [watchlist, setWatchlist] = useState<Movie[]>([]);
+  const { user } = useAuth();
 
   useEffect(() => {
-    loadFavoritesFromServer();
-  }, []);
-
-  /**
-   * Lấy userId đã lưu trong AsyncStorage (do AuthContext lưu khi đăng nhập).
-   * Dùng userId này để lọc favorites theo đúng user.
-   */
-  const getUserId = async (): Promise<number> => {
-    try {
-      const stored = await AsyncStorage.getItem("@authUser");
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        // json-server-auth lưu user.id khi register/login
-        return parsed.id || 1;
-      }
-    } catch (e) {
-      console.error("Failed to get userId", e);
+    if (user) {
+      loadFavoritesFromServer();
+    } else {
+      setWatchlist([]); // Xóa danh sách cục bộ khi đăng xuất
     }
-    return 1; // Mặc định userId = 1
-  };
+  }, [user]);
 
   /**
-   * Load danh sách phim yêu thích từ server khi app khởi động.
+   * Load danh sách phim yêu thích từ server khi app khởi động hoặc user đổi.
    */
   const loadFavoritesFromServer = async () => {
     try {
-      const userId = await getUserId();
+      const userId = user?.id || 1;
       const movies = await getFavorites(userId);
       setWatchlist(movies);
     } catch (e) {
@@ -72,7 +60,7 @@ export const WatchlistProvider = ({ children }: { children: ReactNode }) => {
    */
   const toggleWatchlist = async (movie: Movie) => {
     try {
-      const userId = await getUserId();
+      const userId = user?.id || 1;
       const isAlreadySaved = watchlist.some((m) => m.id === movie.id);
 
       if (isAlreadySaved) {
