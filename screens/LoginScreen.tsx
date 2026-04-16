@@ -54,8 +54,6 @@ const LoginScreen = () => {
       >
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
           <View className="flex-1 justify-center px-4 py-8">
-
-            {/* Thẻ Kính Mờ (Glass Card) lớn bọc ngoài */}
             <View
               className="rounded-[32px] p-6 pt-10 pb-8"
               style={{
@@ -108,7 +106,7 @@ const LoginScreen = () => {
                 </Text>
               </TouchableOpacity>
 
-              {/* Nút Sign In (Có lớp bo sáng) */}
+              {/* Nút Sign In*/}
               <TouchableOpacity
                 onPress={handleLogin}
                 disabled={isSubmitLoading}

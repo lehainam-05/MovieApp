@@ -112,13 +112,12 @@ const AccountSettingsScreen = () => {
           </View>
         </View>
 
-        {/* Khối 2: Subscription Plan (Phiên bản Thẻ Nhấn Cực Mạnh) */}
+        {/* Khối 2: Subscription Plan */}
         <View className="mb-8">
           <Text className="text-white font-bold text-[17px] mb-1">Gói Đăng Ký</Text>
           <Text className="text-neutral-500 text-[10px] uppercase font-bold tracking-[2px] mb-4">THANH TOÁN - THÀNH VIÊN</Text>
 
           <View className="rounded-[24px] p-5 relative" style={{ backgroundColor: '#131315', overflow: 'hidden' }}>
-            {/* Glow ngầm dưới viền mờ */}
             <View className="absolute bottom-0 left-0 right-0 h-20 opacity-20" style={{ backgroundColor: Colors.primary, borderBottomLeftRadius: 24, borderBottomRightRadius: 24, transform: [{ scaleY: 1.5 }] }} />
 
             <View className="flex-row justify-between items-start mb-5 z-10">

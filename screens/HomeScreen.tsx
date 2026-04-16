@@ -147,7 +147,7 @@ const HomeScreen = () => {
     return () => clearInterval(intervalId);
   }, [heroMovies.length]);
 
-  // ─── Scroll handler ────────────────────────────────────
+  // Scroll handler 
   const handleScroll = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
       const offsetY = event.nativeEvent.contentOffset.y;
@@ -156,7 +156,7 @@ const HomeScreen = () => {
     []
   );
 
-  // ─── Section header ────────────────────────────────────
+  // Section header
   const SectionHeader = useCallback(
     ({ title }: { title: string }) => (
       <View className="flex-row justify-between items-center mb-5">
@@ -172,10 +172,9 @@ const HomeScreen = () => {
     []
   );
 
-  // ─── Render ─────────────────────────────────────────────
+  // Render
   return (
     <View style={{ flex: 1, backgroundColor: Colors.background }}>
-      {/* Sticky header */}
       <View style={styles.stickyHeader}>
         {scrolled ? (
           <BlurView
