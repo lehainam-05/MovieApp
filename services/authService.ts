@@ -80,3 +80,38 @@ export const loginUser = async (
 export const getToken = async (): Promise<string | null> => {
     return AsyncStorage.getItem("@authToken");
 };
+
+/**
+ * Lấy thông tin profile (avatar, nickname) từ Server
+ */
+export const getUserProfile = async (userId: number) => {
+    const token = await getToken();
+    const res = await fetch(`${API_BASE_URL}/users/${userId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (!res.ok) throw new Error("Không thể tải thông tin profile từ server");
+    return res.json();
+};
+
+/**
+ * Cập nhật avatar (base64) và nickname lên Server (PATCH /users/:id)
+ */
+export const updateUserProfile = async (userId: number, avatarBase64: string, nickname: string) => {
+    const token = await getToken();
+    const res = await fetch(`${API_BASE_URL}/users/${userId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ avatarBase64, nickname })
+    });
+
+    if (!res.ok) throw new Error("Không thể lưu profile lên server");
+    return res.json();
+};

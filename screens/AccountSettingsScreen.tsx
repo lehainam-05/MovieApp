@@ -25,18 +25,25 @@ const AccountSettingsScreen = () => {
   const [isEditNameVisible, setIsEditNameVisible] = useState(false);
   const [tempName, setTempName] = useState("");
 
-  // Hàm móc vào Thư viện Ảnh của điện thoại
+  // Yêu cầu ImagePicker tự trả về base64 - hoạt động cả trên Native (Expo Go) và Web (PC)
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true, // Cho phép người dùng Crop thành hình vuông
+      allowsEditing: true,
       aspect: [1, 1],
-      quality: 0.5, // Nén ảnh nhẹ cho mượt Máy
+      quality: 0.3,
+      base64: true, // <-- Tự đính kèm base64 vào kết quả, không cần đọc file thủ công
     });
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      const uri = result.assets[0].uri;
-      updateProfile(uri, nickname); // Cập nhật hình lên Tầng cao nhất
+      const asset = result.assets[0];
+      if (asset.base64) {
+        const dataUri = `data:image/jpeg;base64,${asset.base64}`;
+        updateProfile(dataUri, nickname);
+      } else {
+        // Fallback nếu base64 không có (hiếm gặp)
+        updateProfile(asset.uri, nickname);
+      }
     }
   };
 
@@ -108,7 +115,7 @@ const AccountSettingsScreen = () => {
         {/* Khối 2: Subscription Plan (Phiên bản Thẻ Nhấn Cực Mạnh) */}
         <View className="mb-8">
           <Text className="text-white font-bold text-[17px] mb-1">Gói Đăng Ký</Text>
-          <Text className="text-neutral-500 text-[10px] uppercase font-bold tracking-[2px] mb-4">THANH TOÁN • THÀNH VIÊN</Text>
+          <Text className="text-neutral-500 text-[10px] uppercase font-bold tracking-[2px] mb-4">THANH TOÁN - THÀNH VIÊN</Text>
 
           <View className="rounded-[24px] p-5 relative" style={{ backgroundColor: '#131315', overflow: 'hidden' }}>
             {/* Glow ngầm dưới viền mờ */}
@@ -118,7 +125,7 @@ const AccountSettingsScreen = () => {
               <View>
                 <Text style={{ color: Colors.primary, fontSize: 10, fontWeight: '800', letterSpacing: 2, marginBottom: 4 }}>GÓI HIỆN TẠI</Text>
                 <Text className="text-white font-black text-2xl mb-1">Cao Cấp 4K</Text>
-                <Text className="text-neutral-400 text-xs">Thanh toán tiếp: <Text className="text-white font-bold">12/10/2023</Text></Text>
+                <Text className="text-neutral-500 text-xs">Thanh toán tiếp: <Text className="text-white font-bold">12/10/2023</Text></Text>
               </View>
               <View className="w-12 h-12 rounded-2xl items-center justify-center bg-[#1C1C1E]">
                 <MaterialCommunityIcons name="monitor-shimmer" size={24} color={Colors.primary} />
@@ -134,7 +141,7 @@ const AccountSettingsScreen = () => {
         {/* Khối 3: App Settings */}
         <View className="mb-8">
           <Text className="text-white font-bold text-[17px] mb-1">Cài Đặt Ứng Dụng</Text>
-          <Text className="text-neutral-500 text-[10px] uppercase font-bold tracking-[2px] mb-4">THÔNG BÁO • CHẤT LƯỢNG</Text>
+          <Text className="text-neutral-500 text-[10px] uppercase font-bold tracking-[2px] mb-4">THÔNG BÁO - CHẤT LƯỢNG</Text>
           <View className="rounded-[24px] overflow-hidden" style={{ backgroundColor: '#131315' }}>
             <SettingRow icon="bell-outline" title="Thông báo đẩy" type="toggle" toggleValue={isNotificationsEnabled} onToggle={setIsNotificationsEnabled} />
             <SettingRow icon="quality-high" title="Chất lượng tải xuống" value="Ultra HD (4K)" valueColor={Colors.primary} hideBorder />
@@ -144,7 +151,7 @@ const AccountSettingsScreen = () => {
         {/* Khối 4: Security & Privacy */}
         <View className="mb-8">
           <Text className="text-white font-bold text-[17px] mb-1">Bảo Mật & Quyền Riêng Tư</Text>
-          <Text className="text-neutral-500 text-[10px] uppercase font-bold tracking-[2px] mb-4">BẢO VỆ • TRUY CẬP</Text>
+          <Text className="text-neutral-500 text-[10px] uppercase font-bold tracking-[2px] mb-4">BẢO VỆ - TRUY CẬP</Text>
           <View className="rounded-[24px] overflow-hidden" style={{ backgroundColor: '#131315' }}>
             <SettingRow icon="lock-outline" title="Đổi mật khẩu" />
             <SettingRow icon="fingerprint" title="Đăng nhập sinh trắc" type="toggle" toggleValue={isBiometricEnabled} onToggle={setIsBiometricEnabled} hideBorder />
@@ -165,7 +172,7 @@ const AccountSettingsScreen = () => {
           }}
         >
           <MaterialCommunityIcons name="logout" size={20} color="#FF3B30" />
-          <Text style={{ color: '#FF3B30', fontSize: 13, fontWeight: '700', marginLeft: 8 }}>Đăng xuất khỏi Aether</Text>
+          <Text style={{ color: '#FF3B30', fontSize: 13, fontWeight: '700', marginLeft: 8 }}>Đăng xuất khỏi Cinema</Text>
         </TouchableOpacity>
 
         {/* Version Footer */}

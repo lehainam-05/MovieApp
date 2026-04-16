@@ -7,6 +7,7 @@
  */
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getUserProfile, updateUserProfile } from "@/services/authService";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -41,11 +42,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setIsAuthenticated(true);
 
           if (parsedUser.id) {
-            const savedAvatar = await AsyncStorage.getItem(`@userAvatar_${parsedUser.id}`);
-            if (savedAvatar) setAvatarUri(savedAvatar);
-
-            const savedName = await AsyncStorage.getItem(`@userNickname_${parsedUser.id}`);
-            if (savedName) setNickname(savedName);
+            try {
+              const profile = await getUserProfile(parsedUser.id);
+              // avatar lưu dưới dạng base64 data URI, hiển thị được trên mọi thiết bị
+              if (profile.avatarBase64) setAvatarUri(profile.avatarBase64);
+              if (profile.nickname) setNickname(profile.nickname);
+            } catch {
+              const saved = await AsyncStorage.getItem(`@userAvatar_${parsedUser.id}`);
+              if (saved) setAvatarUri(saved);
+              const name = await AsyncStorage.getItem(`@userNickname_${parsedUser.id}`);
+              if (name) setNickname(name);
+            }
           } else {
             const savedAvatar = await AsyncStorage.getItem('@userAvatar');
             if (savedAvatar) setAvatarUri(savedAvatar);
@@ -69,11 +76,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(userData);
 
       if (userId) {
-        const savedAvatar = await AsyncStorage.getItem(`@userAvatar_${userId}`);
-        setAvatarUri(savedAvatar || "https://i.pravatar.cc/300");
-
-        const savedName = await AsyncStorage.getItem(`@userNickname_${userId}`);
-        setNickname(savedName || "Alex Auteur");
+        try {
+          const profile = await getUserProfile(userId);
+          if (profile.avatarBase64) {
+            setAvatarUri(profile.avatarBase64);
+            await AsyncStorage.setItem(`@userAvatar_${userId}`, profile.avatarBase64);
+          }
+          if (profile.nickname) {
+            setNickname(profile.nickname);
+            await AsyncStorage.setItem(`@userNickname_${userId}`, profile.nickname);
+          }
+        } catch {
+          const savedAvatar = await AsyncStorage.getItem(`@userAvatar_${userId}`);
+          setAvatarUri(savedAvatar || "https://i.pravatar.cc/300");
+          const savedName = await AsyncStorage.getItem(`@userNickname_${userId}`);
+          setNickname(savedName || "Alex Auteur");
+        }
       }
 
       setIsAuthenticated(true);
@@ -97,6 +115,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (user?.id) {
       await AsyncStorage.setItem(`@userAvatar_${user.id}`, avatar);
       await AsyncStorage.setItem(`@userNickname_${user.id}`, name);
+      // Đồng bộ lên server (avatar lúc này đã là base64)
+      try {
+        await updateUserProfile(user.id, avatar, name);
+      } catch (err) {
+        console.error("Đồng bộ profile lên server thất bại:", err);
+      }
     } else {
       await AsyncStorage.setItem('@userAvatar', avatar);
       await AsyncStorage.setItem('@userNickname', name);
