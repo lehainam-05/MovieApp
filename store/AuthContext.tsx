@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const savedAvatar = await AsyncStorage.getItem(`@userAvatar_${userId}`);
           setAvatarUri(savedAvatar || "https://i.pravatar.cc/300");
           const savedName = await AsyncStorage.getItem(`@userNickname_${userId}`);
-          setNickname(savedName || "Alex Auteur");
+          setNickname(savedName || "Lê Hải Nam");
         }
       }
 
