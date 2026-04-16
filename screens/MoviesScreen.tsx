@@ -157,7 +157,7 @@ const MoviesScreen = () => {
   );
 
   const renderFooter = () => (
-    <View className="px-5 py-8 pb-32 mt-4">
+    <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 140, marginTop: 8 }}>
       {isAppending ? (
         <ActivityIndicator color={Colors.primary} size="large" />
       ) : movies.length > 0 ? (
@@ -172,7 +172,7 @@ const MoviesScreen = () => {
           }}
         >
           <Text style={{ color: "#1a1a1a", fontWeight: "900", fontSize: 14, letterSpacing: 1 }}>
-            TẢI THÊM (LOAD MORE)
+            XEM THÊM
           </Text>
         </TouchableOpacity>
       ) : null}
