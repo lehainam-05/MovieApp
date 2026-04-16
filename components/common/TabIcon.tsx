@@ -19,9 +19,9 @@ const TabIcon = ({ focused, icon, title }: TabIconProps) => (
     <View
       style={{
         backgroundColor: focused ? "rgba(171,139,255,0.25)" : "transparent",
-        borderRadius: 16,
+        borderRadius: 14,
         padding: 10,
-        marginBottom: 4,
+        marginBottom: 3,
       }}
     >
       <Image
