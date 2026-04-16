@@ -13,7 +13,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   user: { email: string; id?: number } | null;
-  avatarUri: string;
+  avatarBase64: string;
   nickname: string;
   login: (email: string, userId?: number) => Promise<void>;
   logout: () => Promise<void>;
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<{ email: string; id?: number } | null>(null);
 
   // Trạng thái Hồ sơ cá nhân toàn cục
-  const [avatarUri, setAvatarUri] = useState<string>("https://i.pravatar.cc/300");
+  const [avatarBase64, setAvatarBase64] = useState<string>("https://i.pravatar.cc/300");
   const [nickname, setNickname] = useState<string>("Alex Auteur");
 
   useEffect(() => {
@@ -45,17 +45,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             try {
               const profile = await getUserProfile(parsedUser.id);
               // avatar lưu dưới dạng base64 data URI, hiển thị được trên mọi thiết bị
-              if (profile.avatarBase64) setAvatarUri(profile.avatarBase64);
+              if (profile.avatarBase64) setAvatarBase64(profile.avatarBase64);
               if (profile.nickname) setNickname(profile.nickname);
             } catch {
               const saved = await AsyncStorage.getItem(`@userAvatar_${parsedUser.id}`);
-              if (saved) setAvatarUri(saved);
+              if (saved) setAvatarBase64(saved);
               const name = await AsyncStorage.getItem(`@userNickname_${parsedUser.id}`);
               if (name) setNickname(name);
             }
           } else {
             const savedAvatar = await AsyncStorage.getItem('@userAvatar');
-            if (savedAvatar) setAvatarUri(savedAvatar);
+            if (savedAvatar) setAvatarBase64(savedAvatar);
             const savedName = await AsyncStorage.getItem('@userNickname');
             if (savedName) setNickname(savedName);
           }
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
           const profile = await getUserProfile(userId);
           if (profile.avatarBase64) {
-            setAvatarUri(profile.avatarBase64);
+            setAvatarBase64(profile.avatarBase64);
             await AsyncStorage.setItem(`@userAvatar_${userId}`, profile.avatarBase64);
           }
           if (profile.nickname) {
@@ -88,7 +88,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         } catch {
           const savedAvatar = await AsyncStorage.getItem(`@userAvatar_${userId}`);
-          setAvatarUri(savedAvatar || "https://i.pravatar.cc/300");
+          setAvatarBase64(savedAvatar || "https://i.pravatar.cc/300");
           const savedName = await AsyncStorage.getItem(`@userNickname_${userId}`);
           setNickname(savedName || "Lê Hải Nam");
         }
@@ -104,17 +104,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await AsyncStorage.removeItem("@authUser");
     setIsAuthenticated(false);
     setUser(null);
-    setAvatarUri("https://i.pravatar.cc/300");
+    setAvatarBase64("https://i.pravatar.cc/300");
     setNickname("Alex Auteur");
   };
 
   const updateProfile = async (avatar: string, name: string) => {
-    setAvatarUri(avatar);
+    setAvatarBase64(avatar);
     setNickname(name);
 
     if (user?.id) {
-      await AsyncStorage.setItem(`@userAvatar_${user.id}`, avatar);
-      await AsyncStorage.setItem(`@userNickname_${user.id}`, name);
+      try {
+        await AsyncStorage.setItem(`@userAvatar_${user.id}`, avatar);
+        await AsyncStorage.setItem(`@userNickname_${user.id}`, name);
+      } catch (err) {
+        console.warn("Không thể lưu avatar vào AsyncStorage (có thể do dung lượng quá lớn):", err);
+      }
+
       // Đồng bộ lên server (avatar lúc này đã là base64)
       try {
         await updateUserProfile(user.id, avatar, name);
@@ -122,13 +127,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.error("Đồng bộ profile lên server thất bại:", err);
       }
     } else {
-      await AsyncStorage.setItem('@userAvatar', avatar);
-      await AsyncStorage.setItem('@userNickname', name);
+      try {
+        await AsyncStorage.setItem('@userAvatar', avatar);
+        await AsyncStorage.setItem('@userNickname', name);
+      } catch (err) {
+        console.warn("Không thể lưu avatar vào AsyncStorage (có thể do dung lượng quá lớn):", err);
+      }
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, user, avatarUri, nickname, login, logout, updateProfile }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, user, avatarBase64, nickname, login, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

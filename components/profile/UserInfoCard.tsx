@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '@/store/AuthContext';
 
 const UserInfoCard = () => {
-  const { avatarUri, nickname, user } = useAuth();
+  const { avatarBase64, nickname, user } = useAuth();
   const displayName = nickname?.trim() || 'Thành Viên\nCao Cấp';
 
   return (
@@ -26,7 +26,7 @@ const UserInfoCard = () => {
         {/* Avatar */}
         <View style={styles.avatarBox}>
           <Image
-            source={{ uri: avatarUri }}
+            source={{ uri: avatarBase64 }}
             style={styles.avatarImage}
             resizeMode="cover"
           />

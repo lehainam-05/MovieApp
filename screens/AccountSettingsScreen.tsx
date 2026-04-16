@@ -16,7 +16,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 const AccountSettingsScreen = () => {
   const router = useRouter();
-  const { user, logout, avatarUri, nickname, updateProfile } = useAuth();
+  const { user, logout, avatarBase64, nickname, updateProfile } = useAuth();
 
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
   const [isBiometricEnabled, setIsBiometricEnabled] = useState(false);
@@ -31,7 +31,7 @@ const AccountSettingsScreen = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 0.3,
+      quality: 0.1,
       base64: true, // <-- Tự đính kèm base64 vào kết quả, không cần đọc file thủ công
     });
 
@@ -49,7 +49,7 @@ const AccountSettingsScreen = () => {
 
   const handleSaveNickname = async () => {
     if (tempName.trim().length > 0) {
-      updateProfile(avatarUri, tempName.trim());
+      updateProfile(avatarBase64, tempName.trim());
     }
     setIsEditNameVisible(false);
   };
@@ -76,7 +76,7 @@ const AccountSettingsScreen = () => {
             {/* Vòng sáng (Glow) quanh Avatar */}
             <View style={{ position: 'absolute', top: -4, bottom: -4, left: -4, right: -4, borderRadius: 9999, opacity: 0.2, backgroundColor: Colors.primary }} />
             <Image
-              source={avatarUri ? { uri: avatarUri } : { uri: "https://i.pravatar.cc/300" }}
+              source={avatarBase64 ? { uri: avatarBase64 } : { uri: "https://i.pravatar.cc/300" }}
               style={{ width: 96, height: 96, borderRadius: 48, borderWidth: 1.5, borderColor: Colors.primary }}
             />
             {/* Nút Edit Pencil theo thiết kế Aether */}
