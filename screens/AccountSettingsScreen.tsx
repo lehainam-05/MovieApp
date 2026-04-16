@@ -65,24 +65,23 @@ const AccountSettingsScreen = () => {
       >
         {/* Khối Profile Card Phát Sáng */}
         <View className="flex-row items-center rounded-3xl p-5 mb-8" style={{ backgroundColor: '#131315', shadowColor: Colors.primary, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.1, shadowRadius: 20 }}>
-          <View className="relative mr-4">
+          <View style={{ width: 96, height: 96, position: 'relative', marginRight: 24 }}>
             {/* Vòng sáng (Glow) quanh Avatar */}
-            <View className="absolute -inset-1 rounded-full opacity-30" style={{ backgroundColor: Colors.primary }} />
+            <View style={{ position: 'absolute', top: -4, bottom: -4, left: -4, right: -4, borderRadius: 9999, opacity: 0.2, backgroundColor: Colors.primary }} />
             <Image
-              source={{ uri: avatarUri }}
-              className="w-20 h-20 rounded-full border-2"
-              style={{ borderColor: Colors.primary }}
+              source={avatarUri ? { uri: avatarUri } : { uri: "https://i.pravatar.cc/300" }}
+              style={{ width: 96, height: 96, borderRadius: 48, borderWidth: 1.5, borderColor: Colors.primary }}
             />
-            {/* Nút Edit Pencil nhỏ xíu cắm đè lên góc */}
-            <TouchableOpacity onPress={pickImage} className="absolute bottom-0 right-0 w-7 h-7 rounded-full items-center justify-center border-2 border-[#131315]" style={{ backgroundColor: Colors.primary }}>
-              <MaterialCommunityIcons name="pencil" size={12} color="black" />
+            {/* Nút Edit Pencil theo thiết kế Aether */}
+            <TouchableOpacity onPress={pickImage} style={{ position: 'absolute', bottom: -4, right: -4, width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' }}>
+              <MaterialCommunityIcons name="pencil" size={18} color="#131315" />
             </TouchableOpacity>
           </View>
-          <View className="flex-1 justify-center">
-            <Text className="text-white font-bold text-xl">{nickname}</Text>
-            <Text className="text-white text-[13px] font-medium mt-1 mb-2">{user?.email || "alex.auteur@cinema.com"}</Text>
-            <View className="self-start rounded-full px-3 py-1 border" style={{ backgroundColor: 'rgba(212, 139, 255, 0.1)', borderColor: 'rgba(212, 139, 255, 0.2)' }}>
-              <Text style={{ color: Colors.primary, fontSize: 9, fontWeight: '800', letterSpacing: 1 }}>THÀNH VIÊN CAO CẤP</Text>
+          <View style={{ flex: 1, justifyContent: 'center', paddingVertical: 4 }}>
+            <Text style={{ color: 'white', fontSize: 26, fontWeight: 'bold', marginBottom: 6 }}>{nickname}</Text>
+            <Text style={{ color: '#A3A3A3', fontSize: 15, fontWeight: '500', marginBottom: 16 }}>{user?.email || "alex.auteur@cinema.com"}</Text>
+            <View style={{ alignSelf: 'flex-start', borderRadius: 9999, paddingHorizontal: 16, paddingVertical: 6, borderWidth: 1, backgroundColor: 'rgba(212, 139, 255, 0.05)', borderColor: 'rgba(212, 139, 255, 0.3)' }}>
+              <Text style={{ color: Colors.primary, fontSize: 10, fontWeight: '700', letterSpacing: 1.5 }}>PREMIUM MEMBER</Text>
             </View>
           </View>
         </View>
@@ -155,14 +154,14 @@ const AccountSettingsScreen = () => {
         <TouchableOpacity
           onPress={logout}
           className="flex-row items-center justify-center"
-          style={{ 
-            height: 56, 
-            marginTop: 16, 
-            marginBottom: 48, 
-            borderRadius: 16, 
-            borderWidth: 1, 
-            borderColor: 'rgba(255, 59, 48, 0.2)', 
-            backgroundColor: 'rgba(255, 59, 48, 0.08)' 
+          style={{
+            height: 56,
+            marginTop: 16,
+            marginBottom: 48,
+            borderRadius: 16,
+            borderWidth: 1,
+            borderColor: 'rgba(255, 59, 48, 0.2)',
+            backgroundColor: 'rgba(255, 59, 48, 0.08)'
           }}
         >
           <MaterialCommunityIcons name="logout" size={20} color="#FF3B30" />
@@ -176,11 +175,11 @@ const AccountSettingsScreen = () => {
 
       </ScrollView>
 
-      {/* MODAL: Đổi Nickname đúc bằng bóng đêm */}
+      {/* MODAL: Đổi Nickname */}
       <Modal visible={isEditNameVisible} transparent animationType="fade">
-        <View className="flex-1 justify-center px-6" style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}>
-          <View className="p-6 rounded-3xl" style={{ backgroundColor: '#131315', borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)' }}>
-            <Text className="text-white font-bold text-lg mb-4 text-center">Đổi Biệt Danh</Text>
+        <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 24, backgroundColor: 'rgba(0,0,0,0.8)' }}>
+          <View style={{ padding: 24, borderRadius: 24, backgroundColor: '#131315', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, marginBottom: 16, textAlign: 'center' }}>Đổi Biệt Danh</Text>
 
             <TextInput
               autoFocus
@@ -188,24 +187,48 @@ const AccountSettingsScreen = () => {
               onChangeText={setTempName}
               placeholder="Nhập biệt danh mới"
               placeholderTextColor="#666"
-              className="text-white font-semibold text-base px-5 h-14 rounded-2xl mb-6 border"
-              style={{ backgroundColor: '#1C1C1E', borderColor: Colors.primary + '50' }} // Focus hắt màu tím
+              style={{
+                color: 'white',
+                fontWeight: '600',
+                fontSize: 16,
+                paddingHorizontal: 20,
+                height: 56,
+                borderRadius: 16,
+                marginBottom: 24,
+                borderWidth: 1,
+                backgroundColor: '#1C1C1E',
+                borderColor: 'rgba(212, 139, 255, 0.5)'
+              }}
             />
 
-            <View className="flex-row gap-4">
+            <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
                 onPress={() => setIsEditNameVisible(false)}
-                className="flex-1 h-12 rounded-xl items-center justify-center bg-[#1C1C1E]"
+                style={{
+                  flex: 1,
+                  height: 48,
+                  borderRadius: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#333333',
+                  marginRight: 16
+                }}
               >
-                <Text className="text-white font-bold text-sm">Huỷ</Text>
+                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>Huỷ</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={handleSaveNickname}
-                className="flex-1 h-12 rounded-xl items-center justify-center"
-                style={{ backgroundColor: Colors.primary }}
+                style={{
+                  flex: 1,
+                  height: 48,
+                  borderRadius: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: Colors.primary
+                }}
               >
-                <Text className="text-black font-black text-sm">Lưu Thay Đổi</Text>
+                <Text style={{ color: 'black', fontWeight: '900', fontSize: 15 }}>Lưu Thay Đổi</Text>
               </TouchableOpacity>
             </View>
           </View>

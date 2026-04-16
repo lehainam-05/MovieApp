@@ -36,15 +36,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         const storedUser = await AsyncStorage.getItem("@authUser");
         if (storedUser) {
-          setUser(JSON.parse(storedUser));
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
           setIsAuthenticated(true);
+
+          if (parsedUser.id) {
+            const savedAvatar = await AsyncStorage.getItem(`@userAvatar_${parsedUser.id}`);
+            if (savedAvatar) setAvatarUri(savedAvatar);
+
+            const savedName = await AsyncStorage.getItem(`@userNickname_${parsedUser.id}`);
+            if (savedName) setNickname(savedName);
+          } else {
+            const savedAvatar = await AsyncStorage.getItem('@userAvatar');
+            if (savedAvatar) setAvatarUri(savedAvatar);
+            const savedName = await AsyncStorage.getItem('@userNickname');
+            if (savedName) setNickname(savedName);
+          }
         }
-
-        const savedAvatar = await AsyncStorage.getItem('@userAvatar');
-        if (savedAvatar) setAvatarUri(savedAvatar);
-
-        const savedName = await AsyncStorage.getItem('@userNickname');
-        if (savedName) setNickname(savedName);
       } catch (e) {
         console.error("Failed to load auth status", e);
       } finally {
@@ -59,6 +67,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const userData = { email, id: userId };
       await AsyncStorage.setItem("@authUser", JSON.stringify(userData));
       setUser(userData);
+
+      if (userId) {
+        const savedAvatar = await AsyncStorage.getItem(`@userAvatar_${userId}`);
+        setAvatarUri(savedAvatar || "https://i.pravatar.cc/300");
+
+        const savedName = await AsyncStorage.getItem(`@userNickname_${userId}`);
+        setNickname(savedName || "Alex Auteur");
+      }
+
       setIsAuthenticated(true);
     } catch (e) {
       console.error("Login failed", e);
@@ -69,13 +86,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await AsyncStorage.removeItem("@authUser");
     setIsAuthenticated(false);
     setUser(null);
+    setAvatarUri("https://i.pravatar.cc/300");
+    setNickname("Alex Auteur");
   };
 
   const updateProfile = async (avatar: string, name: string) => {
     setAvatarUri(avatar);
     setNickname(name);
-    await AsyncStorage.setItem('@userAvatar', avatar);
-    await AsyncStorage.setItem('@userNickname', name);
+
+    if (user?.id) {
+      await AsyncStorage.setItem(`@userAvatar_${user.id}`, avatar);
+      await AsyncStorage.setItem(`@userNickname_${user.id}`, name);
+    } else {
+      await AsyncStorage.setItem('@userAvatar', avatar);
+      await AsyncStorage.setItem('@userNickname', name);
+    }
   };
 
   return (
