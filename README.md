@@ -94,7 +94,7 @@ Dự án có sử dụng một máy chủ JSON cục bộ cho việc xác thực
 ```bash
 npm run backend
 ```
-*(Lưu ý quan trọng: Khi tải json-server trên máy tính, bạn cần mở cmd/terminal và chạy lệnh `ipconfig` (Windows) hoặc `ifconfig` (Mac/Linux) để lấy địa chỉ IP mạng LAN của máy (IPv4, ví dụ: `192.168.x.x`). Sau đó, hãy dùng IP này để cấu hình kết nối ứng dụng tới backend của bạn thay vì dùng `localhost` để thiết bị thật có thể kết nối được.)*
+*(Lưu ý quan trọng: Khi tải json-server trên máy tính, bạn cần mở cmd/terminal và chạy lệnh `ipconfig` (Windows) hoặc `ifconfig` (Mac/Linux) để lấy địa chỉ IP mạng LAN của máy (IPv4, ví dụ: `192.168.x.x`) đưa vào constants/backend.ts . Sau đó, hãy dùng IP này để cấu hình kết nối ứng dụng tới backend của bạn thay vì dùng `localhost` để thiết bị thật có thể kết nối được.)*
 
 ### 2. Khởi chạy Mobile App (Expo)
 Mở một cửa sổ Terminal (hoặc tab) mới:
