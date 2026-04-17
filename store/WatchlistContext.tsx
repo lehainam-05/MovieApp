@@ -54,8 +54,8 @@ export const WatchlistProvider = ({ children }: { children: ReactNode }) => {
   /**
    * toggleWatchlist
    * @purpose Hạt nhân logic: bấm thêm/xóa phim khỏi danh sách yêu thích.
-   * @highlight Đã có trong danh sách → gọi DELETE API xóa trên server.
-   *            Chưa có → gọi POST API thêm vào server.
+   * @highlight Đã có trong danh sách => gọi DELETE API xóa trên server.
+   *            Chưa có => gọi POST API thêm vào server.
    *            Cập nhật state cục bộ ngay lập tức (optimistic update) để UI phản hồi nhanh.
    */
   const toggleWatchlist = async (movie: Movie) => {

@@ -40,7 +40,6 @@ const useFetch = <T>(fetchFunction: () => Promise<T>, autoFetch = true) => {
 
       // 2. Tạm dừng code chờ kết quả từ máy chủ TMDB dội về
       const result = await fetchFunction();
-      
       // 3. Có kết quả, lưu ngay vào kho data!
       setData(result);
     } catch (err) {

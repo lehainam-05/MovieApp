@@ -42,7 +42,7 @@ const MovieGridCard = ({ movie }: MovieGridCardProps) => {
             resizeMode="cover"
           />
 
-          {/* Badge Rating đè lên ảnh (Góc trái mướt rượt) */}
+          {/* Badge Rating đè lên ảnh */}
           <View
             className="absolute bottom-2 left-2 px-2 py-1 rounded flex-row items-center gap-1"
             style={{ backgroundColor: "rgba(0,0,0,0.7)" }}
