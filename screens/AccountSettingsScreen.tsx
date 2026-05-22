@@ -153,7 +153,7 @@ const AccountSettingsScreen = () => {
           <Text className="text-neutral-500 text-[10px] uppercase font-bold tracking-[2px] mb-4">BẢO VỆ - TRUY CẬP</Text>
           <View className="rounded-[24px] overflow-hidden" style={{ backgroundColor: '#131315' }}>
             <SettingRow icon="lock-outline" title="Đổi mật khẩu" />
-            <SettingRow icon="fingerprint" title="Đăng nhập sinh trắc" type="toggle" toggleValue={isBiometricEnabled} onToggle={setIsBiometricEnabled} hideBorder />
+            <SettingRow icon="fingerprint" title="Đăng nhập sinh trắc học" type="toggle" toggleValue={isBiometricEnabled} onToggle={setIsBiometricEnabled} hideBorder />
           </View>
         </View>
 
