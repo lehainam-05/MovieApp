@@ -40,6 +40,7 @@ const MoviesScreen = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAppending, setIsAppending] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const [scrolled, setScrolled] = useState(false);
 
   // Lấy list categories động từ API
@@ -58,7 +59,9 @@ const MoviesScreen = () => {
       setIsLoading(true);
       setPage(1);
       setMovies([]);
+      setHasMore(true);
     } else {
+      if (isAppending || !hasMore) return; // Chặn gọi trùng khi đang load
       setIsAppending(true);
     }
 
@@ -69,6 +72,10 @@ const MoviesScreen = () => {
         pageToFetch,
         sortBy
       );
+
+      if (results.length === 0) {
+        setHasMore(false); // Không còn dữ liệu để load thêm
+      }
 
       if (reset) {
         setMovies(results);
@@ -158,24 +165,14 @@ const MoviesScreen = () => {
 
   const renderFooter = () => (
     <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 140, marginTop: 8 }}>
-      {isAppending ? (
+      {isAppending && (
         <ActivityIndicator color={Colors.primary} size="large" />
-      ) : movies.length > 0 ? (
-        <TouchableOpacity
-          onPress={() => loadData(false)}
-          activeOpacity={0.8}
-          style={{
-            backgroundColor: Colors.primary,
-            paddingVertical: 18,
-            borderRadius: 30,
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "#1a1a1a", fontWeight: "900", fontSize: 14, letterSpacing: 1 }}>
-            XEM THÊM
-          </Text>
-        </TouchableOpacity>
-      ) : null}
+      )}
+      {!hasMore && movies.length > 0 && (
+        <Text style={{ color: "#555", textAlign: "center", fontSize: 13, fontWeight: "600", marginTop: 8 }}>
+          Đã hiển thị toàn bộ phim
+        </Text>
+      )}
     </View>
   );
 
@@ -208,6 +205,8 @@ const MoviesScreen = () => {
         showsVerticalScrollIndicator={false}
         onScroll={handleScroll}
         scrollEventThrottle={16}
+        onEndReached={() => loadData(false)}
+        onEndReachedThreshold={0.2}
         ListEmptyComponent={() => (
           isLoading ? (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingTop: 80 }}>

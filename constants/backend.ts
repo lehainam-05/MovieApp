@@ -8,4 +8,4 @@
 
 // IP Wifi của máy tính đang chạy json-server
 // Nếu đổi mạng Wifi, chạy `ipconfig` để lấy IP mới và cập nhật ở đây.
-export const API_BASE_URL = "http://192.168.110.152:3000";
+export const API_BASE_URL = "http://192.168.1.73:3000";

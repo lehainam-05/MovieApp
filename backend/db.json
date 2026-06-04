@@ -21,6 +21,12 @@
       "password": "$2a$10$m5kTeUIVSkQ6qNT6UFaDBuxCw8KYtP73SCVOcpZwMzZiLAMtxc7X2",
       "fullName": "Lê Hải Nam",
       "id": 3
+    },
+    {
+      "email": "test123@gmail.com",
+      "password": "$2a$10$Ii6.wXvnKW0cbFD7oMZRluPLwYIov2qzJPegwHPYQGWYp86Bv4uYe",
+      "fullName": "Lê Hải Nam",
+      "id": 4
     }
   ],
   "favorites": [
@@ -165,6 +171,141 @@
       "vote_count": 1376,
       "createdAt": "2026-05-22T14:14:48.013Z",
       "id": 10
+    },
+    {
+      "userId": 1,
+      "movie_id": 687163,
+      "title": "Thoát Khỏi Tận Thế",
+      "poster_path": "/7NzV9SN5ocWzMrdQw9fFDgLYVJC.jpg",
+      "backdrop_path": "/2I1OFQJ0L9T0dpU6FobKFWV2PxX.jpg",
+      "vote_average": 8.612,
+      "release_date": "2026-03-15",
+      "genre_ids": [
+        878,
+        12
+      ],
+      "overview": "Mất trí nhớ và lạc lõng trên một con tàu vũ trụ, một phi hành gia khám phá ra rằng anh là hy vọng duy nhất của nhân loại trước bờ vực tuyệt chủng. Một liên minh bất ngờ được hình thành, nắm giữ vận mệnh của tất cả.",
+      "adult": false,
+      "original_language": "en",
+      "original_title": "Project Hail Mary",
+      "popularity": 402.3877,
+      "video": false,
+      "vote_count": 3794,
+      "createdAt": "2026-05-22T17:08:12.294Z",
+      "id": 11
+    },
+    {
+      "userId": 1,
+      "movie_id": 1439930,
+      "title": "Một Chương Trình Đặc Biệt từ Marvel Television - The Punisher: Phát Súng Cuối Cùng",
+      "poster_path": "/qQclTgLMDvGBuUBFGHRipxkEwWR.jpg",
+      "backdrop_path": "/qO55CD8tgVL1T4WKn6zYFFiD6lL.jpg",
+      "vote_average": 8.492,
+      "release_date": "2026-05-12",
+      "genre_ids": [
+        28,
+        18,
+        80
+      ],
+      "overview": "",
+      "adult": false,
+      "original_language": "en",
+      "original_title": "The Punisher: One Last Kill",
+      "popularity": 593.9964,
+      "video": false,
+      "vote_count": 1034,
+      "createdAt": "2026-05-22T17:08:15.667Z",
+      "id": 12
+    },
+    {
+      "userId": 1,
+      "movie_id": 1304313,
+      "title": "Một bộ phim của Lee Cronin: Xác ướp",
+      "poster_path": "/fIbu9GsLv7j8uWA8OiAEtpNEDsZ.jpg",
+      "backdrop_path": "/wMrV8SLne1jHLeYS0lLrA1Tf86P.jpg",
+      "vote_average": 7.9,
+      "release_date": "2026-04-15",
+      "genre_ids": [
+        27,
+        9648
+      ],
+      "overview": "Con gái nhỏ của một nhà báo biến mất không dấu vết giữa sa mạc. Tám năm sau, gia đình tan vỡ của họ bàng hoàng khi cô bé bất ngờ được đưa trở về — nhưng cuộc đoàn tụ tưởng chừng hạnh phúc nhanh chóng biến thành một cơn ác mộng sống.",
+      "adult": false,
+      "original_language": "en",
+      "original_title": "Lee Cronin's The Mummy",
+      "popularity": 525.5115,
+      "video": false,
+      "vote_count": 705,
+      "createdAt": "2026-05-22T17:08:17.482Z",
+      "id": 13
+    },
+    {
+      "userId": 1,
+      "movie_id": 1311031,
+      "title": "Thanh Gươm Diệt Quỷ: Vô Hạn Thành",
+      "poster_path": "/nV99ACeAa8fFFso0tQZ3HktEf5X.jpg",
+      "backdrop_path": "/1RgPyOhN4DRs225BGTlHJqCudII.jpg",
+      "vote_average": 7.711,
+      "release_date": "2025-07-18",
+      "genre_ids": [
+        16,
+        28,
+        14
+      ],
+      "overview": "Khi các thành viên của Sát Quỷ Đoàn và Trụ Cột tham gia vào chương trình đặc huấn để chuẩn bị cho trận chiến sắp với lũ quỷ, Kibutsuji Muzan xuất hiện tại Dinh thự Ubuyashiki. Khi thủ lĩnh của Sát Quỷ Đoàn gặp nguy hiểm, Tanjiro và các Trụ Cột trở về trụ sở Thế nhưng, Muzan bất ngờ kéo toàn bộ Sát Quỷ Đoàn đến hang ổ cuối cùng của lũ quỷ là Vô Hạn Thành, mở màn cho trận đánh cuối cùng của cả hai phe.",
+      "adult": false,
+      "original_language": "ja",
+      "original_title": "劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来",
+      "popularity": 97.3821,
+      "video": false,
+      "vote_count": 834,
+      "createdAt": "2026-05-22T17:08:19.680Z",
+      "id": 14
+    },
+    {
+      "userId": 1,
+      "movie_id": 1404791,
+      "title": "Vong Nhi Cúp Bế",
+      "poster_path": "/kP3Weds0zmduitEtviLZgK12n1U.jpg",
+      "backdrop_path": "/hV6eicjIYxP1v6Qki0bAUMF2Ijf.jpg",
+      "vote_average": 7.5,
+      "release_date": "2025-06-13",
+      "genre_ids": [
+        27,
+        9648
+      ],
+      "overview": "Suzuki Yoshie bỗng tìm thấy một con búp bê giống với đứa con gái đã mất của mình, vì quá đau buồn mà vợ chồng cô đã chăm sóc con búp bê trong suốt nhiều năm. Sự việc kinh hoàng xảy ra khi cô phát hiện mình đã có thai, và dường như con búp bê của cô không muốn chia sẻ tình thương với “đứa em” sơ sinh đó.",
+      "adult": false,
+      "original_language": "ja",
+      "original_title": "ドールハウス",
+      "popularity": 47.174,
+      "video": false,
+      "vote_count": 59,
+      "createdAt": "2026-05-22T17:08:21.707Z",
+      "id": 15
+    },
+    {
+      "userId": 1,
+      "movie_id": 129,
+      "title": "Vùng Đất Linh Hồn",
+      "poster_path": "/pNHppsjxGBcRUCFlXQh0briymTN.jpg",
+      "backdrop_path": "/dyJvKsNs2KP8qQnAXbRwDjblViy.jpg",
+      "vote_average": 8.534,
+      "release_date": "2001-07-20",
+      "genre_ids": [
+        16,
+        10751,
+        14
+      ],
+      "overview": "Câu chuyện kể về cô bé bướng bỉnh Chihiro. Gia đình của Chihiro chuyển từ thành phố về quê sinh sống, và Chihiro chẳng thích thú tí nào với sự thay đổi này.  Bố của Chihiro là một tay lái xe tệ hại và có một trí nhớ \"quá tồi\", ông đã lái xe lạc đường đến một thành phố bị bỏ hoang, không bóng người. Bị cuốn hút bởi mùi vị thơm ngon của thức ăn, bố mẹ của Chihiro bắt đầu \"thưởng thức\", nhưng kết quả họ bị biến thành những con heo mập. Còn thành phố không người kia, sau khi trời tối, tất cả sống dậy, những bóng ma bắt đầu xuất hiện và hoạt động. Cô bé bướng bỉnh phải làm gì để cứu bố mẹ mình và thoát khỏi đây?",
+      "adult": false,
+      "original_language": "ja",
+      "original_title": "千と千尋の神隠し",
+      "popularity": 32.3547,
+      "video": false,
+      "vote_count": 18298,
+      "createdAt": "2026-05-22T17:08:29.547Z",
+      "id": 17
     }
   ],
   "metrics": [
@@ -295,6 +436,62 @@
       "count": 1,
       "poster_url": "https://image.tmdb.org/t/p/w500/dql1WvlOdEgzQ0Ub05NqHmW7D4y.jpg",
       "id": 16
+    },
+    {
+      "searchTerm": "Dorem",
+      "movie_id": 1509713,
+      "title": "Dore",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500/e11Ani8LUG0CdIbR7BCQr5VChLd.jpg",
+      "id": 17
+    },
+    {
+      "searchTerm": "Dore",
+      "movie_id": 590640,
+      "title": "Dor Secreta",
+      "count": 2,
+      "poster_url": "https://image.tmdb.org/t/p/w500null",
+      "id": 18
+    },
+    {
+      "searchTerm": "Doremon",
+      "movie_id": 728754,
+      "title": "Doraemon: Đôi Bạn Thân 2",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500/zdYNwZZinyEDEl6IEk3Ad3fn2eP.jpg",
+      "id": 19
+    },
+    {
+      "searchTerm": "Do",
+      "movie_id": 999136,
+      "title": "Khách Sạn Của Quỷ",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500/stM9N7eJmHKLmFR59JG4tLdN7Wk.jpg",
+      "id": 20
+    },
+    {
+      "searchTerm": "Dora",
+      "movie_id": 590640,
+      "title": "Dor Secreta",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500null",
+      "id": 21
+    },
+    {
+      "searchTerm": "Doraemo",
+      "movie_id": 1210490,
+      "title": "Doraemon: Viaje al Mismo Planeta",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500/nsKs6oTk63RYVE7h4XSakcqAHfS.jpg",
+      "id": 22
+    },
+    {
+      "searchTerm": "Doraemon",
+      "movie_id": 1469984,
+      "title": "Doraemon: El Cuadrado Amarillo",
+      "count": 1,
+      "poster_url": "https://image.tmdb.org/t/p/w500/ohEmFkNntCe4CcxN5ruEdqDvtO2.jpg",
+      "id": 23
     }
   ]
 }

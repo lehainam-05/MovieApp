@@ -2,7 +2,7 @@
  * services/authService.ts
  *
  * @purpose Gọi API đến JSON Server Auth để Đăng Ký / Đăng Nhập.
- * @why     Thay thế cho Appwrite Authentication. json-server-auth cung cấp
+ * @why     json-server-auth cung cấp
  *          endpoint POST /register và POST /login, trả về JWT token.
  */
 import AsyncStorage from "@react-native-async-storage/async-storage";

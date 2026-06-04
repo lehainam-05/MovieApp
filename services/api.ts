@@ -7,7 +7,7 @@
  */
 
 export const TMDB_CONFIG = {
-  BASE_URL: "https://api.themoviedb.org/3", // Khối xương sống URL của kho phim
+  BASE_URL: "https://api.tmdb.org/3", // Khối xương sống URL của kho phim
   API_KEY: process.env.EXPO_PUBLIC_MOVIE_API_KEY,
   headers: {
     accept: "application/json",
